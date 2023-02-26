@@ -404,7 +404,7 @@ header .header_form .syncer-acdn-child li a:hover {
 }
 /*header decided*/
 header .header_form nav ul li .close_tools,
-header .header_form nav ul li .auto_download_cookie {
+header .header_form nav ul li .auto_download_storage {
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -420,7 +420,7 @@ header .header_form nav ul li .close_tools:active {
   box-shadow: none;
 }
 header .header_form nav ul li .close_tools i,
-header .header_form nav ul li .auto_download_cookie i {
+header .header_form nav ul li .auto_download_storage i {
   position: relative;
   top: 3px;
   color: rgba(0, 0, 0, 0.5);
@@ -442,29 +442,39 @@ header .header_form nav ul li p.language {
 header .header_form nav ul li a.language {
   box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px -1px 1px rgba(0, 0, 0, 0.5);
 }
-header .header_form nav ul li i.fa-github {
+header .header_form nav ul li i.fa-github,
+header .header_form nav ul li i.fa-twitter,
+header .header_form nav ul li i.fa-file-shield,
+header .header_form nav ul li.roll_back i.fa-database,
+header .header_form nav ul li.roll_back i.fa-rotate-right {
   line-height: 80px;
-  font-size: xx-large;
+  font-size: large;
   color: transparent;
-  background: rgba(36,41,47,0.8);
-  text-shadow:0 0 0.1em rgba(255,255,255,0.05), 0.01em 0.04em 0.03em rgba(255,255,255,0.4);
   -webkit-background-clip : text;
+}
+header .header_form nav ul li i.fa-github {
+  text-shadow:0 0 0.1em rgba(255,255,255,0.05), 0.01em 0.04em 0.03em rgba(255,255,255,0.4);
+  background-color: rgba(36,41,47,0.8);
 }
 header .header_form nav ul li i.fa-twitter {
-  line-height: 80px;
-  font-size: xx-large;
-  color: transparent;
-  background: rgba(0,255,255,0.2);
-  text-shadow:0 0 0.1em rgba(255,255,255,0.05),0.01em 0.04em 0.03em rgba(255,255,255,0.4);
-  -webkit-background-clip : text;
+  text-shadow:0 0 0.1em rgba(255,255,255,0.05), 0.01em 0.04em 0.03em rgba(255,255,255,0.4);
+  background-color: rgba(0,255,255,0.2);
 }
 header .header_form nav ul li i.fa-file-shield {
-  line-height: 80px;
-  font-size: xx-large;
-  color: transparent;
-  background: rgba(100,0,200,0.2);
-  text-shadow:0 0 0.1em rgba(255,255,255,0.05),0.01em 0.04em 0.03em rgba(255,255,255,0.4);
-  -webkit-background-clip : text;
+  text-shadow:0 0 0.1em rgba(255,255,255,0.05), 0.01em 0.04em 0.03em rgba(255,255,255,0.4);
+  background-color: rgba(100,0,200,0.2);
+}
+header .header_form nav ul li.roll_back button {
+  cursor: pointer;
+}
+header .header_form nav ul li.roll_back i.fa-database,
+header .header_form nav ul li.roll_back i.fa-rotate-right {
+  text-shadow:0 0 0.1em rgba(255,255,255,0.05), 0.01em 0.04em 0.03em rgba(255,255,255,0.4);
+  background-color: rgba(0,255,50,0.5);
+}
+#auto_download_storage:checked ~ .header_form nav ul li.roll_back,
+#auto_download_storage:checked ~ .header_2windows nav ul li.auto_storage {
+  display: none;
 }
 header .header_form h1 {
   margin:0;
@@ -483,14 +493,14 @@ header img:hover {
 #all_close_icons:checked ~ aside, #all_close_icons:checked ~ .icon_button_fixed_frame {
   display: none;
 }
-#auto_download_cookie:checked ~ .header_form .auto_download_cookie {
+#auto_download_storage:checked ~ .header_form .auto_download_storage {
   box-shadow: inset 0 -2px 0px rgba(255, 255, 255, 0.25), inset 0 2px 0px rgba(0, 0, 0, 0.7);
   background-color: none;
   background-image: linear-gradient(green 0%, lightgreen 100%);
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
-#auto_download_cookie:checked ~ .header_form .auto_download_cookie i{
+#auto_download_storage:checked ~ .header_form .auto_download_storage i{
   top: 5.5px;
   color: #fff;
 }
@@ -2268,7 +2278,7 @@ footer i.fa-circle-question:hover {
     right: 20px;
   }
   header .header_2windows .close_tools,
-  header .header_2windows .auto_download_cookie {
+  header .header_2windows .auto_download_storage {
     display: inline-block;
     width: 40px;
     height: 40px;
@@ -2283,21 +2293,21 @@ footer i.fa-circle-question:hover {
     box-shadow: none;
   }
   header .header_2windows .close_tools i,
-  header .header_2windows .auto_download_cookie i {
+  header .header_2windows .auto_download_storage i {
     position: relative;
     top: 8px;
     color: rgba(0, 0, 0, 0.5);
     font-size: 20px;
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
   }
-  #auto_download_cookie:checked ~ .header_2windows .auto_download_cookie {
+  #auto_download_storage:checked ~ .header_2windows .auto_download_storage {
     box-shadow: inset 0 -2px 0px rgba(255, 255, 255, 0.25), inset 0 2px 0px rgba(0, 0, 0, 0.7);
     background-color: none;
     background-image: linear-gradient(green 0%, lightgreen 100%);
     -webkit-transform: translateY(-2px);
     transform: translateY(-2px);
   }
-  #auto_download_cookie:checked ~ .header_2windows .auto_download_cookie i {
+  #auto_download_storage:checked ~ .header_2windows .auto_download_storage i {
     top: 10.5px;
     color: #fff;
   }
@@ -2323,7 +2333,9 @@ footer i.fa-circle-question:hover {
   }
   header .header_form nav ul li i.fa-github,
   header .header_form nav ul li i.fa-twitter,
-  header .header_form nav ul li i.fa-file-shield {
+  header .header_form nav ul li i.fa-file-shield,
+  header .header_form nav ul li.roll_back i.fa-database,
+  header .header_form nav ul li.roll_back i.fa-rotate-right {
     line-height: 20px;
     font-size: small;
   }
@@ -2406,7 +2418,7 @@ footer i.fa-circle-question:hover {
     transform: scale(0.9);
   }
   header .header_2windows .close_tools,
-  header .header_2windows .auto_download_cookie {
+  header .header_2windows .auto_download_storage {
     display: block;
     width: 40px;
     height: 40px;
@@ -2420,21 +2432,21 @@ footer i.fa-circle-question:hover {
     box-shadow: none;
   }
   header .header_2windows .close_tools i,
-  header .header_2windows .auto_download_cookie i {
+  header .header_2windows .auto_download_storage i {
     position: relative;
     top: 8px;
     color: rgba(0, 0, 0, 0.5);
     font-size: 20px;
     text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
   }
-  #auto_download_cookie:checked ~ .header_2windows .auto_download_cookie {
+  #auto_download_storage:checked ~ .header_2windows .auto_download_storage {
     box-shadow: inset 0 -2px 0px rgba(255, 255, 255, 0.25), inset 0 2px 0px rgba(0, 0, 0, 0.7);
     background-color: none;
     background-image: linear-gradient(green 0%, lightgreen 100%);
     -webkit-transform: translateY(-2px);
     transform: translateY(-2px);
   }
-  #auto_download_cookie:checked ~ .header_2windows .auto_download_cookie i {
+  #auto_download_storage:checked ~ .header_2windows .auto_download_storage i {
     top: 10.5px;
     color: #fff;
   }
@@ -2466,6 +2478,12 @@ footer i.fa-circle-question:hover {
   header .header_2windows nav ul li.selected_language {
     background: yellowgreen;
     color: black;
+  }
+  header .header_2windows nav ul li.roll_back {
+    cursor: pointer;
+  }
+  header .header_2windows nav ul li.roll_back:active {
+    background: yellowgreen;
   }
   /*header hanburger button*/
   header .header_2windows nav {

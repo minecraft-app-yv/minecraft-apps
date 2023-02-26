@@ -4830,10 +4830,10 @@ function question_obj(x,y) {
   }
   if (click_class === 'palette_download') {
     if ($('header .header_form p.language').text() === 'Japanese') {
-      str = "cookieの有効期限を超えそうな時にダウンロードして下さい。";
+      str = "Web Storage機能をご利用出来ない環境の方は、ここからtextデータの保存をお願いいたします。";
     }
     if ($('header .header_form p.language').text() === '英語') {
-      str = "Download before the cookie deadline is about to exceeded.";
+      str = "If you are unable to use the Web Storage function, please download your text data here.";
     }
   }
   if (click_class === 'palette_upload') {
@@ -4876,25 +4876,23 @@ function question_obj(x,y) {
       + "<br>Use when it interferes with work.";
     }
   }
-  if (click_class === 'auto_download_cookie') {
+  if (click_class === 'auto_download_storage') {
     if ($('header .header_form p.language').text() === 'Japanese') {
       str = "オンにするとメモリとパレットのデータを、画面を閉じる前の状態に自動で戻します。"
-      + "<br>保存期間は30日になります。"
-      + "<br>cookieを使用しているためご利用の際は許可をお願いいたします。";
+      + "<br>Web Storage機能を使用しているためご利用出来ない環境の方はtextデータの保存をお願いいたします。";
     }
     if ($('header .header_form p.language').text() === '英語') {
       str = "When button was on, memory and palette data are stored before closing the page and automatically upload."
-      + "<br>Data retention period will be 30 days."
-      + "<br>Please allow cookie to be used.";
+      + "<br>Please save the text data if you cannot use the Web Storage function.";
     }
   }
   if (click_id === 'download_memory') {
     if ($('header .header_form p.language').text() === 'Japanese') {
-      str = "cookieの有効期限を超えそうな時にダウンロードして下さい。"
+      str = "Web Storage機能をご利用出来ない環境の方は、ここからtextデータの保存をお願いいたします。"
       + "<br>「下書き」もダウンロード出来ます。";
     }
     if ($('header .header_form p.language').text() === '英語') {
-      str = "Download before the cookie deadline is about to exceeded."
+      str = "If you are unable to use the Web Storage function, please download your text data here."
       + '<br>And you can also download a "Draw Art".';
     }
   }
@@ -4958,183 +4956,166 @@ function  question_obj_mouse(e) {
 }
 document.addEventListener('mousemove', question_obj_mouse);
 document.addEventListener('touchstart', question_obj_touch);
-/*++cookie++*/
+/*++localStorage++*/
 /*https://qiita.com/mocha_xx/items/e0897e9f251da042af59*/
 /*https://www.sejuku.net/blog/28696*/
-/*++Cookieをkeyで取得する++*/
-// 連想配列に格納
-function getCookieArray(){
-  let arr = new Array();
-  if(document.cookie != ''){
-    let tmp = document.cookie.split('; ');
-    for(let i=0;i<tmp.length;i++){
-      let data = tmp[i].split('=');
-      arr[data[0]] = decodeURIComponent(data[1]);
-    }
-  }
-  return arr;
-}
-/*++Cookieの保存と削除++*/
-function save_cookie_data(data) {
-  /*cookie下準備*/
-  let kigen = 30; //Cookieの期限（1ヶ月とする）←適宜、適切な期限を設定
-  let nowdate = new Date(); //現在の日付データを取得
-  nowdate.setTime(nowdate.getTime() + kigen*24*60*60*1000); //1ヶ月後の日付データを作成
-  let kigendate = nowdate.toGMTString(); //GMT形式に変換して変数kigendateに格納
-  let cookievalue = data;
-  let expires = "expires=" + kigendate;
-  let path = "path=/";
-  let dt = new Date('1999-12-31T23:59:59Z'); // 過去の日付をGMT形式に変換
-  return {cookievalue: cookievalue, expires: expires, path: path, dt: dt};
-}
-/*Cookieにデータを書き込む（保存）*/
-function save_cookie (cookievalue, expires, path) {
-  console.log(cookievalue + expires);
-  document.cookie = cookievalue + expires;
-}
-/*Cookieのデータを削除する*/
-function delete_cookie (dt,path) {
-  document.cookie = "session_id=; expires=" + dt.toUTCString() + "; "+ path;
-}
+/*https://atmarkit.itmedia.co.jp/ait/articles/1108/12/news093_2.html*/
 /*https://javascript.programmer-reference.com/js-onunload/*/
-/*
-window.onload = function(){
-    console.log('m');
-  console.log(document.cookie);
-  // keyを指定して取得
-  //「 key1=val1; key2=val2; key3=val3; ・・・ 」というCookie情報が保存されているとする
-  let arr = getCookieArray();
-  //upload memorys and palette frome cookie
-  let key = 'auto_download_cookie';
-  let value = arr[key];
-  if (value === 'on') {
-    $('#auto_download_cookie').prop('checked', true);
-    //top_menu memory
+/*https://qiita.com/niihara_megumu/items/be693500d42088027547*/
+if (typeof sessionStorage === 'undefined') {
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = "このブラウザはWeb Storage機能が実装されていません";
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = "This browser does not been implemented Web Storage function";
+  }
+  window.alert(str);
+} else {
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = "このページはWeb Storage機能を使用しています";
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = "This page uses the Web Storage function";
+  }
+  window.alert(str);
+  let storage = localStorage;
+  function remove_localStorage (storage,key) {
+    storage.removeItem(key);
+  }
+  function all_remove_localStorage(storage) {
+    storage.clear();
+  }
+  function setItem_in_localStorage (storage,key,value_obj) {
+    storage.setItem(key, JSON.stringify(value_obj));
+    //Key=>cat/Value=>{"name":"ねこ","color":"white","age":5}
+  }
+  function return_obj_from_localStorage (storage,key) {
+    let getData = JSON.parse(storage.getItem(key));
+    return getData;
+  }
+  //ページを離れる直前
+  window.onbeforeunload = function(){
+    //make input data for localStorage
+    //storage button on or off
+    let value_obj = {};
+    if ($('#auto_download_storage').prop('checked')) {
+      value_obj['storage'] = 'on';
+    }
+    if (!$('#auto_download_storage').prop('checked')) {
+      value_obj['storage'] = 'off';
+    }
+    //top menu memory
+    let get_memorys_html = '';
+    $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
+      let html = jQuery("<div>").append($(this).clone(true)).html();
+      get_memorys_html = get_memorys_html + html;
+    });
+    value_obj['top_menu'] = get_memorys_html;
+    //memory data obj
+    let get_memorys_data = {};
+    let i = 0;
+    $.each(memory_obj, function(index, obj) {
+      get_memorys_data['memoryObj_id' + i] = index;
+      get_memorys_data['memoryObj_canvas' + i] = obj.canvas;
+      get_memorys_data['memoryObj_data' + i] = obj.data;
+      i++;
+    })
+    value_obj['top_menu_data'] = get_memorys_data;
+    //color boxes of palette board cp
+    value_obj['cp_html'] = $('#CP').html();
+    //in storage
+    let key = 'unload_time';
+    setItem_in_localStorage (storage,key,value_obj);
+  }
+  $('body').ready(function() {
+    //load Storage
+    let key = 'unload_time';
+    let getData = return_obj_from_localStorage (storage,key);
+    if (getData === '') {
+      return false;
+    }
+    //storage button on or off
+    if (getData['storage'] === 'off') {
+      $('#auto_download_storage').prop('checked', false);
+      return false;
+    }
+    if (getData['storage'] === 'on') {
+      //top menu memory
+      $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
+        $(this).remove();
+      });
+      $('#syncer-acdn-03').append(getData['top_menu']);
+      //memory_obj in js
+      let get_obj = getData['top_menu_data'];
+      memory_obj = {};
+      let i = 0;
+      $.each(get_obj, function(index, obj) {
+        let key = get_obj['memoryObj_id' + i];
+        let canvas = get_obj['memoryObj_canvas' + i];
+        let data = get_obj['memoryObj_data' + i];
+        let value = {canvas: canvas, data: data};
+        memory_obj[key] = value;
+        i++;
+      })
+      //color boxes of palette board cp
+      $('#CP').html('');
+      $('#CP').append(getData['cp_html']);
+      all_remove_localStorage(storage);
+    }
+  });
+  //upload load storage from button
+  $('header .header_form nav ul li.roll_back').click((e) => {
+    let key = 'unload_time';
+    let getData = return_obj_from_localStorage (storage,key);
+    if (getData === '') {
+      return false;
+    }
+    //top menu memory
     $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
       $(this).remove();
     });
-    key = 'top_menu_memorys';
-    value = arr[key];
-    $('#syncer-acdn-03').append(value);
+    $('#syncer-acdn-03').append(getData['top_menu']);
     //memory_obj in js
+    let get_obj = getData['top_menu_data'];
     memory_obj = {};
-    let memory_L = $('#syncer-acdn-03 li[data-target="target_memorys"]').length;
-    let j = 0;
-    do {
-      key = 'memoryObj_id' + j;
-      let id = arr[key];
-      if (id === undefined) {
-        break;
-      }
-      key = 'memoryObj_canvas' + j;
-      let obj_canvas = arr[key];
-      key = 'memoryObj_data' + j;
-      let obj_data = arr[key];
-      let memory_obj = {canvas: obj_canvas, data: obj_data};
-      add_new_obj_to_memory_obj (id, memory_obj);
-      j++;
-    } while (j < memory_L);
+    let i = 0;
+    $.each(get_obj, function(index, obj) {
+      let key = get_obj['memoryObj_id' + i];
+      let canvas = get_obj['memoryObj_canvas' + i];
+      let data = get_obj['memoryObj_data' + i];
+      let value = {canvas: canvas, data: data};
+      memory_obj[key] = value;
+      i++;
+    })
     //color boxes of palette board cp
     $('#CP').html('');
-    key = 'icon_palette_cp';
-    value = arr[key];
-    $('#CP').append(value);
-  }
-  if (value === 'off') {
-    $('#auto_download_cookie').prop('checked', false);
-  }
-
-  //ページを離れる直前
-  window.onbeforeunload = function(){
-      console.log('e');
-    //input data to cookie
-    //cookie button on or off
-    let data = '';
-    if ($('#auto_download_cookie').prop('checked')) {
-      data = 'auto_download_cookie=on';
+    $('#CP').append(getData['cp_html']);
+  });
+  $('header .header_2windows nav ul li.roll_back').click((e) => {
+    let key = 'unload_time';
+    let getData = return_obj_from_localStorage (storage,key);
+    if (getData === '') {
+      return false;
     }
-    if (!$('#auto_download_cookie').prop('checked')) {
-      data = 'auto_download_cookie=off';
-    }
-    data = data + '; ';
-    //top meue memory
-    let get_memorys_html = '';
+    //top menu memory
     $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-      let html = jQuery("<div>").append($(this).clone(true)).html();
-      get_memorys_html = get_memorys_html + html;
+      $(this).remove();
     });
-    get_memorys_html = encodeURIComponent(get_memorys_html);
-    get_memorys_html = 'top_menu_memorys=' + get_memorys_html;
-    data = data + get_memorys_html + '; ';
-    //memory data obj
-    let get_memorys_data = '';
+    $('#syncer-acdn-03').append(getData['top_menu']);
+    //memory_obj in js
+    let get_obj = getData['top_menu_data'];
+    memory_obj = {};
     let i = 0;
-    $.each(memory_obj, function(index, obj) {
-      get_memorys_data = get_memorys_data + 'memoryObj_id' + i + '=' + encodeURIComponent(index);
-      get_memorys_data = get_memorys_data + '; ';
-      get_memorys_data = get_memorys_data + 'memoryObj_canvas' + i + '=' + encodeURIComponent(obj.canvas);
-      get_memorys_data = get_memorys_data + '; ';
-      get_memorys_data = get_memorys_data + 'memoryObj_data' + i + '=' + encodeURIComponent(obj.data);
-      get_memorys_data = get_memorys_data + '; ';
+    $.each(get_obj, function(index, obj) {
+      let key = get_obj['memoryObj_id' + i];
+      let canvas = get_obj['memoryObj_canvas' + i];
+      let data = get_obj['memoryObj_data' + i];
+      let value = {canvas: canvas, data: data};
+      memory_obj[key] = value;
       i++;
     })
-    data = data + get_memorys_data;
     //color boxes of palette board cp
-    let get_CP_html = $('#CP').html();
-    get_CP_html = encodeURIComponent(get_CP_html);
-    get_CP_html = 'icon_palette_cp=' + get_CP_html;
-    data = data + get_CP_html;
-    //save to cookie
-    let obj = save_cookie_data(data);
-    save_cookie (obj.cookievalue, obj.expires, obj.path);
-  }
-  //ページを離れた時に
-  window.onunload = function(){
-
-  }
-}*/
-/*test*/
-$('#auto_download_cookie').change(function(e) {
-  //input data to cookie
-    //cookie button on or off
-    let data = '';
-    if ($('#auto_download_cookie').prop('checked')) {
-      data = 'auto_download_cookie=on';
-    }
-    if (!$('#auto_download_cookie').prop('checked')) {
-      data = 'auto_download_cookie=off';
-    }
-    data = data + '; ';
-    //top meue memory
-    let get_memorys_html = '';
-    $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-      let html = jQuery("<div>").append($(this).clone(true)).html();
-      get_memorys_html = get_memorys_html + html;
-    });
-    get_memorys_html = encodeURIComponent(get_memorys_html);
-    get_memorys_html = 'top_menu_memorys=' + get_memorys_html;
-    data = data + get_memorys_html + '; ';
-    //memory data obj
-    let get_memorys_data = '';
-    let i = 0;
-    $.each(memory_obj, function(index, obj) {
-      get_memorys_data = get_memorys_data + 'memoryObj_id' + i + '=' + encodeURIComponent(index);
-      get_memorys_data = get_memorys_data + '; ';
-      get_memorys_data = get_memorys_data + 'memoryObj_canvas' + i + '=' + encodeURIComponent(obj.canvas);
-      get_memorys_data = get_memorys_data + '; ';
-      get_memorys_data = get_memorys_data + 'memoryObj_data' + i + '=' + encodeURIComponent(obj.data);
-      get_memorys_data = get_memorys_data + '; ';
-      i++;
-    })
-    data = data + get_memorys_data;
-    //color boxes of palette board cp
-    let get_CP_html = $('#CP').html();
-    get_CP_html = encodeURIComponent(get_CP_html);
-    get_CP_html = 'icon_palette_cp=' + get_CP_html;
-    data = data + get_CP_html;
-    //save to cookie
-    let obj = save_cookie_data(data);
-  console.log(obj);
-    save_cookie (obj.cookievalue, obj.expires, obj.path);
-  console.log(document.cookie);
-});
+    $('#CP').html('');
+    $('#CP').append(getData['cp_html']);
+  });
+}
