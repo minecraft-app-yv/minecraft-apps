@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="マイクラ, チャンク, 調べる">
+  <meta name="description" content="座標を入力するとチャンクの境界を計算します。">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+  <title>マイクラのチャンク境界チェッカー</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="shortcut icon" href="../index/img/web_icon.png" type="image/png" sizes="16x16">
+  <link rel="stylesheet" href="./css/chunk.css" media="screen">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap">
+</head>
+<body>
+  <input id="all_close_icons" type="checkbox" class="hidden">
+  <header>
+    <div class="header_2windows">
+      <a href="../index/index.html"><img src="../index/img/AppMinecraft_logo.png" alt="Useful app for Minecraft"></a>
+      <input id="header_hanb" type="checkbox">
+      <div class="header_hanb_icon_form">
+        <label for="header_hanb" class="header_hanb_icon"><span></span></label>
+      </div>
+      <nav>
+        <ul>
+          <li class="parent">アプリ</li>
+          <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> チャンク境界チェッカー</a></li>
+          <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> マップ・ピクセルアート用シミュレーター</a></li>
+          <li class="parent">Language</li>
+          <li class="selected_language"><p class="language">Japanese</p></li>
+          <li><a href="./chunk_checker_eng.html" class="language">English</a></li>
+        </ul>
+      </nav>
+      <label for="all_close_icons" class="page_top"><i class="fa-solid fa-toolbox"></i></label>
+    </div>
+    <div class="header_form">
+      <nav class="header_2windows_style">
+        <ul>
+          <li class="syncer-acdn" data-target="syncer-acdn-02">
+            アプリ <span class="arrow"></span>
+            <ul id="syncer-acdn-02" class="syncer-acdn-child">
+              <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> チャンク境界チェッカー</a></li>
+              <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> マップ・ピクセルアート用シミュレーター</a></li>
+            </ul>
+          </li>
+          <li><a href="https://github.com/minecraft-app-yv/minecraft-apps"><i class="fa-brands fa-github"></i></a></li>
+          <li><a href="https://twitter.com/yusuke5028198"><i class="fa-brands fa-twitter"></i></a></li>
+        </ul>
+      </nav>
+      <h1>
+        <a href="../index/index.html"><img src="../index/img/AppMinecraft_logo.png" alt="Useful app for Minecraft"></a>
+      </h1>
+      <nav>
+        <ul>
+          <li>
+            <p class="language">Japanese</p>
+            <a href="./chunk_checker_eng.html" class="language">English</a></li>
+          </li>
+          <li class="header_pc">
+            <label for="all_close_icons" class="page_top"><i class="fa-solid fa-toolbox"></i></label>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <aside>
+    <input id="hanb" type="checkbox" checked>
+    <div class="aside_menu">
+      <!--hanburgerButton-->
+      <div class="hanb_icon_form">
+        <label for="hanb" class="hanb_icon"><span></span></label>
+        <div class="title">入力欄 Input</div>
+      </div>
+      <div class="my_place"><i class="fa-solid fa-location-dot"></i><span class="pop_text">現在地</span></div>
+      <!--hanburgerButton-->
+      <div class="coordinates_input">
+        <div class="title">入力欄 Input</div>
+        <p class="small_title">座標を入力</p>
+        <p>x:<input type="text" name="x" placeholder="123 ※半角数字"></p>
+        <p>z:<input type="text" name="z" placeholder="123 ※半角数字"></p>
+        <p class="small_title">表示チャンク数</p>
+        <select name="count">
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="4">4</option>
+          <option value="6">6</option>
+          <option value="10">10</option>
+        </select>
+        <p class="small_title">表示切り替え</p>
+        <p>
+          <label class="display_switch"><input type="radio" name="view" value="1" class="hidden" checked><span>簡易表示</span></label>
+          <label class="display_switch"><input type="radio" name="view" value="2" class="hidden"><span>詳細表示</span></label>
+        </p>
+        <p class="small_title">座標</p>
+        <p>
+          <label class="display_switch"><input type="radio" name="coordinate" value="1" class="hidden" checked><span>表示</span></label>
+          <label class="display_switch"><input type="radio" name="coordinate" value="2" class="hidden"><span>非表示</span></label>
+        </p>
+        <p class="go_button"><i class="fa-solid fa-hand-point-left"></i><span class="pop_text">場所確認</span></p>
+        <div class="for_scroll"></div>
+      </div>
+    </div>
+  </aside>
+  <main>
+    <!--Respons-->
+    <table id="answer" class="hidden">
+
+    </table>
+    <!--Respons-->
+  </main>
+  <footer>
+    <p><a href="https://github.com/minecraft-app-yv/minecraft-apps"><small><i class="fa-brands fa-github"></i> GitHub</small></a></p>
+    <p><small>Written by <a href="https://twitter.com/yusuke5028198">@Yusuke M</a></small></p>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" charset="utf-8"></script>
+  <script src="./js/chunk.js" charset="utf-8"></script>
+</body>
+</html>
