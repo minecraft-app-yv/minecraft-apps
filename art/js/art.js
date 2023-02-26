@@ -4982,14 +4982,14 @@ function save_cookie_data(data) {
   nowdate.setTime(nowdate.getTime() + kigen*24*60*60*1000); //1ヶ月後の日付データを作成
   let kigendate = nowdate.toGMTString(); //GMT形式に変換して変数kigendateに格納
   let cookievalue = data;
-  let expires = "expires=" + kigendate + "; ";
+  let expires = "expires=" + kigendate;
   let path = "path=/";
   let dt = new Date('1999-12-31T23:59:59Z'); // 過去の日付をGMT形式に変換
   return {cookievalue: cookievalue, expires: expires, path: path, dt: dt};
 }
 /*Cookieにデータを書き込む（保存）*/
 function save_cookie (cookievalue, expires, path) {
-  document.cookie = cookievalue + expires + path;
+  document.cookie = cookievalue + expires;
 }
 /*Cookieのデータを削除する*/
 function delete_cookie (dt,path) {
