@@ -4998,6 +4998,7 @@ function delete_cookie (dt,path) {
 /*https://javascript.programmer-reference.com/js-onunload/*/
 /**/
 window.onload = function(){
+    console.log('t');
   // keyを指定して取得
   //「 key1=val1; key2=val2; key3=val3; ・・・ 」というCookie情報が保存されているとする
   let arr = getCookieArray();
