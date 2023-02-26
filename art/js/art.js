@@ -4989,6 +4989,7 @@ function save_cookie_data(data) {
 }
 /*Cookieにデータを書き込む（保存）*/
 function save_cookie (cookievalue, expires, path) {
+  console.log(cookievalue + expires);
   document.cookie = cookievalue + expires;
 }
 /*Cookieのデータを削除する*/
