@@ -4996,7 +4996,7 @@ function delete_cookie (dt,path) {
   document.cookie = "session_id=; expires=" + dt.toUTCString() + "; "+ path;
 }
 /*https://javascript.programmer-reference.com/js-onunload/*/
-/**/
+/*
 window.onload = function(){
     console.log('m');
   console.log(document.cookie);
@@ -5091,82 +5091,48 @@ window.onload = function(){
   window.onunload = function(){
 
   }
-}
-/*test
+}*/
+/*test*/
 $('#auto_download_cookie').change(function(e) {
   //input data to cookie
-  //cookie button on or off
-  let data = '';
-  if ($('#auto_download_cookie').prop('checked')) {
-
-    data = 'auto_download_cookie=on';
-  }
-  if (!$('#auto_download_cookie').prop('checked')) {
-    data = 'auto_download_cookie=off';
-  }
-  data = data + '; ';
-  //top meue memory
-  let get_memorys_html = '';
-  $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-    let html = jQuery("<div>").append($(this).clone(true)).html();
-    get_memorys_html = get_memorys_html + html;
-  });
-  get_memorys_html = encodeURIComponent(get_memorys_html);
-  get_memorys_html = 'top_menu_memorys=' + get_memorys_html;
-  data = data + get_memorys_html + '; ';
-  //memory data obj
-  let get_memorys_data = '';
-  let i = 0;
-  $.each(memory_obj, function(index, obj) {
-    get_memorys_data = get_memorys_data + 'memoryObj_id' + i + '=' + encodeURIComponent(index);
-    get_memorys_data = get_memorys_data + '; ';
-    get_memorys_data = get_memorys_data + 'memoryObj_canvas' + i + '=' + encodeURIComponent(obj.canvas);
-    get_memorys_data = get_memorys_data + '; ';
-    get_memorys_data = get_memorys_data + 'memoryObj_data' + i + '=' + encodeURIComponent(obj.data);
-    get_memorys_data = get_memorys_data + '; ';
-    i++;
-  })
-  data = data + get_memorys_data;
-  //color boxes of palette board cp
-  let get_CP_html = $('#CP').html();
-  get_CP_html = encodeURIComponent(get_CP_html);
-  get_CP_html = 'icon_palette_cp=' + get_CP_html;
-  data = data + get_CP_html;
-  //instole cookie data into web from here
-  let arr = new Array();
-  let tmp = data.split('; ');
-  for(let i=0;i<tmp.length;i++){
-    let one_time = tmp[i].split('=');
-    arr[one_time[0]] = decodeURIComponent(one_time[1]);
-  }
-  //top_menu memory
-  $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-    $(this).remove();
-  });
-  let key = 'top_menu_memorys';
-  value = arr[key];
-  $('#syncer-acdn-03').append(value);
-  //memory_obj in js
-  memory_obj = {};
-  let memory_L = $('#syncer-acdn-03 li[data-target="target_memorys"]').length;
-  let j = 0;
-  do {
-    key = 'memoryObj_id' + j;
-    let id = arr[key];
-    if (id === undefined) {
-      break;
+    //cookie button on or off
+    let data = '';
+    if ($('#auto_download_cookie').prop('checked')) {
+      data = 'auto_download_cookie=on';
     }
-    key = 'memoryObj_canvas' + j;
-    let obj_canvas = arr[key];
-    key = 'memoryObj_data' + j;
-    let obj_data = arr[key];
-    let memory_obj = {canvas: obj_canvas, data: obj_data};
-    add_new_obj_to_memory_obj (id, memory_obj);
-    j++;
-  } while (j < memory_L);
-  //color boxes of palette board cp
-  $('#CP').html('');
-  key = 'icon_palette_cp';
-  value = arr[key];
-  $('#CP').append(value);
-});*/
+    if (!$('#auto_download_cookie').prop('checked')) {
+      data = 'auto_download_cookie=off';
+    }
+    data = data + '; ';
+    //top meue memory
+    let get_memorys_html = '';
+    $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
+      let html = jQuery("<div>").append($(this).clone(true)).html();
+      get_memorys_html = get_memorys_html + html;
+    });
+    get_memorys_html = encodeURIComponent(get_memorys_html);
+    get_memorys_html = 'top_menu_memorys=' + get_memorys_html;
+    data = data + get_memorys_html + '; ';
+    //memory data obj
+    let get_memorys_data = '';
+    let i = 0;
+    $.each(memory_obj, function(index, obj) {
+      get_memorys_data = get_memorys_data + 'memoryObj_id' + i + '=' + encodeURIComponent(index);
+      get_memorys_data = get_memorys_data + '; ';
+      get_memorys_data = get_memorys_data + 'memoryObj_canvas' + i + '=' + encodeURIComponent(obj.canvas);
+      get_memorys_data = get_memorys_data + '; ';
+      get_memorys_data = get_memorys_data + 'memoryObj_data' + i + '=' + encodeURIComponent(obj.data);
+      get_memorys_data = get_memorys_data + '; ';
+      i++;
+    })
+    data = data + get_memorys_data;
+    //color boxes of palette board cp
+    let get_CP_html = $('#CP').html();
+    get_CP_html = encodeURIComponent(get_CP_html);
+    get_CP_html = 'icon_palette_cp=' + get_CP_html;
+    data = data + get_CP_html;
+    //save to cookie
+    let obj = save_cookie_data(data);
+  console.log(obj);
+    save_cookie (obj.cookievalue, obj.expires, obj.path);
+});
