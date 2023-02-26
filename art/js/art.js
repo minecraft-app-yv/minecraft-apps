@@ -5135,4 +5135,5 @@ $('#auto_download_cookie').change(function(e) {
     let obj = save_cookie_data(data);
   console.log(obj);
     save_cookie (obj.cookievalue, obj.expires, obj.path);
+  console.log(document.cookie);
 });
