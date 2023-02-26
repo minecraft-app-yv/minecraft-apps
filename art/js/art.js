@@ -4996,7 +4996,7 @@ function delete_cookie (dt,path) {
   document.cookie = "session_id=; expires=" + dt.toUTCString() + "; "+ path;
 }
 /*https://javascript.programmer-reference.com/js-onunload/*/
-/*
+/**/
 window.onload = function(){
   // keyを指定して取得
   //「 key1=val1; key2=val2; key3=val3; ・・・ 」というCookie情報が保存されているとする
@@ -5043,6 +5043,7 @@ window.onload = function(){
 
   //ページを離れる直前
   window.onbeforeunload = function(){
+    console.log('e');
     //input data to cookie
     //cookie button on or off
     let data = '';
@@ -5088,7 +5089,7 @@ window.onload = function(){
   window.onunload = function(){
 
   }
-}*/
+}
 /*test
 $('#auto_download_cookie').change(function(e) {
   //input data to cookie
