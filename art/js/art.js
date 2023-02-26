@@ -4977,7 +4977,7 @@ if (typeof sessionStorage === 'undefined') {
   if ($('header .header_form p.language').text() === '英語') {
     str = "This page uses the Web Storage function";
   }
-  window.alert(str);
+  //window.alert(str);
   let storage = localStorage;
   function remove_localStorage (storage,key) {
     storage.removeItem(key);
