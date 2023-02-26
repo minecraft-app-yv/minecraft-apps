@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="keywords" content="マイクラ, マップアート, ピクセルアート, ツール">
+  <meta name="keywords" content="minecraft, map, pixel, art, tools">
   <meta name="description" content="
-  このページはマイクラのマップやピクセルアート用に画像を変換するシミュレーターです。
-  変換出来る画像は画像ファイルや自作できるツールで作った画像です。
-  ブロックの色もマップと素の色の2色を新規登録してアップグレードできます。
+  This page is the conversion simulator for map and pixel art of minecraft.
+  It can use images that makes at image files, or the data that create in this app.
+  And can add as a new block's color that have map and base color.
   ">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
-  <title>マイクラのマップ・ピクセルアート用シミュレーター</title>
+  <title>Minecraft Map & Pixel Art Simulator</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="shortcut icon" href="../index/img/web_icon.png" type="image/png" sizes="16x16">
   <link rel="stylesheet" href="./css/art.css" media="screen">
@@ -21,8 +21,8 @@
   <div id="for_save_Blueprint_with_skins">
     <div class="Blueprint_with_skins_form">
       <canvas id="Blueprint_with_skins" width="600" height="600"></canvas>
-      <button id="Blueprint_with_skins_button">ダウンロード</button>
-      <p class="hidden"><i class="fa-solid fa-hand-pointer"></i> 右クリックで保存して下さい</p>
+      <button id="Blueprint_with_skins_button">GET</button>
+      <p class="hidden"><i class="fa-solid fa-hand-pointer"></i> Click & save the image, please</p>
       <div class="close_button" data-close-id="for_save_Blueprint_with_skins">✕</div>
     </div>
   </div>
@@ -53,9 +53,9 @@
         <input id="sample_ratio_g" type="number" value="0.59" step="0.01" max="1">
         <input id="sample_ratio_b" type="number" value="0.11" step="0.01" max="1">
       </div>
-      <button id="sample_view_default_ratio">数値初期化</button>
-      <button id="sample_view_retry">リトライ</button>
-      <button id="sample_view_to_go">選択して実行</button>
+      <button id="sample_view_default_ratio">Default</button>
+      <button id="sample_view_retry">Retry</button>
+      <button id="sample_view_to_go">Choose & GO</button>
       <div class="close_button" data-close-id="for_sample_view">✕</div>
     </div>
   </div>
@@ -70,14 +70,14 @@
       </div>
       <nav>
         <ul>
-          <li class="parent">アプリ</li>
-          <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> チャンク境界チェッカー</a></li>
-          <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> マップ・ピクセルアート用シミュレーター</a></li>
-          <li class="parent auto_storage">ストレージデータダウンロード</li>
+          <li class="parent">Apps</li>
+          <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> Chunk Border Checker</a></li>
+          <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> Map & Pixel Art Simulator</a></li>
+          <li class="parent auto_storage">Download Storage Data</li>
           <li class="roll_back auto_storage"><i class="fa-sharp fa-solid fa-database"></i>&nbsp;<i class="fa-solid fa-rotate-right" style="transform:rotateY(180deg);"></i></li>
-          <li class="parent">Language</li>
-          <li class="selected_language"><p class="language">Japanese</p></li>
-          <li><a href="./art_eng.html" class="language">English</a></li>
+          <li class="parent">言語</li>
+          <li><a href="./art.html" class="language">日本語</a></li>
+          <li class="selected_language"><p class="language">英語</p></li>
         </ul>
       </nav>
       <div class="sub_header_form">
@@ -91,10 +91,10 @@
       <nav class="header_2windows_style">
         <ul>
           <li class="syncer-acdn" data-target="syncer-acdn-02">
-            アプリ <span class="arrow"></span>
+            Apps <span class="arrow"></span>
             <ul id="syncer-acdn-02" class="syncer-acdn-child">
-              <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> チャンク境界チェッカー</a></li>
-              <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> マップ・ピクセルアート用シミュレーター</a></li>
+              <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> Chunk Border Checker</a></li>
+              <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> Map & Pixel Art Simulator</a></li>
             </ul>
           </li>
           <li><a href="https://github.com/minecraft-app-yv/minecraft-apps"><i class="fa-brands fa-github"></i></a></li>
@@ -114,8 +114,8 @@
       <nav>
         <ul>
           <li>
-            <p class="language">Japanese</p>
-            <a href="./art_eng.html" class="language">English</a></li>
+            <a href="./art.html" class="language">日本語</a>
+            <p class="language">英語</p>
           </li>
           <li class="header_pc">
             <label for="auto_download_storage">
@@ -131,8 +131,8 @@
     <ul>
       <li id="OTM" class="syncer-acdn" data-target="syncer-acdn-03">
         <i class="fa-solid fa-bookmark"></i>
-        <span class="thin_text">&nbsp;保存</span>
-        <span class="wid_text">&nbsp;キャンパス一時保存</span>
+        <span class="thin_text">&nbsp;OTM</span>
+        <span class="wid_text">&nbsp;One Time Memory</span>
       </li>
       <ul id="syncer-acdn-03" class="syncer-acdn-child">
         <li class="top_menu_acdn_action_tool">
@@ -184,17 +184,17 @@
       </ul>
       <label>
         <input id="pixel_art" type="radio" name="display" value="pixel_art">
-        <li><i class="fa-solid fa-cube"></i><span class="pc_text">&nbsp;ピクセルアート</span></li>
+        <li><i class="fa-solid fa-cube"></i><span class="pc_text">&nbsp;Pixel Art</span></li>
       </label>
       <label>
         <input id="map_art" type="radio" name="display" value="map_art" checked>
-        <li><i class="fa-regular fa-map"></i><span class="pc_text">&nbsp;マップアート</span></li>
+        <li><i class="fa-regular fa-map"></i><span class="pc_text">&nbsp;Map Art</span></li>
       </label>
       <label>
         <input id="draw_art" type="radio" name="display" value="draw_art">
-        <li><i class="fa-sharp fa-solid fa-shapes"></i><span class="pc_text">&nbsp;下書き</span></li>
+        <li><i class="fa-sharp fa-solid fa-shapes"></i><span class="pc_text">&nbsp;Draw Art</span></li>
       </label>
-      <li id="clear_canvas"><i class="fa-solid fa-trash-can"></i><span class="pc_text">&nbsp;消去</span></li>
+      <li id="clear_canvas"><i class="fa-solid fa-trash-can"></i><span class="pc_text">&nbsp;Clear</span></li>
     </ul>
   </div>
   <aside>
@@ -203,27 +203,27 @@
       <!--hanburgerButton-->
       <div class="hanb_icon_form">
         <label for="hanb" class="hanb_icon"><span></span></label>
-        <div class="title">入力欄 Input</div>
+        <div class="title">Input Field</div>
       </div>
-      <div class="change_to_pixel_art"><i class="fa-regular fa-image"></i><span class="pop_text">画像変換</span></div>
+      <div class="change_to_pixel_art"><i class="fa-regular fa-image"></i><span class="pop_text">Image change to data</span></div>
       <!--hanburgerButton-->
       <div class="input_forms">
-        <div class="title">入力欄 Input</div>
-        <p class="load_title"><span>ファイル名</span></p>
+        <div class="title">Input Field</div>
+        <p class="load_title"><span>File Name</span></p>
         <div class="check_view">
           <canvas id="check_view" width="171" height="171"></canvas>
         </div>
         <div style="position: relative; height: 30px;">
           <button id="check_view_button" class="first_try">
-            <i class="fa-sharp fa-solid fa-check"></i><span class="pop_text">チェック</span>
+            <i class="fa-sharp fa-solid fa-check"></i><span class="pop_text">Check View</span>
           </button>
         </div>
-        <p class="small_title">サイズ選択</p>
+        <p class="small_title">Select size</p>
         <input type="radio" id="for_pixel_art_size" name="size" class="hidden">
         <label for="for_pixel_art_size" class="for_pixel_art_size">
           <p>
             <i class="fa-solid fa-keyboard"></i>
-            <input id="pixel_art_size" class="get_bata" type="number" placeholder="最大512">
+            <input id="pixel_art_size" class="get_bata" type="number" placeholder="Max 512">
           </p>
         </label>
         <input type="radio" id="for_map_art_size" name="size" class="hidden" checked>
@@ -231,23 +231,23 @@
           <p>
             <i class="fa-solid fa-list"></i>
             <select id="map_art_size" class="get_bata">
-              <option value="128" autofocus selected>等倍&nbsp;128x128</option>
-              <option value="256">2倍&nbsp;256x256</option>
-              <option value="512">4倍&nbsp;512x512</option>
+              <option value="128" autofocus selected>Step 0&nbsp;128x128</option>
+              <option value="256">Step 1&nbsp;256x256</option>
+              <option value="512">Step 2&nbsp;512x512</option>
             </select>
           </p>
         </label>
-        <p class="small_title">サイズ変更</span></p>
+        <p class="small_title">Resize canvas</span></p>
         <button id="resize_button"><i class="fa-solid fa-crop-simple"></i></button>
-        <p class="small_title">設計図ダウンロード</span></p>
+        <p class="small_title">Download blueprint datas</span></p>
         <button id="download_datas_button"><i class="fa-solid fa-file-excel"></i>&nbsp;<i class="fa-solid fa-file-image"></i></button>
         <input id="want_block_skins" type="checkbox" class="hidden">
         <label for="want_block_skins" class="want_block_skins">
           <div class="img_form">
             <span class="slash do"></span><img src="./img/blocks/Block_of_Diamond.jpg" alt="block">
           </div>
-          <span class="need_skins">&nbsp;スキンあり&nbsp;</span>
-          <span class="no_need">&nbsp;スキン不要&nbsp;</span>
+          <span class="need_skins">&nbsp;Need skins&nbsp;</span>
+          <span class="no_need">&nbsp;No nee skins&nbsp;</span>
           <i class="fa-solid fa-shuttle-space fast"></i>
         </label>
         <div class="for_scroll"></div>
@@ -263,11 +263,11 @@
           <label for="zoom_scope_button"><i class="fa-solid fa-caret-right"></i></label>
         </div>
         <input id="map_art_scale" type="number" value="100" class="appear">
-        <label for="map_art_scale" class="appear">サイズ入力%</label>
+        <label for="map_art_scale" class="appear">Input scale %</label>
         <input id="pixel_art_scale" type="number" value="100">
-        <label for="pixel_art_scale">サイズ入力%</label>
+        <label for="pixel_art_scale">Input scale %</label>
         <input id="draw_art_scale" type="number" value="100">
-        <label for="draw_art_scale">サイズ入力%</label>
+        <label for="draw_art_scale">Input scale %</label>
         <input id="plus_scope_icon" name="scope_icon" type="radio" class="hidden" checked>
         <label for="plus_scope_icon"><i class="fa-solid fa-magnifying-glass-plus"></i></label>
         <input id="minus_scope_icon" name="scope_icon" type="radio" class="hidden">
@@ -315,15 +315,15 @@
           </div>
           <div id="CP">
             <label id="selected_color_box"></label>
-            <p class="big_title">色玉</p>
+            <p class="big_title">Color boxes</p>
             <input id="add_new_blocks" type="checkbox" class="hidden" checked>
-            <label for="add_new_blocks" class="small_title">新ブロック</label>
+            <label for="add_new_blocks" class="small_title">Add new blocks</label>
             <div class="add_new_blocks">
               <input id="new_block_img" type="file" accept="image/*" class="hidden" multiple>
               <button type="button"><i class="fa-solid fa-file-circle-plus"></i></button>
             </div>
             <input id="color_named_blocks" type="checkbox" class="hidden" checked>
-            <label for="color_named_blocks" class="small_title">色の名前付きブロック</label>
+            <label for="color_named_blocks" class="small_title">Color named blocks</label>
             <div class="color_named_blocks">
               <label id="CP1" class="check">
                 <div class="CPrgb" style="background: rgb(217, 217, 217);"></div>
@@ -471,7 +471,7 @@
               </label>
             </div>
             <input id="easy_to_gather" type="checkbox" class="hidden">
-            <label for="easy_to_gather" class="small_title">入手易</label>
+            <label for="easy_to_gather" class="small_title">Easy to gather</label>
             <div class="easy_to_gather">
               <label id="CP17">
                 <div class="CPrgb" style="background: rgb(186, 106, 42);"></div>
@@ -619,7 +619,7 @@
               </label>
             </div>
             <input id="hard_in_overworld" type="checkbox" class="hidden">
-            <label for="hard_in_overworld" class="small_title">入手難</label>
+            <label for="hard_in_overworld" class="small_title">Hard in the Overworld</label>
             <div class="hard_in_overworld">
               <label id="CP41">
                 <div class="CPrgb" style="background: rgb(140, 140, 138);"></div>
@@ -767,7 +767,7 @@
               </label>
             </div>
             <input id="in_nether" type="checkbox" class="hidden">
-            <label for="in_nether" class="small_title">ネザー</label>
+            <label for="in_nether" class="small_title">Gather in the Nether</label>
             <div class="in_nether">
               <label id="CP65">
                 <div class="CPrgb" style="background: rgb(111, 143, 130);"></div>
@@ -873,7 +873,7 @@
               </label>
             </div>
             <input id="in_end" type="checkbox" class="hidden">
-            <label for="in_end" class="small_title">エンド</label>
+            <label for="in_end" class="small_title">Gather in the End</label>
             <div class="in_end">
               <label id="CP82">
                 <div class="CPrgb" style="background: rgb(216, 197, 141);"></div>
@@ -928,7 +928,7 @@
           <label for="advanced_tool_button"><i class="fa-solid fa-caret-right"></i></label>
         </div>
         <input id="line_bold_for_draw" type="number" value="5" min="4">
-        <label for="line_bold_for_draw">線幅px</label>
+        <label for="line_bold_for_draw">Bold of line px</label>
         <input id="stroke_path_with_line" type="radio" name="tools" class="hidden">
         <label for="stroke_path_with_line">&xutri;</label>
         <input id="fill_in_with_line" type="radio" name="tools" class="hidden">
@@ -949,11 +949,11 @@
         <label for="roll_area_with_rect"><i class="fa-solid fa-rotate"></i><span>&#10063;</span></label>
         <div class="sub_advanced_tool">
           <input id="for_cut_area" type="radio" name="rect_todo" class="hidden">
-          <label for="for_cut_area"><i class="fa-solid fa-scissors"></i> 範囲カット</label>
+          <label for="for_cut_area"><i class="fa-solid fa-scissors"></i> Cut Area</label>
           <input id="for_copy_area" type="radio" name="rect_todo" class="hidden" checked>
-          <label for="for_copy_area"><i class="fa-solid fa-copy"></i> 範囲コピー</label>
-          <div class="to_close_path"><i class="fa-solid fa-o"></i> 閉じて終わり<span class="shortcut">Shift+Click</span></div>
-          <div class="to_open_path"><i class="fa-solid fa-c"></i> 開いて終わり<span class="shortcut">Ctrl+Click</span></div>
+          <label for="for_copy_area"><i class="fa-solid fa-copy"></i> Copy Area</label>
+          <div class="to_close_path"><i class="fa-solid fa-o"></i> to close path<span class="shortcut">Shift+Click</span></div>
+          <div class="to_open_path"><i class="fa-solid fa-c"></i> to open path<span class="shortcut">Ctrl+Click</span></div>
         </div>
       </div>
     </div>
@@ -963,9 +963,13 @@
       <div id="color_pick_map_drag-and-drop-area">
         <div class="color_pick_map_form">
           <p><i class="fa-regular fa-map"></i></p>
-          <p>ここに色ピック用の<br>地図画像をドラッグするか</p>
+          <p>
+            Drag here the image<br>
+            for picking map colors<br>
+            or
+          </p>
           <input id="color_pick_map_input" type="file" accept="image/*" class="hidden">
-          <button type="button" id="color_pick_map_button">フォルダから選択して下さい</button>
+          <button type="button" id="color_pick_map_button">Please select from your folder</button>
           <div class="close_button" data-close-id="color_pick_map_drag-and-drop-area">✕</div>
         </div>
       </div>
@@ -975,20 +979,23 @@
       <div id="drag-and-drop-area">
         <div class="drag-and-drop-area_form">
           <p><i class="fa-regular fa-image"></i></p>
-          <p class="select_map_or_pixel">目的のアートを選択してから</p>
+          <p class="select_map_or_pixel">After selecting the desired art</p>
           <label>
             <input id="change_to_pixel_art_data" name="change_to_data" type="radio" class="hidden">
-            <span><i class="fa-solid fa-cube"></i>ピクセルアート</span>
+            <span><i class="fa-solid fa-cube"></i>Pixel Art</span>
           </label>
           <label>
             <input id="change_to_map_art_data" name="change_to_data" type="radio" class="hidden" checked>
-            <span><i class="fa-regular fa-map"></i>マップアート</span>
+            <span><i class="fa-regular fa-map"></i>Map Art</span>
           </label>
-          <p>ここに変換する画像を1枚ドラッグするか</p>
+          <p>
+            Drag here one image to be converted<br>
+            or
+          </p>
           <input id="file-select-input" type="file" accept="image/*" class="hidden">
-          <button type="button" id="file-select-button">フォルダから選択して下さい</button>
-          <p class="draw_art_to_pixels"></p>
-          <button type="button" id="draw_art_to_pixels">描いた画像の変換はここをクリックします</button>
+          <button type="button" id="file-select-button">Please select from your folder</button>
+          <p class="draw_art_to_pixels">or</p>
+          <button type="button" id="draw_art_to_pixels">Click here to convert your drawing</button>
           <div class="close_button" data-close-id="drag-and-drop-area">✕</div>
         </div>
       </div>
