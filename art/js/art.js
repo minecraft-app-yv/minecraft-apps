@@ -2729,6 +2729,9 @@ function change_to_blocks(e) {
   ratio_r = Number(ratio_r);
   ratio_g = Number(ratio_g);
   ratio_b = Number(ratio_b);
+  $('#sample_ratio_r').val(ratio_r);
+  $('#sample_ratio_g').val(ratio_g);
+  $('#sample_ratio_b').val(ratio_b);
   let calcDelta = function ( t, p) {
     return ( Math.pow((p.r - t.r) * ratio_r, 2) + Math.pow((p.g - t.g) * ratio_g, 2) + Math.pow((p.b - t.b) * ratio_b, 2));
   };
@@ -2761,6 +2764,18 @@ $('#sample_view_default_ratio').click((e) => {
   $('#sample_ratio_r').val(0.30);
   $('#sample_ratio_g').val(0.59);
   $('#sample_ratio_b').val(0.11);
+});
+$('#for_sample_view input[name="sample_view"]').change((e) => {
+  let target_id = $('#for_sample_view input[name="sample_view"]:checked').attr('id');
+  let ratio_r = $('#' + target_id + ' ~ p span.r').text();
+  let ratio_g = $('#' + target_id + ' ~ p span.g').text();
+  let ratio_b = $('#' + target_id + ' ~ p span.b').text();
+  ratio_r = Number(ratio_r);
+  ratio_g = Number(ratio_g);
+  ratio_b = Number(ratio_b);
+  $('#sample_ratio_r').val(ratio_r);
+  $('#sample_ratio_g').val(ratio_g);
+  $('#sample_ratio_b').val(ratio_b);
 });
 $('#sample_view_retry').click((e) => {
   $('#wait').removeClass('hidden');
@@ -5024,6 +5039,10 @@ if (typeof sessionStorage === 'undefined') {
     value_obj['top_menu_data'] = get_memorys_data;
     //color boxes of palette board cp
     value_obj['cp_html'] = $('#CP').html();
+    //input sample_view rgb
+    value_obj['ratio_r'] = $('#sample_ratio_r').val();
+    value_obj['ratio_g'] = $('#sample_ratio_g').val();
+    value_obj['ratio_b'] = $('#sample_ratio_b').val();
     //in storage
     let key = 'unload_time';
     setItem_in_localStorage (storage,key,value_obj);
@@ -5041,6 +5060,7 @@ if (typeof sessionStorage === 'undefined') {
       return false;
     }
     if (getData['storage'] === 'on') {
+      remove_localStorage (storage,key);
       //top menu memory
       $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
         $(this).remove();
@@ -5061,7 +5081,10 @@ if (typeof sessionStorage === 'undefined') {
       //color boxes of palette board cp
       $('#CP').html('');
       $('#CP').append(getData['cp_html']);
-      all_remove_localStorage(storage);
+      //input sample_view rgb
+      $('#sample_ratio_r').val(getData['ratio_r']);
+      $('#sample_ratio_g').val(getData['ratio_g']);
+      $('#sample_ratio_b').val(getData['ratio_b']);
     }
   });
   //upload load storage from button
