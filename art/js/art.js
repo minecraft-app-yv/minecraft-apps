@@ -4969,6 +4969,7 @@ if (typeof sessionStorage === 'undefined') {
   if ($('header .header_form p.language').text() === '英語') {
     str = "This browser does not been implemented Web Storage function";
   }
+  $('#auto_download_storage').prop('checked', false);
   window.alert(str);
 } else {
   if ($('header .header_form p.language').text() === 'Japanese') {
