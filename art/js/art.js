@@ -4780,7 +4780,7 @@ function question_obj(x,y) {
     }
     if ($('header .header_form p.language').text() === '英語') {
       str = "This is a reduced rough image of the canvas for checking."
-      + "<br>Click on the location you want to jump to and the screen will scroll to the desired location.";
+      + "<br>Click on the location you want to jump to, and then the screen will scroll to the desired location.";
     }
   }
   if (click_id === 'pixel_art_size') {
@@ -4790,7 +4790,7 @@ function question_obj(x,y) {
     }
     if ($('header .header_form p.language').text() === '英語') {
       str = "Size for pixel art using block skins."
-      + "<br>If input has no value, it's returns 30 x 30.";
+      + "<br>If input has no value, it returns 30 x 30.";
     }
   }
   if (click_id === 'download_datas_button') {
