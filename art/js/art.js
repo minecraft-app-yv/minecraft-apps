@@ -838,6 +838,69 @@ $('#CP_icons .CP_icons_form .change_art_board').click((e) => {
     return true;
   }
 });
+function cell_defaulting (id) {
+  let i = 0;
+  let col = "";
+  let colHead = '<th class="FirstBlank"></th>';
+  while (i < 30) {
+    colHead = colHead + '<th class="headCol"></th>';
+    col = col + '<td class="x' + i + '"></td>';
+    i = i + 1;
+  }
+  let j = 0;
+  let table = "";
+  while (j < 30) {
+    table = table + '<tr class="y' + j + '"><th class="headRow"></th>' + col + "</tr>";
+    j = j + 1;
+  }
+  $('#' + id + ' thead tr').html(colHead);
+  $('#' + id + ' tbody').html(table);
+}
+$('input[name="display"]').change((e) => {
+  let canvas = $('input[name="display"]:checked').val();
+  /**/
+  if (canvas === 'map_art') {
+    //select canvas in to data
+    let key = 'map_art';
+    let data_obj = memory_obj[key];
+    delete memory_obj[key];
+    if (data_obj) {
+      $('#map_art_canvas').html(data_obj.data);
+      $('#map_art_canvas').attr('data-fileName', data_obj.fileName);
+    }
+    //pre canvas get data
+    key = 'pixel_art';
+    data_obj = memory_obj[key];
+    if (data_obj === undefined) {
+      console.log('e');
+      let data = $('#pixel_art_canvas').html();
+      let fileName = $('#pixel_art_canvas').attr('data-fileName');
+      memory_obj[key] = {data: data, fileName: fileName};
+      let id = 'pixel_art_canvas';
+      cell_defaulting (id);
+    }
+  }
+  if (canvas === 'pixel_art') {
+    //select canvas in to data
+    let key = 'pixel_art';
+    let data_obj = memory_obj[key];
+    delete memory_obj[key];
+    if (data_obj) {
+      $('#pixel_art_canvas').html(data_obj.data);
+      $('#pixel_art_canvas').attr('data-fileName', data_obj.fileName);
+    }
+    //pre canvas get data
+    key = 'map_art';
+    data_obj = memory_obj[key];
+    if (data_obj === undefined) {
+      let data = $('#map_art_canvas').html();
+      let fileName = $('#map_art_canvas').attr('data-fileName');
+      memory_obj[key] = {data: data, fileName: fileName};
+      let id = 'map_art_canvas';
+      cell_defaulting (id);
+    }
+  }
+});
 /*++aside++*/
 //change select size views
 $('.get_bata').click(function() {
