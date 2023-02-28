@@ -381,18 +381,14 @@ $(document).ready(function () {
   let j = 0;
   let table = "";
   while (j < 30) {
-    table =
-    table +
-    '<tr class="y' +
-    j +
-    '"><th class="headRow"></th>' +
-    col +
-    "</tr>";
+    table = table + '<tr class="y' + j + '"><th class="headRow"></th>' + col + "</tr>";
     j = j + 1;
   }
-  $("#map_art_canvas thead").html(colHead);
+  $("#map_art_canvas thead").append('<tr></tr>');
+  $("#map_art_canvas thead tr").html(colHead);
   $("#map_art_canvas tbody").html(table);
-  $("#pixel_art_canvas thead").html(colHead);
+  $("#pixel_art_canvas thead").append('<tr></tr>');
+  $("#pixel_art_canvas thead tr").html(colHead);
   $("#pixel_art_canvas tbody").html(table);
 });
 /*++window resize++*/
@@ -424,10 +420,10 @@ function otm_check(e) {
 function return_for_memory_value (e) {
   let value;
   if ($('#pixel_art').prop('checked')) {
-    value = {canvas: 'pixel_art', data: $('#pixel_art_canvas tbody').html()};
+    value = {canvas: 'pixel_art', data: $('#pixel_art_canvas').html()};
   }
   if ($('#map_art').prop('checked')) {
-    value = {canvas: 'map_art', data: $('#map_art_canvas tbody').html()};
+    value = {canvas: 'map_art', data: $('#map_art_canvas').html()};
   }
   if ($('#draw_art').prop('checked')) {
     let img = document.getElementById("draw_art_canvas").getContext("2d").getImageData(0, 0, dac.width, dac.height);
@@ -475,18 +471,19 @@ function otm_delete(e) {
 function memory_value_into_canvas (key, name) {
   let value = memory_obj[key];
   if (value.canvas === 'pixel_art' && $('#pixel_art').prop('checked')) {
-    $('#pixel_art_canvas tbody').html(value.data);
+    $('#pixel_art_canvas').html(value.data);
     $('#pixel_art_canvas').attr('data-fileName', '');
     if (name !== null) {
       $('#pixel_art_canvas').attr('data-fileName', name);
     }
   }
   if (value.canvas === 'map_art' && $('#map_art').prop('checked')) {
-    $('#map_art_canvas tbody').html(value.data);
+    $('#map_art_canvas').html(value.data);
     $('#map_art_canvas').attr('data-fileName', '');
     if (name !== null) {
       $('#map_art_canvas').attr('data-fileName', name);
     }
+    $('#map_art_canvas thead th.headCol').css('')
   }
   if (value.canvas === 'draw_art' && $('#draw_art').prop('checked')) {
     let url = value.data;
@@ -1013,7 +1010,7 @@ function build_new_board(canvas_id, px, rowL, colL) {
   }
   let i = colL - 1;
   while (i >= px) {
-    $('#' + canvas_id + ' thead th:last-child').remove();
+    $('#' + canvas_id + ' thead tr th:last-child').remove();
     $('#' + canvas_id + ' tbody').find("td.x" + i).remove();
     i = i - 1;
   }
@@ -1057,31 +1054,33 @@ $("#resize_button").click(function () {
       return false;
     }
   }
-  //addcol
-  let ci = colL;
-  while (ci < px) {
-    let cj = 0;
-    $('#' + canvas_id + ' thead').append('<th class="headCol"></th>');
-    while (cj < rowL) {
-      $('#' + canvas_id + ' tbody tr.y' + cj).append('<td class="x' + ci + '"></td>');
-      cj = cj + 1;
+  if (rowL < px || colL < px) {
+    //addcol
+    let ci = colL;
+    while (ci < px) {
+      let cj = 0;
+      $('#' + canvas_id + ' thead tr').append('<th class="headCol"></th>');
+      while (cj < rowL) {
+        $('#' + canvas_id + ' tbody tr.y' + cj).append('<td class="x' + ci + '"></td>');
+        cj = cj + 1;
+      }
+      ci = ci + 1;
     }
-    ci = ci + 1;
+    //addrow
+    let ri = 0;
+    let col = "";
+    while (ri < px) {
+      col = col + '<td class="x' + ri + '"></td>';
+      ri = ri + 1;
+    }
+    let rj = rowL;
+    let table = "";
+    while (rj < px) {
+      table = table + '<tr class="y' + rj + '"><th class="headRow"></th>' + col + "</tr>";
+      rj = rj + 1;
+    }
+    $('#' + canvas_id + ' tbody').append(table);
   }
-  //addrow
-  let ri = 0;
-  let col = "";
-  while (ri < px) {
-    col = col + '<td class="x' + ri + '"></td>';
-    ri = ri + 1;
-  }
-  let rj = rowL;
-  let table = "";
-  while (rj < px) {
-    table = table + '<tr class="y' + rj + '"><th class="headRow"></th>' + col + "</tr>";
-    rj = rj + 1;
-  }
-  $('#' + canvas_id + ' tbody').append(table);
 });
 //file download
 /*https://magazine.techacademy.jp/magazine/21073*/
@@ -2666,11 +2665,11 @@ function change_to_blocks(e) {
     j = j + 1;
   }
   if ($('#map_art').prop('checked')) {
-    $("#map_art_canvas thead").html(colHead);
+    $("#map_art_canvas thead tr").html(colHead);
     $("#map_art_canvas tbody").html(table);
   }
   if ($('#pixel_art').prop('checked')) {
-    $("#pixel_art_canvas thead").html(colHead);
+    $("#pixel_art_canvas thead tr").html(colHead);
     $("#pixel_art_canvas tbody").html(table);
   }
   const palette = [];
@@ -2878,11 +2877,11 @@ function draw_art_to_pixels(e) {
     j = j + 1;
   }
   if ($("#change_to_map_art_data").prop('checked')) {
-    $("#map_art_canvas thead").html(colHead);
+    $("#map_art_canvas thead tr").html(colHead);
     $("#map_art_canvas tbody").html(table);
   }
   if ($('#change_to_pixel_art_data').prop('checked')) {
-    $("#pixel_art_canvas thead").html(colHead);
+    $("#pixel_art_canvas thead tr").html(colHead);
     $("#pixel_art_canvas tbody").html(table);
   }
   const palette = [];
@@ -3172,11 +3171,11 @@ function end_fun (e) {
   all_removeEventListener ();
   let value;
   if (obj.use === 'mouse_at_map_art' || obj.use === 'touch_at_map_art') {
-    value = $('#map_art_canvas tbody').html();
+    value = $('#map_art_canvas').html();
     add_canvas_to_roll_back_obj (value);
   }
   if (obj.use === 'mouse_at_pixel_art' || obj.use === 'touch_at_pixel_art') {
-    value = $('#pixel_art_canvas tbody').html();
+    value = $('#pixel_art_canvas').html();
     add_canvas_to_roll_back_obj (value);
   }
   if (obj.use === 'mouse_at_draw_art' || obj.use === 'touch_at_draw_art') {
@@ -4258,7 +4257,7 @@ function roll_back (e) {
       $("#map_art_canvas tbody td").removeAttr("style");
     }
     if (value !== 'null') {
-      $('#map_art_canvas tbody').html(value);
+      $('#map_art_canvas').html(value);
     }
     roll_back_obj.c_map ++;
   }
@@ -4276,7 +4275,7 @@ function roll_back (e) {
       $("#pixel_art_canvas tbody td img").remove();
     }
     if (value !== 'null') {
-      $('#pixel_art_canvas tbody').html(value);
+      $('#pixel_art_canvas').html(value);
     }
     roll_back_obj.c_pixel ++;
   }
@@ -4345,7 +4344,7 @@ function roll_forward (e) {
       $("#map_art_canvas tbody td").removeAttr("style");
     }
     if (value !== 'null') {
-      $('#map_art_canvas tbody').html(value);
+      $('#map_art_canvas').html(value);
     }
     roll_back_obj.c_map --;
   }
@@ -4360,7 +4359,7 @@ function roll_forward (e) {
       $("#pixel_art_canvas tbody td img").remove();
     }
     if (value !== 'null') {
-      $('#pixel_art_canvas tbody').html(value);
+      $('#pixel_art_canvas').html(value);
     }
     roll_back_obj.c_pixel --;
   }
@@ -4735,9 +4734,11 @@ $('#map_art_scale, #pixel_art_scale, #draw_art_scale').change((e) => {
   scale = scale / 100;
   if ($('#map_art').prop('checked')) {
     $("#map_art_canvas").css("transform", "scale(" + scale + ")");
+    $('#zoom_scope_button').prop('checked', false);
   }
   if ($('#pixel_art').prop('checked')) {
     $("#pixel_art_canvas").css("transform", "scale(" + scale + ")");
+    $('#zoom_scope_button').prop('checked', false);
   }
   if ($('#draw_art').prop('checked')) {
     let value = dactx.getImageData(0, 0, dac.width, dac.height);
@@ -4753,6 +4754,7 @@ $('#map_art_scale, #pixel_art_scale, #draw_art_scale').change((e) => {
       dac.width = 600 * scale;
       dac.height = 600 * scale;
       dactx.drawImage(img, 0, 0, dac.width, dac.height);
+      $('#zoom_scope_button').prop('checked', false);
     };
   }
 });
@@ -4780,7 +4782,7 @@ function question_obj(x,y) {
     }
     if ($('header .header_form p.language').text() === '英語') {
       str = "This is a reduced rough image of the canvas for checking."
-      + "<br>Click on the location you want to jump to, and then the screen will scroll to the desired location.";
+      + "<br>Click on the location you want to jump to and the screen will scroll to the desired location.";
     }
   }
   if (click_id === 'pixel_art_size') {
@@ -4790,7 +4792,7 @@ function question_obj(x,y) {
     }
     if ($('header .header_form p.language').text() === '英語') {
       str = "Size for pixel art using block skins."
-      + "<br>If input has no value, it returns 30 x 30.";
+      + "<br>If input has no value, it's returns 30 x 30.";
     }
   }
   if (click_id === 'download_datas_button') {
