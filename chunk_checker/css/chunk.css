@@ -33,7 +33,7 @@ input, select {
 }
 /*style*/
 body {
-  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-family: "M PLUS Rounded 1c", sans-serif, "Font Awesome 5 Free";
   background-image: radial-gradient(ellipse at center, rgba(10,5,0,0.4) 40%,rgba(0,0,0,0.45) 60%,rgba(0,0,0,1) 100%) , url(../img/codePen_Minecraft_1.jpg);
   background-position: center;
   background-size: cover;
@@ -44,6 +44,81 @@ body {
 html {
   overflow-x: hidden;
   scroll-behavior: smooth;
+}
+/*close_button form*/
+.close_button {
+  background: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  font-size: x-large;
+  font-weight: bold;
+  cursor: pointer;
+}
+/*share_buttons*/
+#share_buttons {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 75;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  display: none;
+  overflow-y: auto;
+}
+#share_buttons::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+#share_buttons .share_buttons_form {
+  position: relative;
+  padding: 20px;
+}
+#share_buttons .share_buttons_form .close_button {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+#share_buttons .share_buttons_form > a{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  margin: 10px;
+  text-decoration: none;
+  color: #fff;
+  transform: rotateY(0) scale(1);
+  transition: all 0.5s ease-in-out;
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+}
+#share_buttons .share_buttons_form > a.facebook {
+  background: #3b5998;
+}
+#share_buttons .share_buttons_form > a.twitter {
+  background: #55acee;
+}
+#share_buttons .share_buttons_form > a.hatena {
+  background: #008fde;
+}
+#share_buttons .share_buttons_form > a.line {
+  background: #06c755;
+}
+#share_buttons .share_buttons_form > a.getpocket {
+  background: #d3505a;
+}
+#share_buttons .share_buttons_form > a:hover,
+#share_buttons .share_buttons_form > a:active {
+  transform: rotateY(360deg) scale(1.3);
 }
 /*header*/
 header {
@@ -215,13 +290,16 @@ header .header_form nav ul li i.fa-github {
   text-shadow:0 0 0.1em rgba(255,255,255,0.05), 0.01em 0.04em 0.03em rgba(255,255,255,0.4);
   -webkit-background-clip : text;
 }
-header .header_form nav ul li i.fa-twitter {
+header .header_form nav ul li i.fa-share {
   line-height: 80px;
   font-size: large;
   color: transparent;
   background : rgba(0,255,255,0.2);
   text-shadow :0 0 0.1em rgba(255,255,255,0.05),0.01em 0.04em 0.03em rgba(255,255,255,0.4);
   -webkit-background-clip : text;
+}
+header .header_form nav ul li i.fa-share:hover {
+  cursor: pointer;
 }
 header .header_form h1 {
   margin:0;
@@ -833,7 +911,7 @@ footer img {
     text-decoration-color: #fff;
   }
   header .header_form nav ul li i.fa-github,
-  header .header_form nav ul li i.fa-twitter {
+  header .header_form nav ul li i.fa-share {
     line-height: 20px;
     font-size: small;
   }
@@ -853,6 +931,13 @@ footer img {
   main, aside {
     width: 100%;
   }
+  /*share_buttons*/
+  #share_buttons .share_buttons_form {
+    margin: 0 40px;
+    text-align: center;
+    width: 80%;
+  }
+  /*header*/
   header .header_form {
     display: none;
   }
@@ -914,6 +999,22 @@ footer img {
   header .header_2windows nav ul li.selected_language {
     background: yellowgreen;
     color: black;
+  }
+  header .header_2windows nav ul li.share_buttons {
+    cursor: pointer;
+    color: black;
+    background: yellowgreen;
+  }
+  header .header_2windows nav ul li.share_buttons::before {
+    content: '\f101';
+    float: left;
+    text-indent: 10px;
+    margin-right: 5px;
+    color: black;
+    line-height: 25px;
+  }
+  header .header_2windows nav ul li.share_buttons:active {
+    background: green;
   }
   /*header hanburger button*/
   header .header_2windows nav {
@@ -1003,7 +1104,7 @@ footer img {
   header .header_2windows nav ul li.parent {
     background: green;
   }
-  header .header_2windows nav ul li:not(.parent)::before {
+  header .header_2windows nav ul li:not(.parent, .share_buttons)::before {
     content: 'L';
     float: left;
     text-indent: 10px;

@@ -1,3 +1,4 @@
+/*++reserve functions++*/
 /*aside display at 1200px*/
 $(window).resize(function() {
   let ww = window.innerWidth;
@@ -6,6 +7,22 @@ $(window).resize(function() {
       $('#hanb').prop('checked', true);
     }
   }
+});
+//close_button
+$('.close_button').click((e) => {
+  let close_target_id = $('.close_button:hover').attr('data-close-id');
+  $('#' + close_target_id).css('display', 'none');
+});
+/*++header++*/
+/*share_buttons*/
+/*https://www.javadrive.jp/javascript/webpage/index10.html*/
+$('header .header_form nav ul li.share_buttons ,header .header_2windows nav ul li.share_buttons').click((e) => {
+  $('#share_buttons').css('display', 'flex');
+  $('#share_buttons a.facebook').attr('href', 'http://www.facebook.com/share.php?u=' + location.href);
+  $('#share_buttons a.twitter').attr('href', 'https://twitter.com/share?url=' + location.href + '&hashtags=github,js&text=' + $('head title').text());
+  $('#share_buttons a.hatena').attr('href', 'http://b.hatena.ne.jp/add?mode=confirm&url=' + location.href + '&title=' + $('head title').text());
+  $('#share_buttons a.line').attr('href', 'http://line.me/R/msg/text/?' + location.href + '%0a' + $('head title').text());
+  $('#share_buttons a.getpocket').attr('href', 'http://getpocket.com/edit?url=' + location.href + '&title=' + $('head title').text());
 });
 //accordion
 //https://syncer.jp/accordion-content
