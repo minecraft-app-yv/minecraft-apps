@@ -406,6 +406,18 @@ $(window).resize(function() {
     }
   }
 });
+/*++header++*/
+/*share_buttons*/
+/*https://www.javadrive.jp/javascript/webpage/index10.html*/
+$('header .header_form nav ul li.share_buttons ,header .header_2windows nav ul li.share_buttons').click((e) => {
+  $('#share_buttons').css('display', 'flex');
+  console.log(location.href);
+  $('#share_buttons a.facebook').attr('href', 'http://www.facebook.com/share.php?u=' + location.href);
+  $('#share_buttons a.ftwitter').attr('href', 'https://twitter.com/share?url=' + location.href + '&hashtags=github,js&text=' + $('head title').text());
+  $('#share_buttons a.hatena').attr('href', 'http://b.hatena.ne.jp/add?mode=confirm&url=' + location.href + '&title=' + $('head title').text());
+  $('#share_buttons a.line').attr('href', 'http://line.me/R/msg/text/?' + location.href + '%0a' + $('head title').text());
+  $('#share_buttons a.getpocket').attr('href', 'http://getpocket.com/edit?url=' + location.href + '&title=' + $('head title').text());
+});
 /*++top_menu++*/
 //one time memory check action
 function otm_check(e) {
@@ -872,7 +884,6 @@ $('input[name="display"]').change((e) => {
     key = 'pixel_art';
     data_obj = memory_obj[key];
     if (data_obj === undefined) {
-      console.log('e');
       let data = $('#pixel_art_canvas').html();
       let fileName = $('#pixel_art_canvas').attr('data-fileName');
       memory_obj[key] = {data: data, fileName: fileName};
@@ -2848,8 +2859,10 @@ $('#sample_view_to_go').click((e) => {
   $('#wait').removeClass('hidden');
   $('#for_sample_view').css('display', 'none');
   $('#drag-and-drop-area').css('display', 'none');
-  change_to_blocks();
-  $('#wait').addClass('hidden');
+  setTimeout((e) => {
+    change_to_blocks();
+    $('#wait').addClass('hidden');
+  }, 1)
 });
 const previewAndInsert = (files) => {
   let file = files[0];
