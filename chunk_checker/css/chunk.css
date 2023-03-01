@@ -87,6 +87,7 @@ html {
   right: -20px;
 }
 #share_buttons .share_buttons_form > a{
+  border-radius: 3px;
   display: inline-block;
   width: 40px;
   height: 40px;
