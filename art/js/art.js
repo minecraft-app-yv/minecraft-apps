@@ -411,7 +411,6 @@ $(window).resize(function() {
 /*https://www.javadrive.jp/javascript/webpage/index10.html*/
 $('header .header_form nav ul li.share_buttons ,header .header_2windows nav ul li.share_buttons').click((e) => {
   $('#share_buttons').css('display', 'flex');
-  console.log(location.href);
   $('#share_buttons a.facebook').attr('href', 'http://www.facebook.com/share.php?u=' + location.href);
   $('#share_buttons a.twitter').attr('href', 'https://twitter.com/share?url=' + location.href + '&hashtags=Minecraft&text=' + $('head title').text());
   $('#share_buttons a.hatena').attr('href', 'http://b.hatena.ne.jp/add?mode=confirm&url=' + location.href + '&title=' + $('head title').text());
@@ -2833,6 +2832,17 @@ $('#for_sample_view .for_sample_view_form .close_button').click((e) => {
   obj.dl_img = '';
   obj.dl_name = '';
 });
+$('#for_sample_view .sub_selected_color_box label').click((e) => {
+  let color_box_id = $(e.target).attr('for');
+  setTimeout((e) => {
+    if ($('#' + color_box_id).prop('checked')) {
+      $('#for_sample_view .sub_selected_color_box label[for="' + color_box_id + '"]').addClass('box_selected');
+    }
+    if (!$('#' + color_box_id).prop('checked')) {
+      $('#for_sample_view .sub_selected_color_box label[for="' + color_box_id + '"]').removeClass('box_selected');
+    }
+  }, 1)
+});
 $('#sample_view_default_ratio').click((e) => {
   $('#sample_ratio_r').val(0.30);
   $('#sample_ratio_g').val(0.59);
@@ -2878,6 +2888,13 @@ const previewAndInsert = (files) => {
   reader.onload = function (evt) {
     image.onload = function () {
       obj.dl_img = image;
+      $('#for_sample_view .sub_selected_color_box label').each(function (index) {
+        let color_box_id = $(this).attr('for');
+        $(this).removeClass('box_selected');
+        if ($('#' + color_box_id).prop('checked')) {
+          $(this).addClass('box_selected');
+        }
+      });
       for_sample_view_action();
       $('#file-select-input').val('');
     };

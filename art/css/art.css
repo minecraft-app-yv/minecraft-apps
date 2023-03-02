@@ -277,6 +277,33 @@ html {
 #for_sample_view .for_sample_view_form #sample_ratio_b {
   color: blue;
 }
+#for_sample_view .for_sample_view_form .sub_selected_color_box {
+  display: block;
+  position: absolute;
+  height: 20px;
+  top: 25px;
+  right: -20px;
+  line-height: 20px;
+  white-space: nowrap;
+  transform: translateX(100%) rotateZ(90deg);
+  transform-origin: top left;
+}
+#for_sample_view .for_sample_view_form .sub_selected_color_box label {
+  background-color: lightgray;
+  margin: 0;
+  padding: 0 5px;
+  text-shadow: 1px 1px 0.5px white;
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  cursor: pointer;
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+}
+#for_sample_view .for_sample_view_form .sub_selected_color_box label.box_selected {
+  box-shadow: inset -1px -1px 1px rgba(255, 255, 255, 0.5), inset 1px 1px 1px rgba(0, 0, 0, 0.5);
+  background-color: yellowgreen;
+  color: black;
+  text-shadow: none;
+}
 /*share_buttons*/
 #share_buttons {
   position: fixed;
