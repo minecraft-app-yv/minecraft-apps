@@ -529,7 +529,7 @@ footer img {
   header .header_2windows nav ul li.share_buttons {
     cursor: pointer;
     color: black;
-    background: yellowgreen;
+    background: cornflowerblue;
   }
   header .header_2windows nav ul li.share_buttons::before {
     content: '\f101';
@@ -540,7 +540,11 @@ footer img {
     line-height: 25px;
   }
   header .header_2windows nav ul li.share_buttons:active {
-    background: green;
+    color: white;
+    background: navy;
+  }
+  header .header_2windows nav ul li.share_buttons:active::before {
+    color: white;
   }
   /*header hanburger button*/
   header .header_2windows nav {
