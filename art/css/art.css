@@ -2556,7 +2556,7 @@ footer i.fa-circle-question:hover {
   header .header_2windows nav ul li.share_buttons {
     cursor: pointer;
     color: black;
-    background: yellowgreen;
+    background: cornflowerblue;
   }
   header .header_2windows nav ul li.share_buttons::before {
     content: '\f101';
@@ -2570,7 +2570,11 @@ footer i.fa-circle-question:hover {
     background: yellowgreen;
   }
   header .header_2windows nav ul li.share_buttons:active {
-    background: green;
+    color: white;
+    background: navy;
+  }
+  header .header_2windows nav ul li.share_buttons:active::before {
+    color: white;
   }
   /*header hanburger button*/
   header .header_2windows nav {
