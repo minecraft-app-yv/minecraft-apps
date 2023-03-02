@@ -365,7 +365,7 @@ $(document).ready(function () {
   }
   //palette color img add crossorigin
   // WARNING: if can display img do -> crossorigin="anonymous
-  $('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
+  //$('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
   //drawSelf canvas background
   document.getElementById("draw_art_canvas").getContext("2d").fillStyle = "white";
   document.getElementById("draw_art_canvas").getContext("2d").fillRect(0, 0, dac.width, dac.height);
@@ -413,7 +413,7 @@ $('header .header_form nav ul li.share_buttons ,header .header_2windows nav ul l
   $('#share_buttons').css('display', 'flex');
   console.log(location.href);
   $('#share_buttons a.facebook').attr('href', 'http://www.facebook.com/share.php?u=' + location.href);
-  $('#share_buttons a.twitter').attr('href', 'https://twitter.com/share?url=' + location.href + '&hashtags=github,js&text=' + $('head title').text());
+  $('#share_buttons a.twitter').attr('href', 'https://twitter.com/share?url=' + location.href + '&hashtags=Minecraft&text=' + $('head title').text());
   $('#share_buttons a.hatena').attr('href', 'http://b.hatena.ne.jp/add?mode=confirm&url=' + location.href + '&title=' + $('head title').text());
   $('#share_buttons a.line').attr('href', 'http://line.me/R/msg/text/?' + location.href + '%0a' + $('head title').text());
   $('#share_buttons a.getpocket').attr('href', 'http://getpocket.com/edit?url=' + location.href + '&title=' + $('head title').text());
