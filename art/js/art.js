@@ -2862,8 +2862,11 @@ $('#for_sample_view input[name="sample_view"]').change((e) => {
 });
 $('#sample_view_retry').click((e) => {
   $('#wait').removeClass('hidden');
-  for_sample_view_action();
-  $('#wait').addClass('hidden');
+  $('#for_sample_view').css('display', 'none');
+  setTimeout((e) => {
+    for_sample_view_action();
+    $('#wait').addClass('hidden');
+  }, 1)
 });
 $('#sample_view_to_go').click((e) => {
   $('#wait').removeClass('hidden');

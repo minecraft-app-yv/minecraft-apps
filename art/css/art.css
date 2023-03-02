@@ -2485,7 +2485,9 @@ footer i.fa-circle-question:hover {
   }
   /*++for_sample_view++*/
   #for_sample_view .for_sample_view_form {
-    width: 80%;
+    margin-left: 40px;
+    margin-right: 40px;
+    width: 100%;
   }
   #for_sample_view .for_sample_view_form input[type="number"],
   #for_sample_view .for_sample_view_form button {
