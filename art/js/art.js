@@ -5107,43 +5107,47 @@ if (typeof sessionStorage === 'undefined') {
     let getData = JSON.parse(storage.getItem(key));
     return getData;
   }
+  let value_obj = {};
   //ページを離れる直前
   window.onbeforeunload = function(){
     //make input data for localStorage
     //storage button on or off
-    let value_obj = {};
-    if ($('#auto_download_storage').prop('checked')) {
-      value_obj['storage'] = 'on';
-    }
     if (!$('#auto_download_storage').prop('checked')) {
       value_obj['storage'] = 'off';
+      //in storage
+      let key = 'unload_time';
+      setItem_in_localStorage (storage,key,value_obj);
+      return false;
     }
-    //top menu memory
-    let get_memorys_html = '';
-    $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-      let html = jQuery("<div>").append($(this).clone(true)).html();
-      get_memorys_html = get_memorys_html + html;
-    });
-    value_obj['top_menu'] = get_memorys_html;
-    //memory data obj
-    let get_memorys_data = {};
-    let i = 0;
-    $.each(memory_obj, function(index, obj) {
-      get_memorys_data['memoryObj_id' + i] = index;
-      get_memorys_data['memoryObj_canvas' + i] = obj.canvas;
-      get_memorys_data['memoryObj_data' + i] = obj.data;
-      i++;
-    })
-    value_obj['top_menu_data'] = get_memorys_data;
-    //color boxes of palette board cp
-    value_obj['cp_html'] = $('#CP').html();
-    //input sample_view rgb
-    value_obj['ratio_r'] = $('#sample_ratio_r').val();
-    value_obj['ratio_g'] = $('#sample_ratio_g').val();
-    value_obj['ratio_b'] = $('#sample_ratio_b').val();
-    //in storage
-    let key = 'unload_time';
-    setItem_in_localStorage (storage,key,value_obj);
+    if ($('#auto_download_storage').prop('checked')) {
+      value_obj['storage'] = 'on';
+      //top menu memory
+      let get_memorys_html = '';
+      $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
+        let html = jQuery("<div>").append($(this).clone(true)).html();
+        get_memorys_html = get_memorys_html + html;
+      });
+      value_obj['top_menu'] = get_memorys_html;
+      //memory data obj
+      let get_memorys_data = {};
+      let i = 0;
+      $.each(memory_obj, function(index, obj) {
+        get_memorys_data['memoryObj_id' + i] = index;
+        get_memorys_data['memoryObj_canvas' + i] = obj.canvas;
+        get_memorys_data['memoryObj_data' + i] = obj.data;
+        i++;
+      })
+      value_obj['top_menu_data'] = get_memorys_data;
+      //color boxes of palette board cp
+      value_obj['cp_html'] = $('#CP').html();
+      //input sample_view rgb
+      value_obj['ratio_r'] = $('#sample_ratio_r').val();
+      value_obj['ratio_g'] = $('#sample_ratio_g').val();
+      value_obj['ratio_b'] = $('#sample_ratio_b').val();
+      //in storage
+      let key = 'unload_time';
+      setItem_in_localStorage (storage,key,value_obj);
+    }
   }
   $('body').ready(function() {
     //load Storage
@@ -5152,6 +5156,7 @@ if (typeof sessionStorage === 'undefined') {
     if (getData === '') {
       return false;
     }
+    value_obj = getData;
     //storage button on or off
     if (getData['storage'] === 'off') {
       $('#auto_download_storage').prop('checked', false);
