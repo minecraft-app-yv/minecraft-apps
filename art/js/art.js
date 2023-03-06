@@ -5160,6 +5160,7 @@ if (typeof sessionStorage === 'undefined') {
     //storage button on or off
     if (getData['storage'] === 'off') {
       $('#auto_download_storage').prop('checked', false);
+      remove_localStorage (storage,key);
       return false;
     }
     if (getData['storage'] === 'on') {
