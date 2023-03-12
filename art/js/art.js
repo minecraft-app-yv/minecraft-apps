@@ -5153,7 +5153,7 @@ if (typeof sessionStorage === 'undefined') {
     //load Storage
     let key = 'unload_time';
     let getData = return_obj_from_localStorage (storage,key);
-    if (getData === '') {
+    if (getData === '' || getData === null) {
       return false;
     }
     value_obj = getData;
