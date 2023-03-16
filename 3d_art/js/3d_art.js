@@ -3118,6 +3118,20 @@ function area_cut_tool_of_scissors(e) {
   area_action_fun (canvas_id, color, img, action_type);
   $('html').css('cursor', 'default');
 }
+function input_arry_into_art_canvas_td (e) {
+  let arry = obj.start_img;
+  $('#art_canvas td.selected').removeClass('selected');
+  $('#art_canvas td').each(function(index) {
+    let tr_y = $(this).parent().attr('class');
+    let td_x = $(this).attr('class');
+    tr_y = tr_y.substring(1);
+    td_x = td_x.substring(1);
+    tr_y = Number(tr_y);
+    td_x = Number(td_x);
+    let img = arry[tr_y][td_x]
+    $(this).html(img);
+  });
+}
 function stroke_path_with_line(e) {
   let img = $('.palette .palette_button .selected_block_img').find('img.mImg');
   if (img.length) {
@@ -3139,7 +3153,7 @@ function stroke_path_with_line(e) {
   let range_y = obj.bef_y - obj.start_y;
   range_x = Math.floor(range_x / obj.range);
   range_y = Math.floor(range_y / obj.range);
-  $('#art_canvas').html(obj.start_img);
+  input_arry_into_art_canvas_td (e);
   if (isNaN(range_x) || isNaN(range_y) || range_x == 0) {
     $('#art_canvas tr.y' + obj.tr_y + ' td.x' + obj.td_x).html(img);
     return true;
@@ -3187,7 +3201,7 @@ function stroke_path_with_rect(e) {
   let range_y = Math.abs(obj.bef_y - obj.start_y);
   range_x = Math.floor(range_x / obj.range);
   range_y = Math.floor(range_y / obj.range);
-  $('#art_canvas').html(obj.start_img);
+  input_arry_into_art_canvas_td (e);
   if (isNaN(range_x) || isNaN(range_y)) {
     $('#art_canvas tr.y' + obj.tr_y + ' td.x' + obj.td_x).html(img);
     return true;
@@ -3228,7 +3242,7 @@ function stroke_path_with_arc(e) {
   let range_y = obj.bef_y - obj.start_y;
   range_x = Math.floor(range_x / obj.range);
   range_y = Math.floor(range_y / obj.range);
-  $('#art_canvas').html(obj.start_img);
+  input_arry_into_art_canvas_td (e);
   if (isNaN(range_x) || isNaN(range_y)) {
     $('#art_canvas tr.y' + obj.tr_y + ' td.x' + obj.td_x).html(img);
     return true;
@@ -3427,7 +3441,7 @@ function copy_area_with_rect(e) {
     obj.bef_x = e.touches[0].clientX;
     obj.bef_y = e.touches[0].clientY;
   }
-  $('#art_canvas').html(obj.start_img);
+  input_arry_into_art_canvas_td (e);
   if (obj.copy_img === '') {
     let left_x, top_y;
     if (obj.start_x <= obj.bef_x) {
@@ -3607,6 +3621,36 @@ function choose_fun (e) {
     copy_area_with_rect(e);
   }
 }
+function return_arry_of_art_canvas_td (e) {
+  let arry = [];
+  let i = -1;
+  let j = 0;
+  let bef_tr_y = -1;
+  $('#art_canvas td').each(function(index) {
+    let tr_y = $(this).parent().attr('class');
+    tr_y = tr_y.substring(1);
+    tr_y = Number(tr_y);
+    if (bef_tr_y != tr_y) {
+      i++
+      j = 0;
+      arry[i] = [];
+    }
+    bef_tr_y = tr_y;
+    let img = $(this).find('img.mImg');
+    if (!img.length) {
+      arry[i][j] = '';
+      j++;
+      return true;
+    }
+    if (img.length) {
+      img = jQuery("<div>").append(img.clone(true)).html();
+      arry[i][j] = img;
+      j++;
+      return true;
+    }
+  });
+  return arry;
+}
 /*escape for touch test*/
 ac.onmousedown = function (e) {
   obj.use = 'mouse_at_art';
@@ -3643,7 +3687,7 @@ ac.onmousedown = function (e) {
     color_dropper_icon(e);
   }
   else {
-    obj.start_img = $('#art_canvas').html();
+    obj.start_img = return_arry_of_art_canvas_td (e);
     ac.addEventListener('mousemove', choose_fun);
     ac.addEventListener('mouseup', end_fun);
   }
@@ -3683,7 +3727,7 @@ ac.addEventListener("touchstart", function (e) {
     color_dropper_icon(e);
   }
   else {
-    obj.start_img = $('#art_canvas').html();
+    obj.start_img = return_arry_of_art_canvas_td (e);
     ac.addEventListener("touchmove", choose_fun);
     ac.addEventListener("touchend", end_fun);
   }
