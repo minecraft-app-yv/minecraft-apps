@@ -365,7 +365,7 @@ $(document).ready(function () {
   }
   //palette color img add crossorigin
   // WARNING: if can display img do -> crossorigin="anonymous
-  //$('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
+  $('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
   //drawSelf canvas background
   document.getElementById("draw_art_canvas").getContext("2d").fillStyle = "white";
   document.getElementById("draw_art_canvas").getContext("2d").fillRect(0, 0, dac.width, dac.height);
@@ -520,7 +520,7 @@ function memory_value_into_canvas (key, name) {
     if (name !== null) {
       $('#pixel_art_canvas').attr('data-fileName', name);
     }
-    $('#pixel_art_size').val(value.data.length);
+    $('#pixel_art_size').val(value.data[0].length);
     $('.aside_menu label[for="for_pixel_art_size"]').click();
     //into canvas
     let palette_color = [];
@@ -535,21 +535,22 @@ function memory_value_into_canvas (key, name) {
     });
     let colHead = '<tr><th class="FirstBlank"></th>';
     let table = '';
-    value.data.forEach((row, y) => {
+    let count = value.data[0].length;
+    for (let y = 0; y < count; y++) {
       colHead = colHead + '<th class="headCol"></th>';
       let col_html = '';
-      row.forEach((col, x) => {
+      for (let x = 0; x < count; x++) {
         let imgColor = value.data[y][x];
         let index = palette_color.indexOf(imgColor);
         if (index < 0) {
           col_html += '<td class="x' + x + '"></td>';
-          return true;
+          continue;
         }
         let img = palette_img[index];
         col_html += '<td class="x' + x + '">' + img + '</td>';
-      });
+      }
       table = table + '<tr class="y' + y + '"><th class="headRow"></th>' + col_html + "</tr>";
-    });
+    }
     colHead += '</tr>';
     $("#pixel_art_canvas thead").html(colHead);
     $("#pixel_art_canvas tbody").html(table);
@@ -563,7 +564,7 @@ function memory_value_into_canvas (key, name) {
     if (name !== null) {
       $('#map_art_canvas').attr('data-fileName', name);
     }
-    $('#map_art_size').val(value.data.length);
+    $('#map_art_size').val(value.data[0].length);
     $('.aside_menu label[for="for_map_art_size"]').click();
     //into canvas
     let palette_color = [];
@@ -573,20 +574,21 @@ function memory_value_into_canvas (key, name) {
     });
     let colHead = '<tr><th class="FirstBlank"></th>';
     let table = '';
-    value.data.forEach((row, y) => {
+    let count = value.data[0].length;
+    for (let y = 0; y < count; y++) {
       colHead = colHead + '<th class="headCol"></th>';
       let col_html = '';
-      row.forEach((col, x) => {
+      for (let x = 0; x < count; x++) {
         let imgColor = value.data[y][x];
         let index = palette_color.indexOf(imgColor);
         if (index < 0) {
           col_html += '<td class="x' + x + '"></td>';
-          return true;
+          continue;
         }
         col_html += '<td class="x' + x + '" style="background: ' + imgColor + ';"></td>';
-      });
+      }
       table = table + '<tr class="y' + y + '"><th class="headRow"></th>' + col_html + "</tr>";
-    });
+    }
     colHead += '</tr>';
     $("#map_art_canvas thead").html(colHead);
     $("#map_art_canvas tbody").html(table);
