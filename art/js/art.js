@@ -431,10 +431,44 @@ function otm_check(e) {
 function return_for_memory_value (e) {
   let value;
   if ($('#pixel_art').prop('checked')) {
-    value = {canvas: 'pixel_art', data: $('#pixel_art_canvas').html()};
+    let arry = [];
+    $('#pixel_art_canvas td').each(function(index) {
+      let tr_y = $(this).parent().attr('class');
+      let td_x = $(this).attr('class');
+      tr_y = tr_y.substring(1);
+      td_x = td_x.substring(1);
+      tr_y = Number(tr_y);
+      td_x = Number(td_x);
+      if (!arry[tr_y]) {
+        arry[tr_y] = [];
+      }
+      let img = $(this).find('img.mImg');
+      if (!img.length) {
+        arry[tr_y][td_x] = '';
+        return true;
+      }
+      if (img.length) {
+        arry[tr_y][td_x] = jQuery("<div>").append(img.clone(true)).children().css('backgroundColor');
+        return true;
+      }
+    });
+    value = {canvas: 'pixel_art', data: arry};
   }
   if ($('#map_art').prop('checked')) {
-    value = {canvas: 'map_art', data: $('#map_art_canvas').html()};
+    let arry = [];
+    $('#map_art_canvas td').each(function(index) {
+      let tr_y = $(this).parent().attr('class');
+      let td_x = $(this).attr('class');
+      tr_y = tr_y.substring(1);
+      td_x = td_x.substring(1);
+      tr_y = Number(tr_y);
+      td_x = Number(td_x);
+      if (!arry[tr_y]) {
+        arry[tr_y] = [];
+      }
+      arry[tr_y][td_x] = $(this).css('backgroundColor');
+    });
+    value = {canvas: 'map_art', data: arry};
   }
   if ($('#draw_art').prop('checked')) {
     let img = document.getElementById("draw_art_canvas").getContext("2d").getImageData(0, 0, dac.width, dac.height);
@@ -482,19 +516,84 @@ function otm_delete(e) {
 function memory_value_into_canvas (key, name) {
   let value = memory_obj[key];
   if (value.canvas === 'pixel_art' && $('#pixel_art').prop('checked')) {
-    $('#pixel_art_canvas').html(value.data);
     $('#pixel_art_canvas').attr('data-fileName', '');
     if (name !== null) {
       $('#pixel_art_canvas').attr('data-fileName', name);
     }
+    $('#pixel_art_size').val(value.data.length);
+    $('.aside_menu label[for="for_pixel_art_size"]').click();
+    //into canvas
+    let palette_color = [];
+    let palette_img = [];
+    $('#CP .CPimg img').each(function(index) {
+      let imgColor = $(this).css('background-color');
+      let img = jQuery("<div>").append($(this).clone(true));
+      img.children().addClass("mImg");
+      img = img.html();
+      palette_color.push(imgColor);
+      palette_img.push(img);
+    });
+    let colHead = '<tr><th class="FirstBlank"></th>';
+    let table = '';
+    value.data.forEach((row, y) => {
+      colHead = colHead + '<th class="headCol"></th>';
+      let col_html = '';
+      row.forEach((col, x) => {
+        let imgColor = value.data[y][x];
+        let index = palette_color.indexOf(imgColor);
+        if (index < 0) {
+          col_html += '<td class="x' + x + '"></td>';
+          return true;
+        }
+        let img = palette_img[index];
+        col_html += '<td class="x' + x + '">' + img + '</td>';
+      });
+      table = table + '<tr class="y' + y + '"><th class="headRow"></th>' + col_html + "</tr>";
+    });
+    colHead += '</tr>';
+    $("#pixel_art_canvas thead").html(colHead);
+    $("#pixel_art_canvas tbody").html(table);
+    setTimeout((e) => {
+      let roll_back = $('#pixel_art_canvas').html();
+      add_canvas_to_roll_back_obj (roll_back);
+    }, 1)
   }
   if (value.canvas === 'map_art' && $('#map_art').prop('checked')) {
-    $('#map_art_canvas').html(value.data);
     $('#map_art_canvas').attr('data-fileName', '');
     if (name !== null) {
       $('#map_art_canvas').attr('data-fileName', name);
     }
-    $('#map_art_canvas thead th.headCol').css('')
+    $('#map_art_size').val(value.data.length);
+    $('.aside_menu label[for="for_map_art_size"]').click();
+    //into canvas
+    let palette_color = [];
+    $('#CP .CPrgb').each(function(index) {
+      let imgColor = $(this).css('background-color');
+      palette_color.push(imgColor);
+    });
+    let colHead = '<tr><th class="FirstBlank"></th>';
+    let table = '';
+    value.data.forEach((row, y) => {
+      colHead = colHead + '<th class="headCol"></th>';
+      let col_html = '';
+      row.forEach((col, x) => {
+        let imgColor = value.data[y][x];
+        let index = palette_color.indexOf(imgColor);
+        if (index < 0) {
+          col_html += '<td class="x' + x + '"></td>';
+          return true;
+        }
+        col_html += '<td class="x' + x + '" style="background: ' + imgColor + ';"></td>';
+      });
+      table = table + '<tr class="y' + y + '"><th class="headRow"></th>' + col_html + "</tr>";
+    });
+    colHead += '</tr>';
+    $("#map_art_canvas thead").html(colHead);
+    $("#map_art_canvas tbody").html(table);
+    setTimeout((e) => {
+      let roll_back = $('#map_art_canvas').html();
+      add_canvas_to_roll_back_obj (roll_back);
+    }, 1)
   }
   if (value.canvas === 'draw_art' && $('#draw_art').prop('checked')) {
     let url = value.data;
@@ -505,6 +604,10 @@ function memory_value_into_canvas (key, name) {
       dac.width = img.width;
       dac.width = img.height;
       dactx.drawImage(img, 0, 0, dac.width, dac.width);
+      setTimeout((e) => {
+        let roll_back = dactx.getImageData(0, 0, dac.width, dac.height);
+        add_canvas_to_roll_back_obj (roll_back);
+      }, 1)
     };
     img.src = url;
     $('#draw_art_canvas').attr('data-fileName', '');
@@ -563,7 +666,8 @@ $('#remove_memory').click((e) => {
 /*https://techacademy.jp/magazine/21725*/
 $('#download_memory').click((e) => {
   let target_id = $('#syncer-acdn-03 li[data-target="target_memorys"] p.target').parent().attr('id');
-  if (target_id === undefined || target_id === '') {
+  let have_memory = $('#' + target_id).attr('data-check');
+  if (target_id === undefined || target_id === '' || have_memory !== 'checked') {
     return false;
   }
   let value = memory_obj[target_id];
@@ -577,47 +681,19 @@ $('#download_memory').click((e) => {
     getStr = getStr + "_drawUrl_" + url + "_drawUrl_";
   }
   else {
-    let html = '<table id="download_memory_table" style="display:none"><tbody>';
-    html += value.data;
-    html += '</tbody></table>';
-    $('body').append(html);
-    let rowL = $('#download_memory_table').find("tr").length;
-    let colL = $('#download_memory_table tbody').children('tr.y1').find("td").length;
     getStr = getStr + "_split_";
-    for (let y = 0; y < rowL; y++) {
-      for (let x = 0; x < colL; x++) {
-        let $cell = $('#download_memory_table tbody').children('tr.y' + y).children('td.x' + x);
-        let cell = $cell.clone(true);
-        let children = $cell.children().clone(true);
-        if (children.length) {
-          let alt = jQuery(children).attr("alt");
-          let cl = jQuery(children).attr("class");
-          let style = jQuery(children).attr("style");
-          let tag = jQuery(children).get(0).tagName;
-          if (tag !== undefined) {
-            getStr = getStr + "_tag_" + tag + "_tag_";
-          }
-          if (cl !== undefined) {
-            getStr = getStr + "_class_" + cl + "_class_";
-          }
-          if (alt !== undefined) {
-            getStr = getStr + "_alt_" + alt + "_alt_";
-          }
-          if (style !== undefined) {
-            let rgb = style.split("rgb(").slice(1);
-            rgb = rgb[0].replace(");", "");
-            rgb = rgb.split(",");
-            getStr = getStr + "_r_" + rgb[0] + "_r_" + "_g_" + rgb[1] + "_g_" + "_b_" + rgb[2] + "_b_";
-          }
-        } else {
-          let style = jQuery(cell).attr("style");
-          if (style !== undefined) {
-            let rgb = style.split("rgb(").slice(1);
-            rgb = rgb[0].replace(");", "");
-            rgb = rgb.split(",");
-            getStr = getStr + "_r_" + rgb[0] + "_r_" + "_g_" + rgb[1] + "_g_" + "_b_" + rgb[2] + "_b_";
-          }
+    for (let y = 0; y < value.data.length; y++) {
+      for (let x = 0; x < value.data[0].length; x++) {
+        let color = value.data[y][x];
+        if (color === '' || color === undefined) {
+          getStr = getStr + "_col_";
+          continue;
         }
+        let rgb = color.split("rgb(").slice(1);
+        rgb = rgb[0].replace(")", "");
+        rgb = rgb[0].replaceAll(" ", "");
+        rgb = rgb.split(",");
+        getStr = getStr + "_r_" + rgb[0] + "_r_" + "_g_" + rgb[1] + "_g_" + "_b_" + rgb[2] + "_b_";
         getStr = getStr + "_col_";
       }
       getStr = getStr + "_row_";
@@ -663,12 +739,6 @@ $('#upload_memory').change((e) => {
   const reader = new FileReader();
   let alt_arr = [];
   let src_arr = [];
-  $("#CP .CPimg").children("img").each(function (index) {
-    let alt = $(this).attr("alt");
-    let src = $(this).attr("src");
-    alt_arr.push(alt);
-    src_arr.push(src);
-  });
   reader.onload = () => {
     let upText = reader.result;
     upText = return_str_escape_html(upText);
@@ -677,6 +747,7 @@ $('#upload_memory').change((e) => {
     canvas_style = canvas_style.split("_canvas_").slice(1, 2);
     canvas_style = canvas_style[0];
     let html = '';
+    let arry = [];
     if (canvas_style === 'draw_art') {
       let url = upText[1].split("_drawUrl_").slice(1, 2);
       html = decodeURIComponent(url);
@@ -687,41 +758,29 @@ $('#upload_memory').change((e) => {
       table.pop();
       for (let i = 0; i < table.length; i++) {
         table[i] = table[i].split("_col_");
+        table[i].pop();
       }
       table.forEach((row, y) => {
-        html = html + '<tr class="y' + y + '"><th class="headRow"></th>';
         row.forEach((col, x) => {
-          let tag = table[y][x].split("_tag_").slice(1, 2);
-          if (tag.length) {
-            let cl = table[y][x].split("_class_").slice(1, 2);
-            let alt = table[y][x].split("_alt_").slice(1, 2);
-            let r = table[y][x].split("_r_").slice(1, 2);
-            let g = table[y][x].split("_g_").slice(1, 2);
-            let b = table[y][x].split("_b_").slice(1, 2);
-            let index = alt_arr.indexOf(alt[0]);
-            if (index < 0) {
-              html = html + '<td class="x' + x + '">';
-              html = html + "</td>";
-              return true;
-            }
-            let src = src_arr[index];
-            html = html + '<td class="x' + x + '">';
-            html = html + '<img class="' + cl + '" src="' + src + '" alt="' + alt + '" style="background: rgb(' + r + "," + g + "," + b + ');">';
-            html = html + "</td>";
-          } else {
-            let r = table[y][x].split("_r_").slice(1, 2);
-            let g = table[y][x].split("_g_").slice(1, 2);
-            let b = table[y][x].split("_b_").slice(1, 2);
-            if (r.length) {
-              html = html + '<td class="x' + x + '" style="background: rgb(' + r + "," + g + "," + b + ');">';
-              html = html + "</td>";
-            } else {
-              html = html + '<td class="x' + x + '"></td>';
-            }
+          if (!arry[y]) {
+            arry[y] = [];
           }
+          if (table[y][x] === '') {
+            arry[y][x] = '';
+            return true;
+          }
+          table[y][x] = table[y][x].replaceAll(" ", "");
+          let r = table[y][x].split("_r_").slice(1, 2);
+          let g = table[y][x].split("_g_").slice(1, 2);
+          let b = table[y][x].split("_b_").slice(1, 2);
+          if (r == '255' && g == '255' && b == '255') {
+            arry[y][x] = '';
+            return true;
+          }
+          arry[y][x] = 'rgb(' + r + ", " + g + ", " + b + ')';
         });
-        html = html + "</tr>";
       });
+      html = arry;
     }
     $('#' + target_id).attr('data-check', 'checked');
     $('#' + target_id).children('i.fa-bookmark').css('display', 'none');
