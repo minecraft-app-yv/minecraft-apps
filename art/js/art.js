@@ -3076,6 +3076,7 @@ function all_removeEventListener (e) {
   dac.removeEventListener('mousemove', choose_fun);
   document.removeEventListener('mouseup', rect_FirstUp);
   document.removeEventListener('mouseup', rect_SecondUp);
+  document.removeEventListener("touchstart", handleTouchMove, { passive: false });
   document.removeEventListener("touchmove", handleTouchMove, { passive: false });
   mac.removeEventListener("touchmove", choose_fun);
   pac.removeEventListener("touchmove", choose_fun);
@@ -4215,6 +4216,7 @@ mac.addEventListener("touchstart", function (e) {
   obj.start_x = e.touches[0].clientX;
   obj.start_y = e.touches[0].clientY;
   if (obj.want_if === 'fill_tool_of_paint_roller') {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     $('html').css('cursor', 'wait');
     setTimeout(() => {
@@ -4223,6 +4225,7 @@ mac.addEventListener("touchstart", function (e) {
     }, "1")
   }
   else if (obj.want_if === 'area_cut_tool_of_scissors') {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     $('html').css('cursor', 'wait');
     setTimeout(() => {
@@ -4234,6 +4237,7 @@ mac.addEventListener("touchstart", function (e) {
     color_dropper_icon(e);
   }
   else {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     mac.addEventListener("touchmove", choose_fun);
     mac.addEventListener("touchend", end_fun);
@@ -4253,6 +4257,7 @@ pac.addEventListener("touchstart", function (e) {
   obj.start_x = e.touches[0].clientX;
   obj.start_y = e.touches[0].clientY;
   if (obj.want_if === 'fill_tool_of_paint_roller') {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     $('html').css('cursor', 'wait');
     setTimeout(() => {
@@ -4261,6 +4266,7 @@ pac.addEventListener("touchstart", function (e) {
     }, "1")
   }
   else if (obj.want_if === 'area_cut_tool_of_scissors') {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     $('html').css('cursor', 'wait');
     setTimeout(() => {
@@ -4272,6 +4278,7 @@ pac.addEventListener("touchstart", function (e) {
     color_dropper_icon(e);
   }
   else {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     pac.addEventListener("touchmove", choose_fun);
     pac.addEventListener("touchend", end_fun);
@@ -4292,6 +4299,7 @@ dac.addEventListener("touchstart", function (e) {
   obj.start_y = e.touches[0].clientY - dac.getBoundingClientRect().top;
   obj.start_img = dactx.getImageData(0, 0, dac.width, dac.height);
   if (obj.want_if === 'fill_tool_of_paint_roller') {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     $('html').css('cursor', 'wait');
     setTimeout(() => {
@@ -4300,6 +4308,7 @@ dac.addEventListener("touchstart", function (e) {
     }, "1")
   }
   else if (obj.want_if === 'area_cut_tool_of_scissors') {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     $('html').css('cursor', 'wait');
     setTimeout(() => {
@@ -4317,18 +4326,21 @@ dac.addEventListener("touchstart", function (e) {
         roll_back_obj.one_time_img.pop();
         roll_back_obj.c_one_time --;
       }
+      document.addEventListener("touchstart", handleTouchMove, { passive: false });
       document.addEventListener("touchmove", handleTouchMove, { passive: false });
       dac.addEventListener("touchmove", choose_fun);
       dac.addEventListener("touchend", end_fun);
     }
   }
   else if (obj.want_if === 'copy_area_with_rect' || obj.want_if === 'resize_area_with_rect' || obj.want_if === 'roll_area_with_rect') {
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     dac.addEventListener("touchmove", choose_fun);
   }
   else {
     obj.bef_x = obj.start_x;
     obj.bef_y = obj.start_y;
+    document.addEventListener("touchstart", handleTouchMove, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     dac.addEventListener("touchmove", choose_fun);
     dac.addEventListener("touchend", end_fun);
