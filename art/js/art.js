@@ -708,7 +708,6 @@ $('#download_memory').click((e) => {
   link.download = getTitle + ".txt";
   link.click();
   link.remove();
-  $('#download_memory_table').remove();
 });
 //data upload
 /*https://javascript.keicode.com/newjs/how-to-read-file-with-file-api.php*/
