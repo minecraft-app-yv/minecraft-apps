@@ -1609,7 +1609,7 @@ function move_icon (e) {
   obj.$icon.css('left', obj.icon_left + x_range + 'px');
 }
 $("#for_palette_resize").mousedown(function (e) {
-  e.preventDefault;
+  e.preventDefault();
   obj.use = 'mouse';
   obj.$target = $(".palette .palette_board");
   obj.$icon = $("#for_palette_resize");
@@ -1629,7 +1629,7 @@ $("#for_palette_resize").mouseup(function(e) {
   document.removeEventListener('mousemove', move_icon);
 });
 $("#for_palette_resize").on('touchstart', function(e) {
-  e.preventDefault;
+  e.preventDefault();
   obj.use = 'touch';
   obj.$target = $(".palette .palette_board");
   obj.$icon = $("#for_palette_resize");
@@ -2437,7 +2437,7 @@ function choose_$icon_from_buttons_class (button_class) {
   return $icon;
 }
 $(tool_icons_selecters).mousedown(function (e) {
-  e.preventDefault;
+  e.preventDefault();
   obj.use = 'mouse';
   let button_class = $(this).parent().attr('class');
   obj.$icon = choose_$icon_from_buttons_class (button_class);
@@ -2453,7 +2453,7 @@ $(tool_icons_selecters).mouseup(function(e) {
   document.removeEventListener('mousemove', palette_button_move);
 });
 $(tool_icons_selecters).on('touchstart', function (e) {
-  e.preventDefault;
+  e.preventDefault();
   obj.use = 'touch';
   let button_class = $(this).parent().attr('class');
   obj.$icon = choose_$icon_from_buttons_class (button_class);
@@ -4570,14 +4570,14 @@ $('.roll_back_and_forward .roll_forward').click((e) => {
 document.addEventListener('keydown', ctrl_keydown_event,false);
 document.addEventListener('keydown', ctrl_shift_keydown_event,false);
 function ctrl_keydown_event(e){
-  e.preventDefault;
   if(event.ctrlKey && !event.shiftKey && event.code === "KeyZ") {
+    e.preventDefault();
     $('.roll_back_and_forward .roll_back').click();
   }
 }
 function ctrl_shift_keydown_event(e){
-  e.preventDefault;
   if(event.ctrlKey && event.shiftKey && event.code === "KeyZ") {
+    e.preventDefault();
     $('.roll_back_and_forward .roll_forward').click();
   }
 }
@@ -4689,17 +4689,17 @@ $('.advanced_tool .to_open_path').click((e) => {
 dac.addEventListener('click', shift_click_event,false);
 dac.addEventListener('click', ctrl_click_event,false);
 function shift_click_event(e){
-  e.preventDefault;
   if ($('#stroke_path_with_line').prop('checked') || $('#fill_in_with_line').prop('checked')) {
     if(event.shiftKey) {
+      e.preventDefault();
       $('.advanced_tool .to_close_path').click();
     }
   }
 }
 function ctrl_click_event(e){
-  e.preventDefault;
   if ($('#stroke_path_with_line').prop('checked') || $('#fill_in_with_line').prop('checked')) {
     if(event.ctrlKey) {
+      e.preventDefault();
       $('.advanced_tool .to_open_path').click();
     }
   }
