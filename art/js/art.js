@@ -1772,6 +1772,11 @@ function return_array_doinput(alt_arr, src_arr, str) {
 }
 $("#palette_upload").change(function (e) {
   e.preventDefault();
+  const file = e.target.files[0];
+  if (file === undefined) {
+    $("#palette_upload").val('');
+    return false;
+  }
   $('html').css('cursor', 'wait');
   let alt_arr = [];
   let src_arr = [];
@@ -1784,10 +1789,6 @@ $("#palette_upload").change(function (e) {
   $("#CP .CPrgb").parent().each(function (index) {
     $(this).remove();
   });
-  const file = e.target.files[0];
-  if (file === undefined) {
-    return false;
-  }
   const reader = new FileReader();
   reader.onload = () => {
     let str = reader.result;
@@ -1797,7 +1798,7 @@ $("#palette_upload").change(function (e) {
       let parent_class = array_html[i].parent_class;
       $('#CP .' + parent_class).append(array_html[i].html);
     }
-    $("#palette_upload").val("");
+    $("#palette_upload").val('');
     $('html').css('cursor', 'default');
   };
   reader.readAsText(file);
