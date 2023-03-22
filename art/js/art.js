@@ -2054,7 +2054,7 @@ function upload_new_blocks (i, cp_L, files, callback) {
           i++;
           if (i >= files.length) {
             $('#new_block_img').val('');
-            $("#CP" + cp_L).addClass("check");
+            //$("#CP" + cp_L).addClass("check");
             return false;
           }
           cp_L ++;
