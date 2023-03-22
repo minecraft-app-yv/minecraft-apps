@@ -2023,41 +2023,48 @@ $('#CP .add_new_blocks button').on('click', (e) => {
 });
 function upload_new_blocks (i, cp_L, files, callback) {
   let reader = new FileReader();
-  let img = document.createElement("img");
   let image = new Image();
-  img.crossOrigin = "anonymous";
   reader.onload = function (evt) {
-    img.onload = function () {
-      $("#CP label.check").removeClass("check");
-      let str = '<label id="CP' + cp_L + '"><div class="CPrgb"></div><div class="CPimg"></div></label>';
-      $("#CP .add_new_blocks").append(str);
-      const cp = document.querySelector("#CP" + cp_L + " .CPimg");
-      cp.appendChild(img);
-      const c = document.createElement("canvas");
-      const ctx = c.getContext("2d");
-      ctx.fillStyle = "rgb(255, 255, 255)";
-      ctx.fillRect(0, 0, 1, 1);
-      ctx.drawImage(image, 0, 0, 1, 1);
-      let pixel = ctx.getImageData(0, 0, 1, 1);
-      let data = pixel.data;
-      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-      setTimeout((e) => {
-        $("#CP" + cp_L + " .CPimg img").css("background", rgb);
-        i++;
-        if (i >= files.length) {
-          $('#new_block_img').val("");
-          //$("#CP" + cp_L).addClass("check");
-          return false;
-        }
-        cp_L ++;
-        callback (i, cp_L, files, upload_new_blocks);
-      },0);
+    image.onload = function () {
+      let c = document.createElement("canvas");
+      let ctx = c.getContext("2d");
+      c.width = 50;
+      c.height = 50;
+      ctx.drawImage(image, 0, 0, 50, 50);
+      let img = document.createElement("img");
+      img.crossOrigin = "anonymous";
+      let alt = files[i].name;
+      alt = alt.split(".");
+      img.onload = function () {
+        $("#CP label.check").removeClass("check");
+        let str = '<label id="CP' + cp_L + '"><div class="CPrgb"></div><div class="CPimg"></div></label>';
+        $("#CP .add_new_blocks").append(str);
+        const cp = document.querySelector('#CP' + cp_L + ' .CPimg');
+        cp.appendChild(img);
+        c = document.createElement("canvas");
+        ctx = c.getContext("2d");
+        ctx.fillStyle = "rgb(255, 255, 255)";
+        ctx.fillRect(0, 0, 1, 1);
+        ctx.drawImage(image, 0, 0, 1, 1);
+        let pixel = ctx.getImageData(0, 0, 1, 1);
+        let data = pixel.data;
+        const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+        setTimeout((e) => {
+          $("#CP" + cp_L + " .CPimg img").css("background", rgb);
+          i++;
+          if (i >= files.length) {
+            $('#new_block_img').val('');
+            $("#CP" + cp_L).addClass("check");
+            return false;
+          }
+          cp_L ++;
+          callback (i, cp_L, files, upload_new_blocks);
+        }, 0)
+      };
+      img.src = c.toDataURL();
+      img.alt = alt[0];
+      img.className = "mImg";
     };
-    let alt = files[i].name;
-    alt = alt.split(".");
-    img.src = evt.target.result;
-    img.alt = alt[0];
-    img.className = "mImg";
     image.src = evt.target.result;
   };
   reader.readAsDataURL(files[i]);
