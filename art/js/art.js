@@ -2736,6 +2736,9 @@ function for_sample_view_action(e) {
         let pixel = ctx.getImageData(j, i, 1, 1);
         let data = pixel.data;
         const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+        if (rgb === 'rgb(255, 255, 255)') {
+          continue;
+        }
         sample_array[k].fillStyle = chooseColor(calcDelta, palette, rgb);
         sample_array[k].fillRect(j, i, 1, 1);
       }
@@ -2880,6 +2883,9 @@ function change_to_blocks(e) {
       let pixel = ctx.getImageData(j, i, 1, 1);
       let data = pixel.data;
       const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+      if (rgb === 'rgb(255, 255, 255)') {
+        continue;
+      }
       if ($('#map_art').prop('checked')) {
         let choosergb = chooseColor(calcDelta, palette, rgb);
         $("#map_art_canvas tbody tr.y" + i + " td.x" + j).css("background", choosergb);
