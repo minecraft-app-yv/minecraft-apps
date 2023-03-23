@@ -4068,7 +4068,7 @@ function copy_area_with_rect(e) {
 }
 function return_want_if_at_tool (e) {
   let want_if = 'false';
-  if ($('#no_set_action').prop('checked') || $('#map_canvas_open_icon').prop('checked')) {
+  if ($('#map_canvas_open_icon').prop('checked')) {
     want_if = 'false';
     return want_if;
   }
