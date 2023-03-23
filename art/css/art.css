@@ -2216,7 +2216,7 @@ footer i.fa-circle-question, #answer_to_questions {
 }
 footer i.fa-circle-question {
   color: #fff;
-  font-size: 30px;
+  font-size: 25px;
   position: absolute;
   bottom: 15px;
   right: 15px;
@@ -2225,7 +2225,7 @@ footer i.fa-circle-question {
   transform: rotateY(0deg) rotateZ(0deg);
 }
 footer i.fa-circle-question:hover {
-  opacity: 0.5;
+  transform: rotateY(0) rotateZ(0) scale(1.3);
 }
 #answer_to_questions {
   color: #000;
@@ -2244,12 +2244,14 @@ footer i.fa-circle-question:hover {
   z-index: 48;
   border-radius: 5px;
   overflow: auto;
+  line-height: 1.3em;
+  font-size: small;
 }
 #question_to_use:checked ~ i.fa-circle-question {
-  color: darkgreen;
+  color: navy;
   background: #fff;
   border-radius: 30px;
-  transform: rotateY(360deg) rotateZ(30deg);
+  transform: rotateY(360deg) rotateZ(30deg) scale(1.3);
   position: fixed;
   z-index: 50;
 }
@@ -2258,16 +2260,16 @@ footer i.fa-circle-question:hover {
 }
 /*scrollbar_byCodepenFromPin*/
 #answer_to_questions::-webkit-scrollbar-track {
-  background-color: #DAAE83;
-  border-radius: 1px;
+  background-color: none;
+  border-radius: 2px;
 }
 #answer_to_questions::-webkit-scrollbar {
-  width: 1px;
-  background-color: #DAAE83;
+  width: 2px;
+  background-color: none;
 }
 #answer_to_questions::-webkit-scrollbar-thumb {
-  border-radius: 1px;
-  background-image: linear-gradient(180deg, #73563A 0%, #DAAE83 100%);
+  border-radius: 2px;
+  background-image: linear-gradient(180deg, darkgreen 0%, lightgreen 100%);
 }
 /*for PC*/
 @media screen and (min-width: 1200px) {
