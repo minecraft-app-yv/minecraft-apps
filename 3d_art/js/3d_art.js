@@ -2323,6 +2323,7 @@ function folder_into_skin_canvas (zip, direction, arry) {
   let folderName = 'block_layer_images';
   let skin_folder = zip.folder(folderName);
   arry.forEach((url, i) => {
+    console.log(url);
     let c_Blob = imgblob(url);
     if (direction === 'horizon') {
       skin_folder.file('horizon_top_' + i, c_Blob);
