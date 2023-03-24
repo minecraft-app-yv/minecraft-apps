@@ -1322,7 +1322,7 @@ $(document).ready(function () {
   }
   //palette color img add crossorigin
   // WARNING: if can display img do -> crossorigin="anonymous
-  //$('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
+  $('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
   //make pixel table
   let layer_count = 30;
   let col = "";
@@ -5153,6 +5153,70 @@ function return_arry_of_art_canvas_td (e) {
   });
   return arry;
 }
+function roll_back_to_correct_arry (e) {
+  if (!obj.once_memory.length) {
+    roll_back_obj.c_art++;
+    if (roll_back_obj.art.length - 1 - roll_back_obj.c_art < 0) {
+      roll_back_obj.c_art = 0;
+      //make pixel table
+      if (!$('#art_size').val()) {
+        $('#art_size').val(30);
+      }
+      let layer_count = $('#art_size').val();
+      let col = "";
+      let colHead = '<th class="FirstBlank"></th>';
+      for (let i = 0; i < layer_count; i++) {
+        colHead = colHead + '<th class="headCol"></th>';
+        col = col + '<td class="x' + i + '"></td>';
+      }
+      let table = "";
+      for (let j = 0; j < layer_count; j++) {
+        table = table + '<tr class="y' + j + '"><th class="headRow"></th>' + col + "</tr>";
+      }
+      $("#art_canvas thead").append('<tr></tr>');
+      $("#art_canvas thead tr").html(colHead);
+      $("#art_canvas tbody").html(table);
+      //make select_layers options
+      let vertical_layer_html = '';
+      let horizontal_layer_html = '';
+      for (let k = 0; k < layer_count; k++) {
+        let reverse_c = layer_count - k - 1;
+        if (k == Math.floor(layer_count / 2) - 1) {
+          vertical_layer_html += '<option value="' + reverse_c + '" autofocus selected class="selected">' + reverse_c + '</option>';
+          horizontal_layer_html += '<option value="' + k + '" autofocus selected class="selected">' + k + '</option>';
+        }
+        else {
+          vertical_layer_html += '<option value="' + reverse_c + '">' + reverse_c + '</option>';
+          horizontal_layer_html += '<option value="' + k + '">' + k + '</option>';
+        }
+      }
+      $('#select_vertical_layers').html(vertical_layer_html);
+      $('#select_side_layers').html(horizontal_layer_html);
+      $('#select_horizon_layers').html(horizontal_layer_html);
+      //create 3d arry
+      let arry = [];
+      for (let z = 0; z < layer_count; z++) {
+        for (let y = 0; y < layer_count; y++) {
+          if (!arry[z]) {
+            arry[z] = [];
+          }
+          for (let x = 0; x < layer_count; x++) {
+            if (!arry[z][y]) {
+              arry[z][y] = [];
+            }
+            arry[z][y][x] = '';
+          }
+        }
+      }
+      add_canvas_to_roll_back_obj (arry);
+      return true;
+    }
+    obj.once_memory = roll_back_obj.art[roll_back_obj.art.length - 1 - roll_back_obj.c_art];
+    if (!obj.once_memory.length) {
+      roll_back_to_correct_arry();
+    }
+  }
+}
 /*escape for touch test*/
 ac.onmousedown = function (e) {
   obj.use = 'mouse_at_art';
@@ -5166,6 +5230,9 @@ ac.onmousedown = function (e) {
     return true;
   }
   obj.once_memory = roll_back_obj.art[roll_back_obj.art.length - 1 - roll_back_obj.c_art];
+  if (!obj.once_memory.length) {
+    roll_back_to_correct_arry();
+  }
   obj.once_memory = copyMatrix(obj.once_memory);
   obj.start_x = e.clientX;
   obj.start_y = e.clientY;
@@ -5210,6 +5277,9 @@ ac.addEventListener("touchstart", function (e) {
     return true;
   }
   obj.once_memory = roll_back_obj.art[roll_back_obj.art.length - 1 - roll_back_obj.c_art];
+  if (!obj.once_memory.length) {
+    roll_back_to_correct_arry();
+  }
   obj.once_memory = copyMatrix(obj.once_memory);
   obj.start_x = e.touches[0].clientX;
   obj.start_y = e.touches[0].clientY;
@@ -5341,6 +5411,19 @@ function ctrl_keydown_event(e){
     obj.tr_y = '';
     let scope = 'minus';
     scope_action(scope);
+  }
+  if(event.ctrlKey && !event.shiftKey && event.code === "KeyS") {
+    if ($('#syncer-acdn-03 li[data-target="target_memorys"] p.target').length) {
+      let id = $('#syncer-acdn-03 li[data-target="target_memorys"] p.target').parent().attr('id');
+      let file_name = $('#' + id + ' span').text();
+      if (file_name === $('.input_forms .load_title span').text()) {
+        event.preventDefault();
+        let key = id;
+        let value = roll_back_obj.art[roll_back_obj.art.length - 1 - roll_back_obj.c_art];
+        value = copyMatrix(value);
+        add_new_obj_to_memory_obj (key,value);
+      }
+    }
   }
 }
 function ctrl_shift_keydown_event(e){
@@ -5734,10 +5817,12 @@ function question_obj(x,y) {
   }
   if (click_onclick === 'otm_save(this)') {
     if ($('header .header_form p.language').text() === 'Japanese') {
-      str = "キャンバスのデータを一時保存します。";
+      str = "キャンバスのデータを一時保存します。"
+      + "ファイル名とメモリ名が一致していればチェックしたメモリをCtrl + Sのショトカで保存出来ます。";
     }
     if ($('header .header_form p.language').text() === '英語') {
-      str = "Save canvas data temporarily.";
+      str = "Save canvas data temporarily."
+      + "If the file name and the memory name were matched, you can save the checked memory with Ctrl + S shortcut.";
     }
   }
   if (click_onclick === 'otm_delete(this)') {
