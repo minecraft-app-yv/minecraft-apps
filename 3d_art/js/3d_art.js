@@ -2347,6 +2347,9 @@ function folder_into_skin_canvas (zip, direction, arry) {
 }
 function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
   let arry = obj.table;
+  if (obj.table === '' || obj.table === undefined) {
+    return false;
+  }
   let arry_url_for_skins = [];
   let border_arry = [];
   if (direction === 'horizon') {
@@ -2356,16 +2359,24 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
       }
       let c = document.createElement("canvas");
       let ctx = c.getContext("2d");
-      c.width = arry.length * 20;
-      c.height = arry.length * 20;
+      document.getElementById('sample_in').appendChild(c);
+      c.width = arry[0].length * 20;
+      c.height = arry[0].length * 20;
       ctx.strokeStyle = "rgb(245,245,245)";
       ctx.lineWidth = 0.1;
-      arry[l_y].forEach((layer_z, z) => {
-        layer_z.forEach((layer_x, x) => {
+      for (let z = 0; z < arry[l_y].length; z++) {
+        for (let x = 0; x < arry[l_y][z].length; x++) {
           let src = arry[l_y][z][x];
           if (src === 'none') {
             border_arry[l_y].push(x);
-            return true;
+            if (border_arry[l_y].length == Math.pow(arry[0].length, 2)) {
+              if (l_z == arry.length - 1) {
+                folder_into_skin_canvas(zip, direction, arry_url_for_skins);
+                break;
+              }
+              continue;
+            }
+            continue;
           }
           let img = new Image();
           // WARNING: if can display img do -> crossorigin="anonymous ->html #Blueprint_with_skins_button toggle hidden
@@ -2387,8 +2398,9 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
             return true;
           };
           img.src = src;
-        });
-      });
+          continue;
+        }
+      }
     }
   }
   if (direction === 'vertical') {
@@ -2398,16 +2410,24 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
       }
       let c = document.createElement("canvas");
       let ctx = c.getContext("2d");
-      c.width = arry.length * 20;
-      c.height = arry.length * 20;
+      document.getElementById('sample_in').appendChild(c);
+      c.width = arry[0].length * 20;
+      c.height = arry[0].length * 20;
       ctx.strokeStyle = "rgb(245,245,245)";
       ctx.lineWidth = 0.1;
-      arry[l_z].forEach((layer_y, y) => {
-        layer_y.forEach((layer_x, x) => {
+      for (let y = 0; y < arry[l_z].length; y++) {
+        for (let x = 0; x < arry[l_z][y].length; x++) {
           let src = arry[l_z][y][x];
           if (src === 'none') {
             border_arry[l_z].push(x);
-            return true;
+            if (border_arry[l_z].length == Math.pow(arry[0].length, 2)) {
+              if (l_z == arry.length - 1) {
+                folder_into_skin_canvas(zip, direction, arry_url_for_skins);
+                break;
+              }
+              continue;
+            }
+            continue;
           }
           let img = new Image();
           // WARNING: if can display img do -> crossorigin="anonymous ->html #Blueprint_with_skins_button toggle hidden
@@ -2429,8 +2449,9 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
             return true;
           };
           img.src = src;
-        });
-      });
+          continue;
+        }
+      }
     }
   }
 }
