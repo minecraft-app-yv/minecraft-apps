@@ -2159,6 +2159,9 @@ function return_obj_make_Blueprint_direction_horizon (arry, palette) {
         if (index < 0) {
           alt = 'none';
           src = 'none';
+          ctx.strokeStyle = "rgb(245,245,245)";
+          ctx.lineWidth = 0.1;
+          ctx.strokeRect(x * 20, z * 20, 20, 20);
         }
         else {
           alt = palette.obj[index].alt;
@@ -2252,6 +2255,9 @@ function return_obj_make_Blueprint_direction_vertical (arry, palette) {
         if (index < 0) {
           alt = 'none';
           src = 'none';
+          ctx.strokeStyle = "rgb(245,245,245)";
+          ctx.lineWidth = 0.1;
+          ctx.strokeRect(x * 20, y * 20, 20, 20);
         }
         else {
           alt = palette.obj[index].alt;
@@ -2323,7 +2329,6 @@ function folder_into_skin_canvas (zip, direction, arry) {
   let folderName = 'block_layer_images';
   let skin_folder = zip.folder(folderName);
   arry.forEach((url, i) => {
-    console.log(url);
     let c_Blob = imgblob(url);
     if (direction === 'horizon') {
       skin_folder.file('horizon_top_' + i, c_Blob);
@@ -2368,6 +2373,7 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
         for (let x = 0; x < arry[l_y][z].length; x++) {
           let src = arry[l_y][z][x];
           if (src === 'none') {
+            ctx.strokeRect(x * 20, z * 20, 20, 20);
             border_arry[l_y].push(x);
             if (border_arry[l_y].length == Math.pow(arry[0].length, 2)) {
               if (l_z == arry.length - 1) {
@@ -2418,6 +2424,7 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
         for (let x = 0; x < arry[l_z][y].length; x++) {
           let src = arry[l_z][y][x];
           if (src === 'none') {
+            ctx.strokeRect(x * 20, y * 20, 20, 20);
             border_arry[l_z].push(x);
             if (border_arry[l_z].length == Math.pow(arry[0].length, 2)) {
               if (l_z == arry.length - 1) {
