@@ -21,37 +21,169 @@
 </head>
 <body>
   <div id="wait" class="hidden"></div>
+  <div id="plan_to_download_Blueprint">
+    <div class="plan_to_download_Blueprint">
+      <input id="plan_menu_0" name="plan_menu" type="radio" class="hidden" checked>
+      <input id="plan_menu_1" name="plan_menu" type="radio" class="hidden">
+      <input id="plan_menu_2" name="plan_menu" type="radio" class="hidden">
+      <input id="plan_menu_3" name="plan_menu" type="radio" class="hidden">
+      <input id="Blueprint_direction_horizon" name="Blueprint_direction" type="radio" class="hidden" checked>
+      <input id="Blueprint_direction_vertical" name="Blueprint_direction" type="radio" class="hidden">
+      <input id="not_need_block_skins" name="want_block_skins" type="radio" class="hidden" checked>
+      <input id="need_block_skins" name="want_block_skins" type="radio" class="hidden">
+      <div class="plan_menu">
+        <div class="first plan">
+          <p>設計図の向きを選択して下さい</p>
+          <label class="left" for="Blueprint_direction_horizon">
+            <span>
+              <div class="multi_layers">
+                <div class="layer"></div>
+                <div class="layer first"></div>
+                <div class="layer second"></div>
+                <div class="layer third"></div>
+                <div class="layer fourth"></div>
+                <div class="layer fifth"></div>
+              </div>
+              水平輪切り
+            </span>
+          </label>
+          <label class="right" for="Blueprint_direction_vertical">
+            <span>
+              <div class="multi_layers">
+                <div class="layer"></div>
+                <div class="layer first"></div>
+                <div class="layer second"></div>
+                <div class="layer third"></div>
+              </div>
+              垂直輪切り
+            </span>
+          </label>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="second plan">
+          <p>ブロックのテクスチャが必要か選択して下さい</p>
+          <label class="left" for="not_need_block_skins">
+            <span>
+              <div class="color_box_img"></div>
+              テクスチャ不要<br>
+              <i class="fa-solid fa-shuttle-space fast"></i>
+            </span>
+          </label>
+          <label class="right" for="need_block_skins">
+            <span>
+              <img src="../art/img/blocks/Block_of_Diamond.jpg" alt="block">
+              テクスチャ必要<br>
+              <i class="fa-solid fa-shuttle-space fast"></i>
+            </span>
+          </label>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="third plan">
+          <p>問題がなければ開始をクリックして下さい</p>
+          <div class="frame">
+            <div class="title">設計図の向き</div>
+            <div class="response">
+              <span class="Blueprint_direction_horizon">水平輪切り</span>
+              <span class="Blueprint_direction_vertical">垂直輪切り</span>
+            </div>
+          </div>
+          <div class="frame">
+            <div class="title">ブロックのテクスチャ</div>
+            <div class="response">
+              <span class="not_need_block_skins">テクスチャ不要</span>
+              <span class="need_block_skins">テクスチャ必要</span>
+            </div>
+          </div>
+          <button type="button" id="check_datas_button">開始</button>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="fourth plan">
+          <p>問題がなければダウンロードをクリックして下さい</p>
+          <div class="frame">
+            <i class="fa-solid fa-angles-left"></i>
+            <i class="fa-solid fa-angles-right"></i>
+            <div class="canvas">
+            </div>
+          </div>
+          <button type="button" id="download_datas_button">ダウンロード</button>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="slideshow_icon">
+          <div class="back_plan">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <label class="slideshow" for="plan_menu_0"></label>
+          <label class="slideshow" for="plan_menu_1"></label>
+          <label class="slideshow" for="plan_menu_2"></label>
+          <label class="slideshow" for="plan_menu_3" data-id="last_plan"></label>
+          <div class="forward_plan">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+      <div class="close_button" data-close-id="plan_to_download_Blueprint">✕</div>
+    </div>
+  </div>
   <div id="for_sample_view">
     <div class="for_sample_view_form">
-      <label>
-        <input id="sample_view_0_input" name="sample_view" type="radio" class="hidden" checked>
-        <canvas id="sample_view_0" width="171" height="171" style="background:white;"></canvas>
-        <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
-      </label>
-      <label>
-        <input id="sample_view_1_input" name="sample_view" type="radio" class="hidden">
-        <canvas id="sample_view_1" width="171" height="171" style="background:white;"></canvas>
-        <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
-      </label>
-      <label>
-        <input id="sample_view_2_input" name="sample_view" type="radio" class="hidden">
-        <canvas id="sample_view_2" width="171" height="171" style="background:white;"></canvas>
-        <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
-      </label>
-      <label>
-        <input id="sample_view_3_input" name="sample_view" type="radio" class="hidden">
-        <canvas id="sample_view_3" width="171" height="171" style="background:white;"></canvas>
-        <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
-      </label>
-      <div class="sample_view_rgb_input">
-        <input id="sample_ratio_r" type="number" value="0.30" step="0.01" max="1">
-        <input id="sample_ratio_g" type="number" value="0.59" step="0.01" max="1">
-        <input id="sample_ratio_b" type="number" value="0.11" step="0.01" max="1">
+      <input id="make_menu_0" name="make_menu" type="radio" class="hidden" checked>
+      <input id="make_menu_1" name="make_menu" type="radio" class="hidden">
+      <input id="make_menu_2" name="make_menu" type="radio" class="hidden">
+      <div class="make_menu">
+        <div class="first plan">
+          <div class="title">近似色を選んでボタンを押して下さい</div>
+          <label>
+            <input id="sample_view_0_input" name="sample_view" type="radio" class="hidden" checked>
+            <canvas id="sample_view_0" width="171" height="171" style="background:white;"></canvas>
+            <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
+          </label>
+          <label>
+            <input id="sample_view_1_input" name="sample_view" type="radio" class="hidden">
+            <canvas id="sample_view_1" width="171" height="171" style="background:white;"></canvas>
+            <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
+          </label>
+          <label>
+            <input id="sample_view_2_input" name="sample_view" type="radio" class="hidden">
+            <canvas id="sample_view_2" width="171" height="171" style="background:white;"></canvas>
+            <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
+          </label>
+          <label>
+            <input id="sample_view_3_input" name="sample_view" type="radio" class="hidden">
+            <canvas id="sample_view_3" width="171" height="171" style="background:white;"></canvas>
+            <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
+          </label>
+          <div class="sample_view_rgb_input">
+            <input id="sample_ratio_r" type="number" value="0.30" step="0.01" max="1">
+            <input id="sample_ratio_g" type="number" value="0.59" step="0.01" max="1">
+            <input id="sample_ratio_b" type="number" value="0.11" step="0.01" max="1">
+          </div>
+          <button id="sample_view_default_ratio">数値初期化</button>
+          <button id="sample_view_retry">リトライ</button>
+          <button id="sample_view_to_go">選択して実行</button>
+        </div>
+        <div class="second plan">
+          <div class="title">正面に必要な画像を切り抜いて下さい</div>
+          <canvas id="check_photo" width="400" height="400"></canvas>
+          <p>xyz-サイズ&nbsp;<input id="art_size_in_make_plan" type="number" placeholder="最大64"></p>
+          <button type="button" id="check_photo_button">チェック</button>
+        </div>
+        <div class="third plan">
+          <div class="title">この画像でピクセル変換を行います</div>
+          <canvas id="change_to_pixel_sample" width="400" height="400"></canvas>
+          <button type="button" id="change_to_pixel_button">開始</button>
+        </div>
+        <div class="slideshow_icon">
+          <div class="back_plan">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <label class="slideshow" for="make_menu_0"></label>
+          <label class="slideshow" for="make_menu_1"></label>
+          <label class="slideshow" for="make_menu_2" data-id="last_plan"></label>
+          <div class="forward_plan">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
       </div>
-      <button id="sample_view_default_ratio">数値初期化</button>
-      <button id="sample_view_retry">リトライ</button>
-      <button id="sample_view_to_go">選択して実行</button>
-      <div class="close_button" data-close-id="for_sample_view">✕</div>
       <div class="sub_selected_color_box">
         <label for="add_new_blocks" class="box_selected">新ブロック</label>
         <label for="color_named_blocks" class="box_selected">色の名前付きブロック</label>
@@ -60,6 +192,7 @@
         <label for="in_nether">ネザー</label>
         <label for="in_end">エンド</label>
       </div>
+      <div class="close_button" data-close-id="for_sample_view">✕</div>
     </div>
   </div>
   <!--https://webdesign-trends.net/entry/3632-->
@@ -199,13 +332,17 @@
           <i class="fa-solid fa-delete-left" onclick="otm_delete(this)"></i>
         </li>
       </ul>
-      <label>
-        <input id="vertical_layer" type="radio" name="display" value="vertical_layer" checked>
-        <li><i class="fa-solid fa-layer-group" style="transform: rotateZ(-90deg);"></i><span class="pc_text">&nbsp;縦スライス</span></li>
+      <input id="vertical_layer" type="radio" name="display" checked>
+      <label for="vertical_layer">
+        <i class="fa-solid fa-layer-group" style="transform: rotateZ(-90deg);"></i><span class="pc_text">&nbsp;正面レイヤー</span>
       </label>
-      <label>
-        <input id="horizontal_layer" type="radio" name="display" value="horizontal_layer">
-        <li><i class="fa-solid fa-layer-group"></i><span class="pc_text">&nbsp;横スライス</span></li>
+      <input id="side_layer" type="radio" name="display">
+      <label for="side_layer">
+        <i class="fa-solid fa-layer-group" style="transform: rotateZ(90deg);"></i><span class="pc_text">&nbsp;横面レイヤー</span>
+      </label>
+      <input id="horizontal_layer" type="radio" name="display">
+      <label for="horizontal_layer">
+        <i class="fa-solid fa-layer-group"></i><span class="pc_text">&nbsp;水平レイヤー</span>
       </label>
       <li id="clear_canvas"><i class="fa-solid fa-trash-can"></i><span class="pc_text">&nbsp;消去</span></li>
     </ul>
@@ -223,8 +360,8 @@
         <div class="title">入力欄 Input</div>
         <p class="load_title"><span>ファイル名</span></p>
         <div class="check_view">
-          <canvas id="check_view" width="180" height="180" class="hidden"></canvas>
-          <div id="check_view_3d"></div>
+          <button id="check_view_button"><i class="fa-solid fa-rotate-right"></i></button>
+          <canvas id="check_view" width="180" height="180"></canvas>
         </div>
         <div id="change_view_face">
           <p id="cube_front" class="front" data-face="front">Front</p>
@@ -240,21 +377,12 @@
         </div>
         <p class="small_title">サイズ選択</p>
         <div class="for_art_size">
-          <p><span>xyz</span><input id="art_size" class="get_bata" type="number" placeholder="最大50"></p>
+          <p><span>xyz</span><input id="art_size" class="get_bata" type="number" placeholder="最大64"></p>
         </div>
         <p class="small_title">サイズ変更</span></p>
         <button id="resize_button"><i class="fa-solid fa-crop-simple"></i></button>
         <p class="small_title">設計図ダウンロード</span></p>
-        <button id="download_datas_button"><i class="fa-solid fa-file-excel"></i>&nbsp;<i class="fa-solid fa-file-image"></i></button>
-        <input id="want_block_skins" type="checkbox" class="hidden">
-        <label for="want_block_skins" class="want_block_skins">
-          <div class="img_form">
-            <span class="slash do"></span><img src="../art/img/blocks/Block_of_Diamond.jpg" alt="block">
-          </div>
-          <span class="need_skins">&nbsp;スキンあり&nbsp;</span>
-          <span class="no_need">&nbsp;スキン不要&nbsp;</span>
-          <i class="fa-solid fa-shuttle-space fast"></i>
-        </label>
+        <button id="display_plan_of_Blueprint"><i class="fa-solid fa-file-excel"></i>&nbsp;<i class="fa-solid fa-file-image"></i></button>
         <div class="for_scroll"></div>
       </div>
     </div>
@@ -270,9 +398,15 @@
         <input id="art_scale" type="number" value="100" class="appear">
         <label for="art_scale" class="appear">サイズ入力%</label>
         <input id="plus_scope_icon" name="scope_icon" type="radio" class="hidden" checked>
-        <label for="plus_scope_icon"><i class="fa-solid fa-magnifying-glass-plus"></i></label>
+        <label for="plus_scope_icon">
+          <i class="fa-solid fa-magnifying-glass-plus"></i>
+          <span class="shortcut">Ctl + <i class="fa-solid fa-square-plus"></i></span>
+        </label>
         <input id="minus_scope_icon" name="scope_icon" type="radio" class="hidden">
-        <label for="minus_scope_icon"><i class="fa-solid fa-magnifying-glass-minus"></i></label>
+        <label for="minus_scope_icon">
+          <i class="fa-solid fa-magnifying-glass-minus"></i>
+          <span class="shortcut">Ctl + <i class="fa-solid fa-square-minus"></i></span>
+        </label>
       </div>
       <div class="palette">
         <input id="palette_button" type="checkbox" class="hidden">
@@ -282,11 +416,6 @@
           </div>
           <label for="palette_button"><i class="fa-solid fa-caret-right"></i></label>
         </div>
-        <input id="palette_lock" type="checkbox" class="hidden" checked>
-        <label for="palette_lock" class="palette_lock">
-          <span class="unlock"><i class="fa-solid fa-lock-open"></i></span>
-          <span class="locked"><i class="fa-solid fa-lock"></i></span>
-        </label>
         <a class="palette_download" href="#"><i class="fa-solid fa-download"></i></a>
         <label class="palette_upload">
           <i class="fa-solid fa-file-arrow-up"></i>
@@ -875,15 +1004,12 @@
           <label for="layer_selector_button"><i class="fa-solid fa-caret-right"></i></label>
         </div>
         <select id="select_vertical_layers" class="appear">
-          <option value="3">3</option>
-          <option value="2">2</option>
-          <option value="1" autofocus selected>1</option>
         </select>
         <label for="select_vertical_layers" class="appear"><i class="fa-solid fa-layer-group" style="transform: rotateZ(-90deg);"></i>&nbsp;Front</label>
+        <select id="select_side_layers">
+        </select>
+        <label for="select_side_layers"><i class="fa-solid fa-layer-group" style="transform: rotateZ(90deg);"></i>&nbsp;Right</label>
         <select id="select_horizon_layers">
-          <option value="1" autofocus selected>1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
         </select>
         <label for="select_horizon_layers"><i class="fa-solid fa-layer-group"></i>&nbsp;Top</label>
         <div class="layer_copy">
@@ -892,6 +1018,8 @@
         <div class="layer_paste">
           <i class="fa-solid fa-paste"></i><span class="shortcut">Ctl + V</span>
         </div>
+        <input id="jump_to_this_layer" type="radio" name="tools" class="hidden">
+        <label for="jump_to_this_layer"><i class="fa-solid fa-location-dot"></i></label>
       </div>
     </div>
   </div>
@@ -919,6 +1047,7 @@
     <label>
       <input id="question_to_use" type="checkbox" class="hidden">
       <div id="answer_to_questions"></div>
+      <input type="text" class="dummy_text hidden">
       <i class="fa-solid fa-circle-question"></i>
     </label>
   </footer>

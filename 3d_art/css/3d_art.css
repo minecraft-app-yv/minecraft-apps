@@ -2,7 +2,8 @@
 .hidden, .hide {
   display: none;
 }
-#CP_img_explanation {
+#CP_img_explanation,
+#jump_layer_explanation {
   display: block;
   position: fixed;
   white-space: nowrap;
@@ -92,6 +93,422 @@ html {
 #wait.hidden {
   display: none;
 }
+/*download for skin*/
+#plan_to_download_Blueprint {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 75;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+#plan_to_download_Blueprint .plan_to_download_Blueprint {
+  width: 600px;
+  height: 600px;
+  border: 1px solid gainsboro;
+  border-radius: 3px;
+  background-color: white;
+  position: relative;
+}
+/*https://qiita.com/shizen-shin/items/2b7534caa17ab2dd02fb*/
+#plan_to_download_Blueprint .plan_menu {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#plan_to_download_Blueprint .plan_menu .for_scroll {
+  display: none;
+  height: 70px;
+}
+#plan_to_download_Blueprint .plan_menu::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+#plan_to_download_Blueprint .close_button {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+#plan_to_download_Blueprint .plan_to_download_Blueprint button {
+  display: block;
+  margin: 10px auto 0 auto;
+  box-sizing: border-box;
+  cursor: pointer;
+  background-color: transparent;
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  line-height: 28px;
+  font-weight: bold;
+  font-size: small;
+  color: #fff;
+  background: green;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0,0,0,0.2);
+}
+#plan_to_download_Blueprint .plan_to_download_Blueprint p {
+  display: block;
+  margin: 0 auto;
+  padding: 0 10px;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  position: relative;
+  background: green;
+  white-space: nowrap;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+}
+#plan_to_download_Blueprint .plan_to_download_Blueprint p::after,
+#plan_to_download_Blueprint .plan_to_download_Blueprint p::before {
+  content:'';
+  width: 20px;
+  height: 40px;
+  position: absolute;
+  display: inline-block;
+}
+#plan_to_download_Blueprint .plan_to_download_Blueprint p::before {
+  border-left: solid 5px darkgreen;
+  border-top: solid 5px darkgreen;
+  top:0;
+  left: 0;
+}
+#plan_to_download_Blueprint .plan_to_download_Blueprint p::after {
+  border-right: solid 5px darkgreen;
+  border-bottom: solid 5px darkgreen;
+  bottom:0;
+  right: 0;
+}
+#plan_to_download_Blueprint .plan {
+  transition: all 0.5s ease-in-out;
+  display: inline-block;
+  min-width: 90%;
+  height: 90%;
+  opacity: 0;
+  text-align: center;
+}
+#plan_to_download_Blueprint .plan_menu .first.plan label,
+#plan_to_download_Blueprint .plan_menu .second.plan label {
+  display: flex;
+  width: 40%;
+  height: 85%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+#plan_to_download_Blueprint .first.plan label.left,
+#plan_to_download_Blueprint .second.plan label.left {
+  float: left;
+  margin-left: 40px;
+}
+#plan_to_download_Blueprint .first.plan label.right,
+#plan_to_download_Blueprint .second.plan label.right {
+  float: right;
+  margin-right: 40px;
+}
+#plan_to_download_Blueprint .first.plan .multi_layers {
+  display: flex;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+}
+#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer {
+  width: 120px;
+  height: 120px;
+  background-color: royalblue;
+  position: absolute;
+  transform-origin: center center;
+  transform: rotateX(75deg) rotateZ(10deg) translateZ(50px);
+}
+#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.first {
+  transform: rotateX(75deg) rotateZ(10deg) translateZ(30px);
+  opacity: 0.9;
+}
+#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.second {
+  transform: rotateX(75deg) rotateZ(10deg) translateZ(10px);
+  opacity: 0.8;
+}
+#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.third {
+  transform: rotateX(75deg) rotateZ(10deg) translateZ(-10px);
+  opacity: 0.7;
+}
+#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.fourth {
+  transform: rotateX(75deg) rotateZ(10deg) translateZ(-30px);
+  opacity: 0.6;
+}
+#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.fifth {
+  transform: rotateX(75deg) rotateZ(10deg) translateZ(-50px);
+  opacity: 0.5;
+}
+#plan_to_download_Blueprint .first.plan label.right .multi_layers .layer {
+  width: 120px;
+  height: 120px;
+  background-color: royalblue;
+  position: absolute;
+  transform-origin: center center;
+  transform: rotateX(15deg) rotateY(15deg) translateZ(-80px);
+}
+#plan_to_download_Blueprint .first.plan label.right .multi_layers .layer.first {
+  transform: rotateX(15deg) rotateY(15deg) translateZ(-20px);
+  opacity: 0.8;
+}
+#plan_to_download_Blueprint .first.plan label.right .multi_layers .layer.second {
+  transform: rotateX(15deg) rotateY(15deg) translateZ(20px);
+  opacity: 0.6;
+}
+#plan_to_download_Blueprint .first.plan label.right .multi_layers .layer.third {
+  transform: rotateX(15deg) rotateY(15deg) translateZ(80px);
+  opacity: 0.4;
+}
+#plan_to_download_Blueprint .second.plan label.left .color_box_img,
+#plan_to_download_Blueprint .second.plan label.right img {
+  display: block;
+  width: 120px;
+  height: 120px;
+  background-color: rgb(130, 239, 234);
+  border-radius: 5px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+#plan_to_download_Blueprint .second.plan i {
+  color: navy;
+}
+#plan_to_download_Blueprint .plan span {
+  cursor: pointer;
+}
+#plan_to_download_Blueprint .second.plan span {
+  line-height: 20px;
+}
+#plan_to_download_Blueprint .third.plan .frame {
+  margin-top: 30px;
+}
+#plan_to_download_Blueprint .third.plan .title {
+  padding: 0.4em 0.5em;
+  color: #494949;
+  background: #f4f4f4;
+  border-left: solid 5px #7db4e6;
+  border-bottom: solid 3px #d7d7d7;
+}
+#plan_to_download_Blueprint .third.plan .response {
+  margin-top: 5px;
+}
+#plan_to_download_Blueprint .third.plan .response span {
+  display: none;
+}
+#plan_to_download_Blueprint .third.plan button {
+  margin-top: 30px;
+}
+#plan_to_download_Blueprint .fourth.plan .for_scroll {
+  display: block;
+}
+#plan_to_download_Blueprint .fourth.plan .frame {
+  position: relative;
+  margin-top: 30px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+#plan_to_download_Blueprint .fourth.plan .frame .canvas {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  overflow: hidden;
+  width: 80%;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid darkgray;
+  transition: all 0.5s ease-in-out;
+  display: none;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas.present {
+  display: block;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas.before {
+  transform-origin: left bottom;
+  transform: rotateZ(-90deg);
+  display: block;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas.after {
+  transform-origin: right bottom;
+  transform: rotateZ(90deg);
+  display: block;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas[data-id="dummy_before"],
+#plan_to_download_Blueprint .fourth.plan .frame canvas[data-id="dummy_after"] {
+  border: none;
+}
+#plan_to_download_Blueprint .fourth.plan i {
+  position: absolute;
+  font-size: xx-large;
+  color: green;
+  opacity: 0.5;
+  font-weight: bold;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+#plan_to_download_Blueprint .fourth.plan i:hover {
+  opacity: 1;
+}
+#plan_to_download_Blueprint .fourth.plan i.fa-angles-left {
+  left: 0;
+}
+#plan_to_download_Blueprint .fourth.plan i.fa-angles-right {
+  right: 0;
+}
+#Blueprint_direction_horizon:checked ~ .plan_menu label[for="Blueprint_direction_horizon"] span,
+#Blueprint_direction_vertical:checked ~ .plan_menu label[for="Blueprint_direction_vertical"] span,
+#not_need_block_skins:checked ~ .plan_menu label[for="not_need_block_skins"] span,
+#need_block_skins:checked ~ .plan_menu label[for="need_block_skins"] span {
+  display: block;
+  border: 3px solid green;
+  padding: 20px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+#not_need_block_skins:checked ~ .plan_menu label[for="not_need_block_skins"] span i {
+  animation: 1s ease-in-out 0s 10 normal none running fly;
+  -webkit-animation: 1s ease-in-out 0s 10 normal none running fly;
+}
+#need_block_skins:checked ~ .plan_menu label[for="need_block_skins"] span i {
+  animation: 5s ease-in-out 0s 3 normal none running fly;
+  -webkit-animation: 5s ease-in-out 0s 3 normal none running fly;
+}
+@keyframes fly {
+  0% {
+    transform: translate(-60px, 0);
+  }
+  100% {
+    transform: translate(60px, 0);
+  }
+}
+@-webkit-keyframes fly {
+  0% {
+    transform: translate(-60px, 0);
+  }
+  100% {
+    transform: translate(60px, 0);
+  }
+}
+#Blueprint_direction_horizon:checked ~ .plan_menu .response span.Blueprint_direction_horizon,
+#Blueprint_direction_vertical:checked ~ .plan_menu .response span.Blueprint_direction_vertical,
+#not_need_block_skins:checked ~ .plan_menu .response span.not_need_block_skins,
+#need_block_skins:checked ~ .plan_menu .response span.need_block_skins {
+  display: inline;
+}
+/*slideshow*/
+/*https://photopizza.design/slideshow/*/
+#plan_to_download_Blueprint .plan_menu .slideshow_icon {
+  height: 60px;
+  width: 100%;
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  background: white;
+  border-radius: 3px;
+}
+#plan_to_download_Blueprint .plan_menu label.slideshow {
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: royalblue;
+  opacity: 0.3;
+  margin: 0 15px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+#plan_to_download_Blueprint .plan_menu label.slideshow::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 35px;
+  height: 35px;
+  top: 50%;
+  left: 50%;
+  opacity: 0.3;
+  border: 2px solid royalblue;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: all 0.3s ease-in-out;
+}
+#plan_menu_0:checked ~ .plan_menu label[for="plan_menu_0"],
+#plan_menu_1:checked ~ .plan_menu label[for="plan_menu_1"],
+#plan_menu_2:checked ~ .plan_menu label[for="plan_menu_2"],
+#plan_menu_3:checked ~ .plan_menu label[for="plan_menu_3"] {
+  opacity: 1;
+}
+#plan_menu_0:checked ~ .plan_menu label[for="plan_menu_0"]::before,
+#plan_menu_1:checked ~ .plan_menu label[for="plan_menu_1"]::before,
+#plan_menu_2:checked ~ .plan_menu label[for="plan_menu_2"]::before,
+#plan_menu_3:checked ~ .plan_menu label[for="plan_menu_3"]::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+#plan_menu_0:checked ~ .plan_menu .first.plan,
+#plan_menu_0:checked ~ .plan_menu .second.plan,
+#plan_menu_0:checked ~ .plan_menu .third.plan,
+#plan_menu_0:checked ~ .plan_menu .fourth.plan {
+  transform: translate(150%, 0);
+}
+#plan_menu_1:checked ~ .plan_menu .first.plan,
+#plan_menu_1:checked ~ .plan_menu .second.plan,
+#plan_menu_1:checked ~ .plan_menu .third.plan,
+#plan_menu_1:checked ~ .plan_menu .fourth.plan {
+  transform: translate(50%, 0);
+}
+#plan_menu_2:checked ~ .plan_menu .first.plan,
+#plan_menu_2:checked ~ .plan_menu .second.plan,
+#plan_menu_2:checked ~ .plan_menu .third.plan,
+#plan_menu_2:checked ~ .plan_menu .fourth.plan {
+  transform: translate(-50%, 0);
+}
+#plan_menu_3:checked ~ .plan_menu .first.plan,
+#plan_menu_3:checked ~ .plan_menu .second.plan,
+#plan_menu_3:checked ~ .plan_menu .third.plan,
+#plan_menu_3:checked ~ .plan_menu .fourth.plan {
+  transform: translate(-150%, 0);
+}
+#plan_menu_0:checked ~ .plan_menu .first.plan,
+#plan_menu_1:checked ~ .plan_menu .second.plan,
+#plan_menu_2:checked ~ .plan_menu .third.plan,
+#plan_menu_3:checked ~ .plan_menu .fourth.plan {
+  opacity: 1;
+}
+#plan_to_download_Blueprint .plan_menu .slideshow_icon .back_plan,
+#plan_to_download_Blueprint .plan_menu .slideshow_icon .forward_plan {
+  display: block;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  color: navy;
+  font-weight: bold;
+  font-size: x-large;
+  margin: 0 10px;
+  text-align: center;
+  line-height: 35px;
+  overflow: hidden;
+}
 /*for_sample_view*/
 #for_sample_view {
   position: fixed;
@@ -101,38 +518,119 @@ html {
   height: 100%;
   z-index: 75;
   background: rgba(0, 0, 0, 0.5);
-  align-items: start;
+  align-items: center;
   justify-content: center;
   display: none;
-  overflow-y: auto;
-}
-#for_sample_view::-webkit-scrollbar {
-  width: 0;
-  height: 0;
 }
 #for_sample_view .for_sample_view_form {
-  text-align: center;
+  width: 600px;
+  height: 640px;
+  border-radius: 3px;
   position: relative;
-  width: 450px;
-  margin: 120px 0;
-  padding: 0 10px;
+  background-color: rgba(0, 5, 10, 0.5);
+  box-shadow: 0 0 5px rgb(0, 5, 10);
 }
-#for_sample_view .for_sample_view_form > label{
+#for_sample_view .make_menu {
+  width: 85%;
+  height: 89%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+#for_sample_view .make_menu::-webkit-scrollbar-track {
+  background-color: none;
+  border-radius: 2px;
+}
+#for_sample_view .make_menu::-webkit-scrollbar {
+  width: 2px;
+  background-color: none;
+}
+#for_sample_view .make_menu::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-image: linear-gradient(180deg, darkgreen 0%, lightgreen 100%);
+}
+#for_sample_view .close_button {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+#for_sample_view .make_menu button {
+  display: block;
+  margin: 10px auto 0 auto;
+  box-sizing: border-box;
+  cursor: pointer;
+  background-color: transparent;
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  line-height: 28px;
+  font-weight: bold;
+  font-size: small;
+  color: #fff;
+  background: green;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0,0,0,0.2);
+}
+#for_sample_view .for_sample_view_form .title {
+  display: block;
+  margin: 0 auto;
+  padding: 0 10px;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  position: relative;
+  background: green;
+  white-space: nowrap;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+}
+#for_sample_view .for_sample_view_form .title::after,
+#for_sample_view .for_sample_view_form .title::before {
+  content:'';
+  width: 20px;
+  height: 40px;
+  position: absolute;
   display: inline-block;
 }
-#for_sample_view .for_sample_view_form canvas {
+#for_sample_view .for_sample_view_form .title::before {
+  border-left: solid 5px darkgreen;
+  border-top: solid 5px darkgreen;
+  top:0;
+  left: 0;
+}
+#for_sample_view .for_sample_view_form .title::after {
+  border-right: solid 5px darkgreen;
+  border-bottom: solid 5px darkgreen;
+  bottom:0;
+  right: 0;
+}
+#for_sample_view .plan {
+  transition: all 0.5s ease-in-out;
+  display: inline-block;
+  min-width: 100%;
+  height: 600px;
+  opacity: 0;
+  text-align: center;
+  position: relative;
+}
+#for_sample_view .first.plan > label{
+  display: inline-block;
+  margin: 0 10px;
+}
+#for_sample_view .first.plan canvas {
   display: inline;
   margin: 20px;
   border: 3px solid black;
   opacity: 0.7;
   cursor: pointer;
 }
-#for_sample_view .for_sample_view_form .close_button {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-}
-#for_sample_view .for_sample_view_form button {
+#for_sample_view .first.plan button {
   display: inline-block;
   margin: 5px;
   box-sizing: border-box;
@@ -150,36 +648,37 @@ html {
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
   border: 2px solid rgba(0,0,0,0.2);
 }
-#for_sample_view .for_sample_view_form p {
+#for_sample_view .first.plan p {
   display: block;
   color: #fff;
   background: #000;
   padding: 5px;
   margin-top: -15px;
 }
-#for_sample_view .for_sample_view_form p span {
+#for_sample_view .first.plan p span {
   font-size: small;
   padding: 0 5px;
 }
-#for_sample_view .for_sample_view_form p span.r {
+#for_sample_view .first.plan p span.r {
   background: red;
 }
-#for_sample_view .for_sample_view_form p span.g {
+#for_sample_view .first.plan p span.g {
   background: green;
 }
-#for_sample_view .for_sample_view_form p span.b {
+#for_sample_view .first.plan p span.b {
   background: blue;
 }
-#for_sample_view .for_sample_view_form input[name="sample_view"]:checked ~ canvas {
+#for_sample_view .first.plan input[name="sample_view"]:checked ~ canvas {
   border: 3px solid yellowgreen;
   opacity: 1;
 }
-#for_sample_view .for_sample_view_form .sample_view_rgb_input {
+#for_sample_view .first.plan .sample_view_rgb_input {
   margin-top: 10px;
   display: block;
 }
-#for_sample_view .for_sample_view_form input[type="number"] {
+#for_sample_view .first.plan input[type="number"] {
   padding: 5px 0;
+  padding-top: 8px;
   cursor: pointer;
   margin: 5px;
   width: 130px;
@@ -192,25 +691,25 @@ html {
   border: 1px solid #fff;
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
-#for_sample_view .for_sample_view_form #sample_ratio_r {
+#for_sample_view .first.plan #sample_ratio_r {
   color: red;
 }
-#for_sample_view .for_sample_view_form #sample_ratio_g {
+#for_sample_view .first.plan #sample_ratio_g {
   color: green;
 }
-#for_sample_view .for_sample_view_form #sample_ratio_b {
+#for_sample_view .first.plan #sample_ratio_b {
   color: blue;
 }
 #for_sample_view .for_sample_view_form .sub_selected_color_box {
-  display: block;
   position: absolute;
   height: 20px;
   top: 25px;
-  right: -20px;
+  right: 5px;
   line-height: 20px;
   white-space: nowrap;
   transform: translateX(100%) rotateZ(90deg);
   transform-origin: top left;
+  display: none;
 }
 #for_sample_view .for_sample_view_form .sub_selected_color_box label {
   background-color: lightgray;
@@ -227,6 +726,128 @@ html {
   background-color: yellowgreen;
   color: black;
   text-shadow: none;
+}
+#for_sample_view .second.plan canvas,
+#for_sample_view .third.plan canvas {
+  margin-top: 30px;
+  box-sizing: border-box;
+  width: 80%;
+  border: 1px solid darkgray;
+}
+#for_sample_view .second.plan p {
+  margin-top: 5px;
+  color: white;
+}
+#for_sample_view .second.plan input {
+  padding: 5px 0;
+  padding-top: 8px;
+  cursor: pointer;
+  width: 130px;
+  border: 1px solid #000;
+  display: inline-block;
+  text-align: center;
+  font-size: large;
+  background: #fff;
+  border-radius: 3px;
+  border: 1px solid #fff;
+  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+#for_sample_view .second.plan input::placeholder {
+  color: silver;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+  transition: all 0.5s ease-in-out;
+}
+#for_sample_view .second.plan input:hover::placeholder,
+#for_sample_view .second.plan input:active::placeholder,
+#for_sample_view .second.plan input:focus::placeholder {
+  opacity: 0.2;
+}
+/*slideshow*/
+/*https://photopizza.design/slideshow/*/
+#for_sample_view .make_menu .slideshow_icon {
+  height: 40px;
+  width: 100%;
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+#for_sample_view .make_menu label.slideshow {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  opacity: 0.3;
+  margin: 0 15px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+#for_sample_view .make_menu label.slideshow::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 25px;
+  height: 25px;
+  top: 50%;
+  left: 50%;
+  opacity: 0.3;
+  border: 2px solid white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: all 0.3s ease-in-out;
+}
+#make_menu_0:checked ~ .make_menu label[for="make_menu_0"],
+#make_menu_1:checked ~ .make_menu label[for="make_menu_1"],
+#make_menu_2:checked ~ .make_menu label[for="make_menu_2"] {
+  box-shadow: 0 0 5px white;
+  opacity: 1;
+}
+#make_menu_0:checked ~ .make_menu label[for="make_menu_0"]::before,
+#make_menu_1:checked ~ .make_menu label[for="make_menu_1"]::before,
+#make_menu_2:checked ~ .make_menu label[for="make_menu_2"]::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+#make_menu_0:checked ~ .make_menu .first.plan,
+#make_menu_0:checked ~ .make_menu .second.plan,
+#make_menu_0:checked ~ .make_menu .third.plan {
+  transform: translate(100%, 0);
+}
+#make_menu_0:checked ~ .sub_selected_color_box {
+  display: block;
+}
+#make_menu_1:checked ~ .make_menu .first.plan,
+#make_menu_1:checked ~ .make_menu .second.plan,
+#make_menu_1:checked ~ .make_menu .third.plan {
+  transform: translate(0%, 0);
+}
+#make_menu_2:checked ~ .make_menu .first.plan,
+#make_menu_2:checked ~ .make_menu .second.plan,
+#make_menu_2:checked ~ .make_menu .third.plan {
+  transform: translate(-100%, 0);
+}
+#make_menu_0:checked ~ .make_menu .first.plan,
+#make_menu_1:checked ~ .make_menu .second.plan,
+#make_menu_2:checked ~ .make_menu .third.plan {
+  opacity: 1;
+}
+#for_sample_view .make_menu .slideshow_icon .back_plan,
+#for_sample_view .make_menu .slideshow_icon .forward_plan {
+  display: block;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  margin: 0 10px;
+  text-align: center;
+  line-height: 25px;
+  text-shadow: 0 0 5px white;
 }
 /*share_buttons*/
 #share_buttons {
@@ -542,7 +1163,8 @@ header img:hover {
   background: green;
   position: relative;
 }
-.top_menu ul li {
+.top_menu ul li,
+.top_menu ul label:not(label.upload_memory) {
   cursor: pointer;
   color: white;
   font-size: small;
@@ -553,11 +1175,6 @@ header img:hover {
   position: relative;
   white-space: nowrap;
   box-shadow: inset 1px 1px 1px rgba(255,255,255,0.5), 1px 1px 1px rgba(0,0,0,0.5);
-}
-.top_menu ul label {
-  cursor: pointer;
-  display: block;
-  width: 100%;
 }
 #memory_text {
   position: absolute;
@@ -656,7 +1273,9 @@ header img:hover {
 /*top menu action*/
 .top_menu ul li:hover,
 .top_menu ul li:active,
-.top_menu ul input:checked ~ li,
+#vertical_layer:checked ~ label[for="vertical_layer"],
+#horizontal_layer:checked ~ label[for="horizontal_layer"],
+#side_layer:checked ~ label[for="side_layer"],
 #syncer-acdn-03 li.top_menu_acdn_action_tool > *:active,
 #syncer-acdn-03 li.top_menu_acdn_action_tool > *:hover {
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), inset 0px -1px 1px rgba(255, 255, 255, 0.5);
@@ -915,17 +1534,37 @@ aside button span {
   border-color: #ffdb88 #DAAE83 #ffdb88;
   box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
 }
-/*check_view_3d view*/
-#check_view_3d {
-  display: block;
-  transform-style: preserve-3d;
-  transform: rotateX(-10deg) rotateY(-10deg) rotateZ(0deg);
-}
-#check_view_3d canvas {
+/*https://saruwakakun.com/html-css/reference/buttons*/
+#check_view_button {
   position: absolute;
-  top: -75px;
-  left: -75px;
-  transform-origin: center center;
+  border: none;
+  display: block;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  text-align: center;
+  background: #f7f7f7;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
+  transform: translate(-50%,-50%);
+  z-index: 1;
+}
+#check_view_button i {
+  color: rgba(0,0,0,0.2);
+  position: relative;
+  content: '';
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  border-radius: 50%;
+  font-size: 40px;
+  background-image: linear-gradient(#e8e8e8 0%, #d6d6d6 100%);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
+  border-bottom: solid 2px #b5b5b5;
+  transform: translate(0, -1px);
+  transition: all 1s ease-in-out;
 }
 /*direction selector*/
 #change_view_face {
@@ -933,6 +1572,7 @@ aside button span {
   position: relative;
   height: 30px;
   margin: 17px auto;
+  z-index: 2;
 }
 #roll_cube_to_left,
 #roll_cube_to_right {
@@ -1143,111 +1783,6 @@ aside button span {
   content: ':';
   right: 0;
 }
-/*change block skins want or none*/
-.input_forms .want_block_skins {
-  position: relative;
-  display: block;
-  box-sizing: border-box;
-  width: 90%;
-  height: 30px;
-  margin: 5px auto;
-  text-align: center;
-  line-height: 28px;
-  font-weight: bold;
-  font-size: small;
-  color: #a5a5a5;
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
-  background: lightgray;
-  border-radius: 4px;
-  box-shadow: inset -1px -1px 1px rgba(255, 255, 255, 0.2), inset 1px 1px 1px rgba(0, 0, 0, 0.2);
-  border: 2px solid rgba(0,0,0,0);
-  cursor: pointer;
-}
-.input_forms .want_block_skins .img_form {
-  top: 3px;
-  left: 25px;
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-.input_forms .want_block_skins i.fast {
-  z-index: 5;
-  top: 7px;
-  right: 30px;
-  color: navy;
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
-  transform: translate(0, 0);
-  position: absolute;
-}
-.input_forms .want_block_skins span.slash {
-  z-index: 3;
-  position: absolute;
-  top: -2px;
-  left: 1px;
-  width: 148%;
-  height: 5px;
-  background: red;
-  transform: rotate(45deg);
-  transform-origin: top left;
-  opacity: 1;
-  border-radius: 5px;
-  transition: all 0.3s ease-in-out;
-}
-.input_forms .want_block_skins .img_form img {
-  z-index: 2;
-  background: gray;
-  opacity: 0.7;
-  width: 100%;
-  height: 100%;
-  transition: all 1s ease-in-out;
-}
-.input_forms .want_block_skins span.need_skins {
-  display: none;
-}
-.input_forms .want_block_skins span.no_need {
-  display: inline-block;
-}
-#want_block_skins:checked ~ .want_block_skins {
-  color: white;
-  text-shadow: none;
-  background: royalblue;
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
-  border: 2px solid rgba(0,0,0,0.2);
-}
-#want_block_skins:checked ~ .want_block_skins span.need_skins {
-  display: inline-block;
-}
-#want_block_skins:checked ~ .want_block_skins span.no_need {
-  display: none;
-}
-#want_block_skins:checked ~ .want_block_skins span.slash {
-  opacity: 0;
-}
-#want_block_skins:checked ~ .want_block_skins img {
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
-  opacity: 1;
-}
-#want_block_skins:checked ~ .want_block_skins i.fast {
-  color: white;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
-}
-.input_forms .want_block_skins:hover i.fast,
-.input_forms .want_block_skins:focus i.fast {
-  animation: fly 1s infinite ease-in-out;
-}
-#want_block_skins:checked ~ .want_block_skins:hover i.fast,
-#want_block_skins:checked ~ .want_block_skins:focus i.fast {
-  animation: fly 10s infinite ease-in-out;
-}
-@keyframes fly {
-  0% {
-    transform: translate(-160px, 0);
-  }
-  100% {
-    transform: translate(20px, 0);
-  }
-}
 .input_forms .for_scroll {
   display: block;
   width: 100%;
@@ -1299,7 +1834,6 @@ aside button span {
 .palette .palette_button,
 .palette .palette_download,
 .palette .palette_upload,
-.palette .palette_lock,
 .zoom_in_out_scope .zoom_scope_button,
 .zoom_in_out_scope label[for="plus_scope_icon"],
 .zoom_in_out_scope label[for="minus_scope_icon"],
@@ -1319,7 +1853,8 @@ aside button span {
 .roll_back_and_forward .roll_forward,
 .layer_selector .layer_selector_button,
 .layer_selector .layer_copy,
-.layer_selector .layer_paste {
+.layer_selector .layer_paste,
+.layer_selector label[for="jump_to_this_layer"] {
   position: absolute;
   top: 0;
   cursor: pointer;
@@ -1369,7 +1904,6 @@ aside button span {
   border: 1px solid rgba(0,0,0,0.2);
   z-index: 2;
 }
-#palette_button:checked ~ .palette_lock,
 #palette_button:checked ~ .palette_download,
 #palette_button:checked ~ .palette_upload,
 #palette_button:checked ~ .palette_board,
@@ -1391,7 +1925,8 @@ aside button span {
 #roll_both_button:checked ~ .roll_forward,
 #layer_selector_button:checked ~ .appear,
 #layer_selector_button:checked ~ .layer_copy,
-#layer_selector_button:checked ~ .layer_paste {
+#layer_selector_button:checked ~ .layer_paste,
+#layer_selector_button:checked ~ label[for="jump_to_this_layer"] {
   display: block;
 }
 #palette_button:checked ~ .palette_button,
@@ -1454,43 +1989,17 @@ aside button span {
   height: 25px;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
-.palette .palette_lock {
-  display: none;
-  left: 30px;
-  background: lightgray;
-  background-image: none;
-  box-shadow: inset -1px -1px 1px rgba(255, 255, 255, 0.2), inset 1px 1px 1px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(0,0,0,0);
-}
-.palette .palette_lock .locked,
-#palette_lock:checked ~ .palette_lock .unlock {
-  display: none;
-}
-#palette_lock:checked ~ .palette_lock {
-  background: none;
-  background-image: linear-gradient(0deg, gold 0%, yellow 100%);
-  color: rgba(255,0,0,0.5);
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 2px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0,0,0,0.2);
-}
-#palette_lock:checked ~ .palette_lock .locked {
-  display: inline;
-}
 .palette .palette_download {
   display: none;
-  left: 60px;
+  left: 30px;
 }
 .palette .palette_upload {
   display: none;
-  left: 90px;
+  left: 60px;
 }
-.palette .palette_lock:hover,
 .palette .palette_download:hover,
 .palette .palette_upload:hover {
   color: black;
-}
-#palette_lock:checked ~ .palette_lock:hover {
-  color: red;
 }
 /*for_palette_resize*/
 .palette .palette_board::-webkit-scrollbar {
@@ -1859,6 +2368,9 @@ input.appear:focus ~ label.appear {
   transform-origin: top left;
   transform: translate(0, 35px);
 }
+.zoom_in_out_scope span.shortcut {
+  display: none;
+}
 /*only normal_tool*/
 .normal_tool label[for="pen_tool"],
 .normal_tool label[for="fill_tool_of_paint_roller"],
@@ -2010,6 +2522,8 @@ input.appear:focus ~ label.appear {
 /*only layer_selector_button*/
 #select_vertical_layers,
 .layer_selector label[for="select_vertical_layers"],
+#select_side_layers,
+.layer_selector label[for="select_side_layers"],
 #select_horizon_layers,
 .layer_selector label[for="select_horizon_layers"] {
   display: none;
@@ -2023,6 +2537,7 @@ input.appear:focus ~ label.appear {
   border-radius: 4px;
 }
 #select_vertical_layers,
+#select_side_layers,
 #select_horizon_layers {
   font-size: large;
   background: #fff;
@@ -2032,6 +2547,7 @@ input.appear:focus ~ label.appear {
   width: 130px;
 }
 .layer_selector label[for="select_vertical_layers"],
+.layer_selector label[for="select_side_layers"],
 .layer_selector label[for="select_horizon_layers"] {
   background-image: linear-gradient(0deg, royalblue 0%, navy 100%);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.8);
@@ -2042,17 +2558,28 @@ input.appear:focus ~ label.appear {
   height: 20px;
   line-height: 20px;
 }
-#select_vertical_layers option:nth-child(2n),
-#select_horizon_layers option:nth-child(2n) {
+.layer_selector select option:nth-child(2n) {
   background: gainsboro;
 }
+.layer_selector select option.selected {
+  background: lightgreen;
+}
 #select_vertical_layers:focus ~ label[for="select_vertical_layers"],
+#select_side_layers:focus ~ label[for="select_side_layers"],
 #select_horizon_layers:focus ~ label[for="select_horizon_layers"] {
   transform-origin: top left;
   transform: translate(0, -35px);
 }
+#select_vertical_layers option.copy_target,
+#select_side_layers option.copy_target,
+#select_horizon_layers option.copy_target {
+  background-color: navy;
+  font-weight: bold;
+  color: white;
+}
 .layer_selector .layer_copy,
-.layer_selector .layer_paste {
+.layer_selector .layer_paste,
+.layer_selector label[for="jump_to_this_layer"] {
   position: relative;
   display: none;
   transform: translate(30px,-30px);
@@ -2069,18 +2596,28 @@ input.appear:focus ~ label.appear {
 .layer_selector span.shortcut {
   display: none;
 }
+#jump_to_this_layer:checked ~ label[for="jump_to_this_layer"] {
+  background-image: linear-gradient(0deg, royalblue 0%, navy 100%);
+  color: white;
+  text-shadow: none;
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.7), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0,0,0,0.7);
+}
 /*scrollbar_byCodepenFromPin*/
 #select_vertical_layers::-webkit-scrollbar-track,
+#select_side_layers::-webkit-scrollbar-track,
 #select_horizon_layers::-webkit-scrollbar-track {
   border-radius: 3px;
 }
 #select_vertical_layers::-webkit-scrollbar,
+#select_side_layers::-webkit-scrollbar,
 #select_horizon_layers::-webkit-scrollbar {
   width: 3px;
   height: 3px;
   background-color: black;
 }
 #select_vertical_layers::-webkit-scrollbar-thumb,
+#select_side_layers::-webkit-scrollbar-thumb,
 #select_horizon_layers::-webkit-scrollbar-thumb {
   background-color: #3399ff;
   border-radius: 3px;
@@ -2251,7 +2788,7 @@ footer i.fa-circle-question, #answer_to_questions {
 }
 footer i.fa-circle-question {
   color: #fff;
-  font-size: 30px;
+  font-size: 25px;
   position: absolute;
   bottom: 15px;
   right: 15px;
@@ -2260,7 +2797,7 @@ footer i.fa-circle-question {
   transform: rotateY(0deg) rotateZ(0deg);
 }
 footer i.fa-circle-question:hover {
-  opacity: 0.5;
+  transform: rotateY(0) rotateZ(0) scale(1.3);
 }
 #answer_to_questions {
   color: #000;
@@ -2279,12 +2816,14 @@ footer i.fa-circle-question:hover {
   z-index: 48;
   border-radius: 5px;
   overflow: auto;
+  line-height: 1.3em;
+  font-size: small;
 }
 #question_to_use:checked ~ i.fa-circle-question {
-  color: darkgreen;
+  color: navy;
   background: #fff;
   border-radius: 30px;
-  transform: rotateY(360deg) rotateZ(30deg);
+  transform: rotateY(360deg) rotateZ(30deg) scale(1.3);
   position: fixed;
   z-index: 50;
 }
@@ -2293,16 +2832,16 @@ footer i.fa-circle-question:hover {
 }
 /*scrollbar_byCodepenFromPin*/
 #answer_to_questions::-webkit-scrollbar-track {
-  background-color: #DAAE83;
-  border-radius: 1px;
+  background-color: none;
+  border-radius: 2px;
 }
 #answer_to_questions::-webkit-scrollbar {
-  width: 1px;
-  background-color: #DAAE83;
+  width: 2px;
+  background-color: none;
 }
 #answer_to_questions::-webkit-scrollbar-thumb {
-  border-radius: 1px;
-  background-image: linear-gradient(180deg, #73563A 0%, #DAAE83 100%);
+  border-radius: 2px;
+  background-image: linear-gradient(180deg, darkgreen 0%, lightgreen 100%);
 }
 /*for PC*/
 @media screen and (min-width: 1200px) {
@@ -2468,6 +3007,31 @@ footer i.fa-circle-question:hover {
   }
 }
 @media screen and (max-width: 760px) {
+  /*++download for skin++*/
+  #plan_to_download_Blueprint .plan_to_download_Blueprint,
+  #for_sample_view .for_sample_view_form {
+    width: 80%;
+  }
+  #plan_to_download_Blueprint .plan_to_download_Blueprint p,
+  #for_sample_view .for_sample_view_form .title {
+    font-size: 2.5vw;
+  }
+  #plan_to_download_Blueprint .fourth.plan i {
+    font-size: 4vw;
+  }
+  #plan_to_download_Blueprint .first.plan label.left,
+  #plan_to_download_Blueprint .second.plan label.left {
+    margin-left: 5%;
+  }
+  #plan_to_download_Blueprint .first.plan label.right,
+  #plan_to_download_Blueprint .second.plan label.right {
+    margin-right: 5%;
+  }
+  /*++for_sample_view++*/
+  #for_sample_view .first.plan canvas {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
   /*++main++*/
   #editing_areas {
     left: 0;
@@ -2483,15 +3047,48 @@ footer i.fa-circle-question:hover {
   main, aside, .top_menu ul, .icon_button_fixed_frame .icon_button_form {
     width: 100%;
   }
+  /*++download for skin++*/
+  #plan_to_download_Blueprint .first.plan label.left,
+  #plan_to_download_Blueprint .second.plan label.left {
+    float: none;
+    margin: 10px auto;
+    height: 250px;
+  }
+  #plan_to_download_Blueprint .first.plan label.right,
+  #plan_to_download_Blueprint .second.plan label.right {
+    float: none;
+    margin: 10px auto;
+    height: 250px;
+  }
+  #plan_to_download_Blueprint .plan_menu .for_scroll {
+    display: block;
+  }
+  #plan_to_download_Blueprint .plan_menu label.slideshow {
+    width: 10px;
+    height: 10px;
+    margin: 0 10px;
+  }
+  #for_sample_view .make_menu label.slideshow {
+    margin: 0 10px;
+  }
+  #plan_to_download_Blueprint .plan_menu label.slideshow::before {
+    width: 25px;
+    height: 25px;
+  }
   /*++for_sample_view++*/
   #for_sample_view .for_sample_view_form {
-    margin-left: 40px;
-    margin-right: 40px;
-    width: 100%;
+    height: 600px;
   }
-  #for_sample_view .for_sample_view_form input[type="number"],
-  #for_sample_view .for_sample_view_form button {
+  #for_sample_view .make_menu {
+    width: 80%;
+  }
+  #for_sample_view .first.plan input[type="number"],
+  #for_sample_view .first.plan button {
     width: 180px;
+  }
+  #for_sample_view .second.plan canvas,
+  #for_sample_view .third.plan canvas {
+    width: 100%;
   }
   /*share_buttons*/
   #share_buttons .share_buttons_form {
