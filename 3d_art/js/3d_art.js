@@ -2159,7 +2159,7 @@ function return_obj_make_Blueprint_direction_horizon (arry, palette) {
         if (index < 0) {
           alt = 'none';
           src = 'none';
-          ctx.strokeStyle = "rgb(245,245,245)";
+          ctx.strokeStyle = 'black';
           ctx.lineWidth = 0.1;
           ctx.strokeRect(x * 20, z * 20, 20, 20);
         }
@@ -2169,7 +2169,7 @@ function return_obj_make_Blueprint_direction_horizon (arry, palette) {
           //rough_Blueprint
           ctx.fillStyle = color;
           ctx.fillRect(x * 20, z * 20, 20, 20);
-          ctx.strokeStyle = "rgb(245,245,245)";
+          ctx.strokeStyle = 'black';
           ctx.lineWidth = 0.1;
           ctx.strokeRect(x * 20, z * 20, 20, 20);
         }
@@ -2255,7 +2255,7 @@ function return_obj_make_Blueprint_direction_vertical (arry, palette) {
         if (index < 0) {
           alt = 'none';
           src = 'none';
-          ctx.strokeStyle = "rgb(245,245,245)";
+          ctx.strokeStyle = 'black';
           ctx.lineWidth = 0.1;
           ctx.strokeRect(x * 20, y * 20, 20, 20);
         }
@@ -2265,7 +2265,7 @@ function return_obj_make_Blueprint_direction_vertical (arry, palette) {
           //rough_Blueprint
           ctx.fillStyle = color;
           ctx.fillRect(x * 20, y * 20, 20, 20);
-          ctx.strokeStyle = "rgb(245,245,245)";
+          ctx.strokeStyle = 'black';
           ctx.lineWidth = 0.1;
           ctx.strokeRect(x * 20, y * 20, 20, 20);
         }
@@ -2367,7 +2367,7 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
       let ctx = c.getContext("2d");
       c.width = arry[0].length * 20;
       c.height = arry[0].length * 20;
-      ctx.strokeStyle = "rgb(245,245,245)";
+      ctx.strokeStyle = 'black';
       ctx.lineWidth = 0.1;
       for (let z = 0; z < arry[l_y].length; z++) {
         for (let x = 0; x < arry[l_y][z].length; x++) {
@@ -2418,7 +2418,7 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
       let ctx = c.getContext("2d");
       c.width = arry[0].length * 20;
       c.height = arry[0].length * 20;
-      ctx.strokeStyle = "rgb(245,245,245)";
+      ctx.strokeStyle = 'black';
       ctx.lineWidth = 0.1;
       for (let y = 0; y < arry[l_z].length; y++) {
         for (let x = 0; x < arry[l_z][y].length; x++) {
@@ -5988,7 +5988,7 @@ if (typeof sessionStorage === undefined) {
     //storage button on or off
     if (getData['storage'] === 'off') {
       $('#auto_download_storage').prop('checked', false);
-      remove_localStorage (storage,key);
+      remove_localStorage (storage, key);
       return false;
     }
     if (getData['storage'] === 'on') {
