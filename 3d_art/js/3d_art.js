@@ -2360,7 +2360,6 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
       }
       let c = document.createElement("canvas");
       let ctx = c.getContext("2d");
-      document.getElementById('sample_in').appendChild(c);
       c.width = arry[0].length * 20;
       c.height = arry[0].length * 20;
       ctx.strokeStyle = "rgb(245,245,245)";
@@ -2411,7 +2410,6 @@ function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
       }
       let c = document.createElement("canvas");
       let ctx = c.getContext("2d");
-      document.getElementById('sample_in').appendChild(c);
       c.width = arry[0].length * 20;
       c.height = arry[0].length * 20;
       ctx.strokeStyle = "rgb(245,245,245)";
