@@ -5983,6 +5983,8 @@ if (typeof sessionStorage === undefined) {
     if (getData === '' || getData === null) {
       return false;
     }
+    //saved storage memory in js obj untile unloading
+    value_obj = getData;
     //storage button on or off
     if (getData['storage'] === 'off') {
       $('#auto_download_storage').prop('checked', false);
