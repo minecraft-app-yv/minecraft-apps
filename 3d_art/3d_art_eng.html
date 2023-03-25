@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="keywords" content="マイクラ, 建築, ピクセルアート, ツール, 3D">
+  <meta name="keywords" content="minecraft, 3D, building, architecture, pixel, art, tools">
   <meta name="description" content="
-  このページでは、マイクラで建築をする際に役に立つリアルの画像を簡単に3Dピクセルアートに落とし込めるアプリを充実させています。
-  平面画像を角度を調整して正面のピクセルアートにして、レイヤー複製等のツールを使い3Dアートにして行きます。
-  また、確認用の表示も3D表示にしてより本番に近い形でデータを確認出来ます。
-  最後に出来たデータをエクセルのデータにして、レイヤー毎のブロック配置とブロック必要個数を設計図データとしてダウンロード出来る所まで行えます。
+  This page has substantial of applications that can easily convert real images into 3D pixel art, which is useful when building at Minecraft game.
+  The flat image is then turned into frontal pixel art by adjusting the angle, and then into 3D art by using tools such as layer duplication.
+  And, the 3D display for confirmation is also available, so you can check the data in a way that is more similar to the real thing.
+  Finally, you can convert the resulting data into Excel data and download it as blueprint data with the placement of blocks per layer and the number of blocks required.
   ">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
-  <title>マイクラの建築・3Dピクセルアート用シミュレーター</title>
+  <title>3D Art Simulator for Buildings of Minecraft</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="shortcut icon" href="../index/img/web_icon.png" type="image/png" sizes="16x16">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -31,7 +31,7 @@
       <input id="need_block_skins" name="want_block_skins" type="radio" class="hidden">
       <div class="plan_menu">
         <div class="first plan">
-          <p>設計図の向きを選択して下さい</p>
+          <p>Select the cutting direction of the blueprint</p>
           <label class="left" for="Blueprint_direction_horizon">
             <span>
               <div class="multi_layers">
@@ -42,7 +42,7 @@
                 <div class="layer fourth"></div>
                 <div class="layer fifth"></div>
               </div>
-              水平輪切り
+              Cut horizontally
             </span>
           </label>
           <label class="right" for="Blueprint_direction_vertical">
@@ -53,57 +53,57 @@
                 <div class="layer second"></div>
                 <div class="layer third"></div>
               </div>
-              垂直輪切り
+              Cut vertically
             </span>
           </label>
           <div class="for_scroll"></div>
         </div>
         <div class="second plan">
-          <p>ブロックのテクスチャが必要か選択して下さい</p>
+          <p>Please select if you need textures for the block</p>
           <label class="left" for="not_need_block_skins">
             <span>
               <div class="color_box_img"></div>
-              テクスチャ不要<br>
+              No textures<br>
               <i class="fa-solid fa-shuttle-space fast"></i>
             </span>
           </label>
           <label class="right" for="need_block_skins">
             <span>
               <img src="../art/img/blocks/Block_of_Diamond.jpg" alt="block">
-              テクスチャ必要<br>
+              Need textures<br>
               <i class="fa-solid fa-shuttle-space fast"></i>
             </span>
           </label>
           <div class="for_scroll"></div>
         </div>
         <div class="third plan">
-          <p>問題がなければ開始をクリックして下さい</p>
+          <p>If all is well, click Start</p>
           <div class="frame">
-            <div class="title">設計図の向き</div>
+            <div class="title">Direction of the blueprint</div>
             <div class="response">
-              <span class="Blueprint_direction_horizon">水平輪切り</span>
-              <span class="Blueprint_direction_vertical">垂直輪切り</span>
+              <span class="Blueprint_direction_horizon">Cut horizontally</span>
+              <span class="Blueprint_direction_vertical">Cut vertically</span>
             </div>
           </div>
           <div class="frame">
-            <div class="title">ブロックのテクスチャ</div>
+            <div class="title">Textures for the block</div>
             <div class="response">
-              <span class="not_need_block_skins">テクスチャ不要</span>
-              <span class="need_block_skins">テクスチャ必要</span>
+              <span class="not_need_block_skins">No textures</span>
+              <span class="need_block_skins">Need textures</span>
             </div>
           </div>
-          <button type="button" id="check_datas_button">開始</button>
+          <button type="button" id="check_datas_button">Start</button>
           <div class="for_scroll"></div>
         </div>
         <div class="fourth plan">
-          <p>問題がなければダウンロードをクリックして下さい</p>
+          <p>If everything is ok, click Download</p>
           <div class="frame">
             <i class="fa-solid fa-angles-left"></i>
             <i class="fa-solid fa-angles-right"></i>
             <div class="canvas">
             </div>
           </div>
-          <button type="button" id="download_datas_button">ダウンロード</button>
+          <button type="button" id="download_datas_button">Download</button>
           <div class="for_scroll"></div>
         </div>
         <div class="slideshow_icon">
@@ -129,7 +129,7 @@
       <input id="make_menu_2" name="make_menu" type="radio" class="hidden">
       <div class="make_menu">
         <div class="first plan">
-          <div class="title">近似色を選んでボタンを押して下さい</div>
+          <div class="title">Select approximate color and press button</div>
           <label>
             <input id="sample_view_0_input" name="sample_view" type="radio" class="hidden" checked>
             <canvas id="sample_view_0" width="171" height="171" style="background:white;"></canvas>
@@ -155,20 +155,20 @@
             <input id="sample_ratio_g" type="number" value="0.59" step="0.01" max="1">
             <input id="sample_ratio_b" type="number" value="0.11" step="0.01" max="1">
           </div>
-          <button id="sample_view_default_ratio">数値初期化</button>
-          <button id="sample_view_retry">リトライ</button>
-          <button id="sample_view_to_go">選択して実行</button>
+          <button id="sample_view_default_ratio">Default</button>
+          <button id="sample_view_retry">Retry</button>
+          <button id="sample_view_to_go">Choose & GO</button>
         </div>
         <div class="second plan">
-          <div class="title">正面に必要な画像を切り抜いて下さい</div>
+          <div class="title">Please crop the image you need on the front</div>
           <canvas id="check_photo" width="400" height="400"></canvas>
-          <p>xyz-サイズ&nbsp;<input id="art_size_in_make_plan" type="number" placeholder="最大64"></p>
-          <button type="button" id="check_photo_button">チェック</button>
+          <p>xyz-size&nbsp;<input id="art_size_in_make_plan" type="number" placeholder="Max 64"></p>
+          <button type="button" id="check_photo_button">Check</button>
         </div>
         <div class="third plan">
-          <div class="title">この画像でピクセル変換を行います</div>
+          <div class="title">Perform pixel transformation on this image</div>
           <canvas id="change_to_pixel_sample" width="400" height="400"></canvas>
-          <button type="button" id="change_to_pixel_button">開始</button>
+          <button type="button" id="change_to_pixel_button">Start</button>
         </div>
         <div class="slideshow_icon">
           <div class="back_plan">
@@ -183,12 +183,12 @@
         </div>
       </div>
       <div class="sub_selected_color_box">
-        <label for="add_new_blocks" class="box_selected">新ブロック</label>
-        <label for="color_named_blocks" class="box_selected">色の名前付きブロック</label>
-        <label for="easy_to_gather">入手易</label>
-        <label for="hard_in_overworld">入手難</label>
-        <label for="in_nether">ネザー</label>
-        <label for="in_end">エンド</label>
+        <label for="add_new_blocks" class="box_selected">New blocks</label>
+        <label for="color_named_blocks" class="box_selected">Color named blocks</label>
+        <label for="easy_to_gather">Easy</label>
+        <label for="hard_in_overworld">Hard</label>
+        <label for="in_nether">Nether</label>
+        <label for="in_end">End</label>
       </div>
       <div class="close_button" data-close-id="for_sample_view">✕</div>
     </div>
@@ -215,16 +215,16 @@
       </div>
       <nav>
         <ul>
-          <li class="parent">アプリ</li>
-          <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> チャンク境界チェッカー</a></li>
-          <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> マップ・ピクセルアート用シミュレーター</a></li>
-          <li><a href="../3d_art/3d_art.html"><i class="fa-solid fa-cube"></i> 建築・3Dピクセルアート用シミュレーター</a></li>
-          <li class="parent auto_storage">ストレージデータダウンロード</li>
+          <li class="parent">Apps</li>
+          <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> Chunk Border Checker</a></li>
+          <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> Map & Pixel Art Simulator</a></li>
+          <li><a href="../3d_art/3d_art_eng.html"><i class="fa-solid fa-cube"></i> 3D Art Simulator for Buildings</a></li>
+          <li class="parent auto_storage">Download Storage Data</li>
           <li class="roll_back auto_storage"><i class="fa-sharp fa-solid fa-database"></i>&nbsp;<i class="fa-solid fa-rotate-right" style="transform:rotateY(180deg);"></i></li>
-          <li class="share_buttons"><i class="fa-solid fa-share"></i> シェア</li>
-          <li class="parent">Language</li>
-          <li class="selected_language"><p class="language">Japanese</p></li>
-          <li><a href="./3d_art_eng.html" class="language">English</a></li>
+          <li class="share_buttons"><i class="fa-solid fa-share"></i> Please share</li>
+          <li class="parent">言語</li>
+          <li><a href="./3d_art.html" class="language">日本語</a></li>
+          <li class="selected_language"><p class="language">英語</p></li>
         </ul>
       </nav>
       <div class="sub_header_form">
@@ -238,11 +238,11 @@
       <nav class="header_2windows_style">
         <ul>
           <li class="syncer-acdn" data-target="syncer-acdn-02">
-            アプリ <span class="arrow"></span>
+            Apps <span class="arrow"></span>
             <ul id="syncer-acdn-02" class="syncer-acdn-child">
-              <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> チャンク境界チェッカー</a></li>
-              <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> マップ・ピクセルアート用シミュレーター</a></li>
-              <li><a href="../3d_art/3d_art.html"><i class="fa-solid fa-cube"></i> 建築・3Dピクセルアート用シミュレーター</a></li>
+              <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> Chunk Border Checker</a></li>
+              <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> Map & Pixel Art Simulator</a></li>
+              <li><a href="../3d_art/3d_art_eng.html"><i class="fa-solid fa-cube"></i> 3D Art Simulator for Buildings</a></li>
             </ul>
           </li>
           <li><a href="https://github.com/minecraft-app-yv/minecraft-apps"><i class="fa-brands fa-github"></i></a></li>
@@ -262,8 +262,8 @@
       <nav>
         <ul>
           <li>
-            <p class="language">Japanese</p>
-            <a href="./3d_art_eng.html" class="language">English</a></li>
+            <a href="./3d_art.html" class="language">日本語</a>
+            <p class="language">英語</p>
           </li>
           <li class="header_pc">
             <label for="auto_download_storage">
@@ -279,8 +279,8 @@
     <ul>
       <li id="OTM" class="syncer-acdn" data-target="syncer-acdn-03">
         <i class="fa-solid fa-bookmark"></i>
-        <span class="thin_text">&nbsp;保存</span>
-        <span class="wid_text">&nbsp;キャンパス一時保存</span>
+        <span class="thin_text">&nbsp;OTM</span>
+        <span class="wid_text">&nbsp;One Time Memory</span>
       </li>
       <ul id="syncer-acdn-03" class="syncer-acdn-child">
         <li class="top_menu_acdn_action_tool">
@@ -332,17 +332,17 @@
       </ul>
       <input id="vertical_layer" type="radio" name="display" checked>
       <label for="vertical_layer">
-        <i class="fa-solid fa-layer-group" style="transform: rotateZ(-90deg);"></i><span class="pc_text">&nbsp;正面レイヤー</span>
+        <i class="fa-solid fa-layer-group" style="transform: rotateZ(-90deg);"></i><span class="pc_text">&nbsp;Front</span>
       </label>
       <input id="side_layer" type="radio" name="display">
       <label for="side_layer">
-        <i class="fa-solid fa-layer-group" style="transform: rotateZ(90deg);"></i><span class="pc_text">&nbsp;横面レイヤー</span>
+        <i class="fa-solid fa-layer-group" style="transform: rotateZ(90deg);"></i><span class="pc_text">&nbsp;Side</span>
       </label>
       <input id="horizontal_layer" type="radio" name="display">
       <label for="horizontal_layer">
-        <i class="fa-solid fa-layer-group"></i><span class="pc_text">&nbsp;水平レイヤー</span>
+        <i class="fa-solid fa-layer-group"></i><span class="pc_text">&nbsp;Horizontal</span>
       </label>
-      <li id="clear_canvas"><i class="fa-solid fa-trash-can"></i><span class="pc_text">&nbsp;消去</span></li>
+      <li id="clear_canvas"><i class="fa-solid fa-trash-can"></i><span class="pc_text">&nbsp;Clear</span></li>
     </ul>
   </div>
   <aside>
@@ -351,35 +351,35 @@
       <!--hanburgerButton-->
       <div class="hanb_icon_form">
         <label for="hanb" class="hanb_icon"><span></span></label>
-        <div class="title">入力欄 Input</div>
+        <div class="title">Input Field</div>
       </div>
-      <div class="change_to_pixel_art"><i class="fa-regular fa-image"></i><span class="pop_text">画像変換</span></div>
+      <div class="change_to_pixel_art"><i class="fa-regular fa-image"></i><span class="pop_text">Image change to data</span></div>
       <div class="input_forms">
-        <div class="title">入力欄 Input</div>
-        <p class="load_title"><span>ファイル名</span></p>
+        <div class="title">Input Field</div>
+        <p class="load_title"><span>File Name</span></p>
         <div class="check_view">
-          <button id="check_view_button"><i class="fa-solid fa-rotate-right"></i><span class="pop_text">3D画像更新</span></button>
+          <button id="check_view_button"><i class="fa-solid fa-rotate-right"></i><span class="pop_text">3D image update</span></button>
           <canvas id="check_view" width="180" height="180"></canvas>
         </div>
         <div id="change_view_face">
-          <p id="cube_front" class="front" data-face="front">正面</p>
-          <p id="cube_right" class="right" data-face="right">右側面</p>
-          <p id="cube_left" class="left" data-face="left">左側面</p>
-          <p id="cube_top" class="top" data-face="top">上面</p>
-          <p id="cube_bottom" class="bottom" data-face="bottom">下面</p>
-          <p id="cube_back" class="back" data-face="back">背面</p>
+          <p id="cube_front" class="front" data-face="front">Front</p>
+          <p id="cube_right" class="right" data-face="right">Right</p>
+          <p id="cube_left" class="left" data-face="left">Left</p>
+          <p id="cube_top" class="top" data-face="top">Top</p>
+          <p id="cube_bottom" class="bottom" data-face="bottom">Bottom</p>
+          <p id="cube_back" class="back" data-face="back">Back</p>
           <span id="roll_cube_to_top"><i class="fa-solid fa-sort-up"></i></span>
           <span id="roll_cube_to_left"><i class="fa-solid fa-sort-up"></i></span>
           <span id="roll_cube_to_right"><i class="fa-solid fa-sort-up"></i></span>
           <span id="roll_cube_to_bottom"><i class="fa-solid fa-sort-up"></i></span>
         </div>
-        <p class="small_title">サイズ選択</p>
+        <p class="small_title">Select size</p>
         <div class="for_art_size">
-          <p><span>xyz</span><input id="art_size" class="get_bata" type="number" placeholder="最大64"></p>
+          <p><span>xyz</span><input id="art_size" class="get_bata" type="number" placeholder="Max 64"></p>
         </div>
-        <p class="small_title">サイズ変更</span></p>
+        <p class="small_title">Resize canvas</span></p>
         <button id="resize_button"><i class="fa-solid fa-crop-simple"></i></button>
-        <p class="small_title">設計図ダウンロード</span></p>
+        <p class="small_title">Download blueprint datas</span></p>
         <button id="display_plan_of_Blueprint"><i class="fa-solid fa-file-excel"></i>&nbsp;<i class="fa-solid fa-file-image"></i></button>
         <div class="for_scroll"></div>
       </div>
@@ -394,7 +394,7 @@
           <label for="zoom_scope_button"><i class="fa-solid fa-caret-right"></i></label>
         </div>
         <input id="art_scale" type="number" value="100" class="appear">
-        <label for="art_scale" class="appear">サイズ入力%</label>
+        <label for="art_scale" class="appear">Input scale %</label>
         <input id="plus_scope_icon" name="scope_icon" type="radio" class="hidden" checked>
         <label for="plus_scope_icon">
           <i class="fa-solid fa-magnifying-glass-plus"></i>
@@ -438,15 +438,15 @@
           </div>
           <div id="CP">
             <label id="selected_color_box"></label>
-            <p class="big_title">色玉</p>
+            <p class="big_title">Color boxes</p>
             <input id="add_new_blocks" type="checkbox" class="hidden" checked>
-            <label for="add_new_blocks" class="small_title">新ブロック</label>
+            <label for="add_new_blocks" class="small_title">Add new blocks</label>
             <div class="add_new_blocks">
               <input id="new_block_img" type="file" accept="image/*" class="hidden" multiple>
               <button type="button"><i class="fa-solid fa-file-circle-plus"></i></button>
             </div>
             <input id="color_named_blocks" type="checkbox" class="hidden" checked>
-            <label for="color_named_blocks" class="small_title">色の名前付きブロック</label>
+            <label for="color_named_blocks" class="small_title">Color named blocks</label>
             <div class="color_named_blocks">
               <label id="CP1" class="check">
                 <div class="CPimg">
@@ -578,7 +578,7 @@
               </label>
             </div>
             <input id="easy_to_gather" type="checkbox" class="hidden">
-            <label for="easy_to_gather" class="small_title">入手易</label>
+            <label for="easy_to_gather" class="small_title">Easy to gather</label>
             <div class="easy_to_gather">
               <label id="CP17">
                 <div class="CPimg">
@@ -712,7 +712,7 @@
               </label>
             </div>
             <input id="hard_in_overworld" type="checkbox" class="hidden">
-            <label for="hard_in_overworld" class="small_title">入手難</label>
+            <label for="hard_in_overworld" class="small_title">Hard in the Overworld</label>
             <div class="hard_in_overworld">
               <label id="CP43">
                 <div class="CPimg">
@@ -841,7 +841,7 @@
               </label>
             </div>
             <input id="in_nether" type="checkbox" class="hidden">
-            <label for="in_nether" class="small_title">ネザー</label>
+            <label for="in_nether" class="small_title">Gather in the Nether</label>
             <div class="in_nether">
               <label id="CP68">
                 <div class="CPimg">
@@ -930,7 +930,7 @@
               </label>
             </div>
             <input id="in_end" type="checkbox" class="hidden">
-            <label for="in_end" class="small_title">エンド</label>
+            <label for="in_end" class="small_title">Gather in the End</label>
             <div class="in_end">
               <label id="CP85">
                 <div class="CPimg">
@@ -1008,13 +1008,13 @@
         </div>
         <select id="select_vertical_layers" class="appear">
         </select>
-        <label for="select_vertical_layers" class="appear"><i class="fa-solid fa-layer-group" style="transform: rotateZ(-90deg);"></i>&nbsp;正面</label>
+        <label for="select_vertical_layers" class="appear"><i class="fa-solid fa-layer-group" style="transform: rotateZ(-90deg);"></i>&nbsp;Front</label>
         <select id="select_side_layers">
         </select>
-        <label for="select_side_layers"><i class="fa-solid fa-layer-group" style="transform: rotateZ(90deg);"></i>&nbsp;右側面</label>
+        <label for="select_side_layers"><i class="fa-solid fa-layer-group" style="transform: rotateZ(90deg);"></i>&nbsp;Right</label>
         <select id="select_horizon_layers">
         </select>
-        <label for="select_horizon_layers"><i class="fa-solid fa-layer-group"></i>&nbsp;上面</label>
+        <label for="select_horizon_layers"><i class="fa-solid fa-layer-group"></i>&nbsp;Top</label>
         <div class="layer_copy">
           <i class="fa-solid fa-copy"></i><span class="shortcut">Ctrl + C</span>
         </div>
@@ -1031,9 +1031,12 @@
       <div id="drag-and-drop-area">
         <div class="drag-and-drop-area_form">
           <p><i class="fa-regular fa-image"></i></p>
-          <p>ここに変換する画像を1枚ドラッグするか</p>
+          <p>
+            Drag here one image to be converted<br>
+            or
+          </p>
           <input id="file-select-input" type="file" accept="image/*" class="hidden">
-          <button type="button" id="file-select-button">フォルダから選択して下さい</button>
+          <button type="button" id="file-select-button">Please select from your folder</button>
           <div class="close_button" data-close-id="drag-and-drop-area">✕</div>
         </div>
       </div>
