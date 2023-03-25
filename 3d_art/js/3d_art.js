@@ -6035,7 +6035,7 @@ if (typeof sessionStorage === undefined) {
       let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
       for (let j = 0; j < arry_cp_class.length; j++) {
         let html = get_cp_obj['cpObj_data' + j];
-        if (html === undefined) {
+        if (html === undefined || html === '') {
           if (getData['cp_html'] !== undefined || getData['cp_html'] !== '') {
             $('#CP').html('');
             $('#CP').append(getData['cp_html']);
