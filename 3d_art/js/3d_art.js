@@ -1,5 +1,6 @@
 /*++reserve objects++*/
-let obj = { start_x: '', start_y: '', start_img: '', copy_img: '', td_x: '', tr_y: '', td_bgColor: '', target_id: '', bef_x: '', bef_y: '',
+let obj = { start_x: '', start_y: '', start_img: '', copy_img: '',
+td_x: '', tr_y: '', td_bgColor: '', target_id: '', bef_x: '', bef_y: '', start_td_x: '', start_tr_y: '',
 $target: '', target_w: '', target_h: '',
 $icon: '', icon_top: '', icon_left: '',
 use: '', want_if: '', once_memory: '', range: '', focus_layer: '',
@@ -1962,11 +1963,16 @@ $('#change_view_face p').click((e) => {
   arry_into_check_view (e);
 });
 //retouch 64 sizes for art_size
+/*https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_Expressions*/
+/*https://qiita.com/BlueSilverCat/items/f35f9b03169d0f70818b*/
+/*https://qiita.com/HorikawaTokiya/items/42a027ed51018caa8575#:~:text=JavaScript%E3%81%A7%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E6%95%B0%E5%AD%97%E3%81%A0%E3%81%91%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%99%E3%80%82.%20Copied%21%20const%20data%20%3D%20%27hoge123%27%3B%20const%20res,123.%20g%E3%80%80%20%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E4%B8%80%E8%87%B4%E3%81%AB%E5%AF%BE%E3%81%97%E3%81%A6%E7%BD%AE%E6%8F%9B%E3%82%92%E5%AE%9F%E6%96%BD%E3%80%82.%20g%E3%81%8C%E5%A4%A7%E4%BA%8B%E3%81%BF%E3%81%9F%E3%81%84%E3%81%A3%E3%81%99%E3%80%82.%20%E5%8F%82%E8%80%83.%20http%3A%2F%2Fmypaceprogram.blogspot.com%2F2017%2F11%2Fjavascript.html.%2031.%2019.*/
 function change_max_size_limit (e) {
   let px = $(e.target).val();
+  px = Number(String(px).replace(/[^0-9]/g, ''));
   if (px > 64) {
-    $(e.target).val(64);
+    px = 64;
   }
+  $(e.target).val(px);
 }
 $('#art_size').change(function (e) {
   change_max_size_limit (e);
@@ -4413,13 +4419,13 @@ function end_fun (e) {
   all_removeEventListener ();
   let color = $('.palette .palette_button .selected_block_img').find('img.mImg').css('background-color');
   if (obj.want_if === 'stroke_path_with_line') {
-    td_xy_bgColor_in_obj (obj.start_x, obj.start_y);
-    let range_x = obj.bef_x - obj.start_x;
-    let range_y = obj.bef_y - obj.start_y;
-    range_x = Math.floor(range_x / obj.range);
-    range_y = Math.floor(range_y / obj.range);
+    td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+    let next_x = obj.td_x;
+    let next_y = obj.tr_y;
+    let range_x = next_x - obj.start_td_x;
+    let range_y = next_y - obj.start_tr_y;
     if (isNaN(range_x) || isNaN(range_y) || range_x == 0) {
-      draw_3d_check_and_make_once_memory (obj.td_x, obj.tr_y, color);
+      draw_3d_check_and_make_once_memory (obj.start_td_x, obj.start_tr_y, color);
       return true;
     }
     let radius = Math.sqrt(Math.pow(range_y,2) + Math.pow(range_x,2));
@@ -4428,62 +4434,62 @@ function end_fun (e) {
       radians = Math.PI - radians;
     }
     for (let i = 0; i <= radius; i++) {
-      let x = Math.floor(obj.td_x + i * Math.cos(radians));
-      let y = Math.floor(obj.tr_y + i * Math.sin(radians));
+      let x = Math.floor(obj.start_td_x + i * Math.cos(radians));
+      let y = Math.floor(obj.start_tr_y + i * Math.sin(radians));
       draw_3d_check_and_make_once_memory (x, y, color);
     }
   }
   if (obj.want_if === 'stroke_path_with_rect') {
+    td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+    let next_x = obj.td_x;
+    let next_y = obj.tr_y;
     let left_x, top_y;
-    if (obj.start_x <= obj.bef_x) {
-      left_x = obj.start_x;
+    if (obj.start_td_x <= next_x) {
+      left_x = obj.start_td_x;
     } else {
-      left_x = obj.bef_x;
+      left_x = next_x;
     }
-    if (obj.start_y <= obj.bef_y) {
-      top_y = obj.start_y;
+    if (obj.start_tr_y <= next_y) {
+      top_y = obj.start_tr_y;
     } else {
-      top_y = obj.bef_y;
+      top_y = next_y;
     }
-    td_xy_bgColor_in_obj (left_x, top_y);
-    let range_x = Math.abs(obj.bef_x - obj.start_x);
-    let range_y = Math.abs(obj.bef_y - obj.start_y);
-    range_x = Math.floor(range_x / obj.range);
-    range_y = Math.floor(range_y / obj.range);
+    let range_x = Math.abs(next_x - obj.start_td_x);
+    let range_y = Math.abs(next_y - obj.start_tr_y);
     if (isNaN(range_x) || isNaN(range_y)) {
-      draw_3d_check_and_make_once_memory (obj.td_x, obj.tr_y, color);
+      draw_3d_check_and_make_once_memory (obj.start_td_x, obj.start_tr_y, color);
       return true;
     }
     for (let i = 0; i <= range_x; i++) {
-      let x = obj.td_x + i;
-      let y = obj.tr_y;
+      let x = left_x + i;
+      let y = top_y;
       draw_3d_check_and_make_once_memory (x, y, color);
       y += range_y;
       draw_3d_check_and_make_once_memory (x, y, color);
     }
     for (let j = 0; j <= range_y; j++) {
-      let x = obj.td_x;
-      let y = obj.tr_y + j;
+      let x = left_x;
+      let y = top_y + j;
       draw_3d_check_and_make_once_memory (x, y, color);
       x += range_x;
       draw_3d_check_and_make_once_memory (x, y, color);
     }
   }
   if (obj.want_if === 'stroke_path_with_arc') {
-    td_xy_bgColor_in_obj (obj.start_x, obj.start_y);
-    let range_x = obj.bef_x - obj.start_x;
-    let range_y = obj.bef_y - obj.start_y;
-    range_x = Math.floor(range_x / obj.range);
-    range_y = Math.floor(range_y / obj.range);
+    td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+    let next_x = obj.td_x;
+    let next_y = obj.tr_y;
+    let range_x = next_x - obj.start_td_x;
+    let range_y = next_y - obj.start_tr_y;
     if (isNaN(range_x) || isNaN(range_y)) {
-      draw_3d_check_and_make_once_memory (obj.td_x, obj.tr_y, color);
+      draw_3d_check_and_make_once_memory (obj.start_td_x, obj.start_tr_y, color);
       return true;
     }
     let radius = Math.sqrt(Math.pow(range_y,2) + Math.pow(range_x,2));
     let circumference = 2 * Math.PI * radius;
     for (let i = 0; i <= circumference; i++) {
-      let x =  Math.round(obj.td_x + Math.cos(i / radius) * radius);
-      let y =  Math.round(obj.tr_y + Math.sin(i / radius) * radius);
+      let x =  Math.round(obj.start_td_x + Math.cos(i / radius) * radius);
+      let y =  Math.round(obj.start_tr_y + Math.sin(i / radius) * radius);
       draw_3d_check_and_make_once_memory (x, y, color);
     }
   }
@@ -4682,14 +4688,14 @@ function stroke_path_with_line(e) {
     obj.bef_x = e.touches[0].clientX;
     obj.bef_y = e.touches[0].clientY;
   }
-  td_xy_bgColor_in_obj (obj.start_x, obj.start_y);
-  let range_x = obj.bef_x - obj.start_x;
-  let range_y = obj.bef_y - obj.start_y;
-  range_x = Math.floor(range_x / obj.range);
-  range_y = Math.floor(range_y / obj.range);
+  td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+  let next_x = obj.td_x;
+  let next_y = obj.tr_y;
+  let range_x = next_x - obj.start_td_x;
+  let range_y = next_y - obj.start_tr_y;
   input_arry_into_art_canvas_td (e);
   if (isNaN(range_x) || isNaN(range_y) || range_x == 0) {
-    $('#art_canvas tr.y' + obj.tr_y + ' td.x' + obj.td_x).html(img);
+    $('#art_canvas tr.y' + obj.start_tr_y + ' td.x' + obj.start_td_x).html(img);
     return true;
   }
   let radius = Math.sqrt(Math.pow(range_y,2) + Math.pow(range_x,2));
@@ -4698,8 +4704,8 @@ function stroke_path_with_line(e) {
     radians = Math.PI - radians;
   }
   for (let i = 0; i <= radius; i++) {
-    let x = Math.floor(obj.td_x + i * Math.cos(radians));
-    let y = Math.floor(obj.tr_y + i * Math.sin(radians));
+    let x = Math.floor(obj.start_td_x + i * Math.cos(radians));
+    let y = Math.floor(obj.start_tr_y + i * Math.sin(radians));
     $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
   }
 }
@@ -4719,37 +4725,37 @@ function stroke_path_with_rect(e) {
     obj.bef_x = e.touches[0].clientX;
     obj.bef_y = e.touches[0].clientY;
   }
+  td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+  let next_x = obj.td_x;
+  let next_y = obj.tr_y;
   let left_x, top_y;
-  if (obj.start_x <= obj.bef_x) {
-    left_x = obj.start_x;
+  if (obj.start_td_x <= next_x) {
+    left_x = obj.start_td_x;
   } else {
-    left_x = obj.bef_x;
+    left_x = next_x;
   }
-  if (obj.start_y <= obj.bef_y) {
-    top_y = obj.start_y;
+  if (obj.start_tr_y <= next_y) {
+    top_y = obj.start_tr_y;
   } else {
-    top_y = obj.bef_y;
+    top_y = next_y;
   }
-  td_xy_bgColor_in_obj (left_x, top_y);
-  let range_x = Math.abs(obj.bef_x - obj.start_x);
-  let range_y = Math.abs(obj.bef_y - obj.start_y);
-  range_x = Math.floor(range_x / obj.range);
-  range_y = Math.floor(range_y / obj.range);
+  let range_x = Math.abs(next_x - obj.start_td_x);
+  let range_y = Math.abs(next_y - obj.start_tr_y);
   input_arry_into_art_canvas_td (e);
   if (isNaN(range_x) || isNaN(range_y)) {
-    $('#art_canvas tr.y' + obj.tr_y + ' td.x' + obj.td_x).html(img);
+    $('#art_canvas tr.y' + obj.start_tr_y + ' td.x' + obj.start_td_x).html(img);
     return true;
   }
   for (let i = 0; i <= range_x; i++) {
-    let x = obj.td_x + i;
-    let y = obj.tr_y;
+    let x = left_x + i;
+    let y = top_y;
     $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
     y += range_y;
     $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
   }
   for (let j = 0; j <= range_y; j++) {
-    let x = obj.td_x;
-    let y = obj.tr_y + j;
+    let x = left_x;
+    let y = top_y + j;
     $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
     x += range_x;
     $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
@@ -4771,21 +4777,21 @@ function stroke_path_with_arc(e) {
     obj.bef_x = e.touches[0].clientX;
     obj.bef_y = e.touches[0].clientY;
   }
-  td_xy_bgColor_in_obj (obj.start_x, obj.start_y);
-  let range_x = obj.bef_x - obj.start_x;
-  let range_y = obj.bef_y - obj.start_y;
-  range_x = Math.floor(range_x / obj.range);
-  range_y = Math.floor(range_y / obj.range);
+  td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+  let next_x = obj.td_x;
+  let next_y = obj.tr_y;
+  let range_x = next_x - obj.start_td_x;
+  let range_y = next_y - obj.start_tr_y;
   input_arry_into_art_canvas_td (e);
   if (isNaN(range_x) || isNaN(range_y)) {
-    $('#art_canvas tr.y' + obj.tr_y + ' td.x' + obj.td_x).html(img);
+    $('#art_canvas tr.y' + obj.start_tr_y + ' td.x' + obj.start_td_x).html(img);
     return true;
   }
   let radius = Math.sqrt(Math.pow(range_y,2) + Math.pow(range_x,2));
   let circumference = 2 * Math.PI * radius;
   for (let i = 0; i <= circumference; i++) {
-    let x =  Math.round(obj.td_x + Math.cos(i / radius) * radius);
-    let y =  Math.round(obj.tr_y + Math.sin(i / radius) * radius);
+    let x =  Math.round(obj.start_td_x + Math.cos(i / radius) * radius);
+    let y =  Math.round(obj.start_tr_y + Math.sin(i / radius) * radius);
     $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
   }
 }
@@ -4800,14 +4806,14 @@ function return_first_copyed_obj (e) {
     y = obj.tr_y - h;
   }
   if (obj.want_if === 'resize_area_with_rect') {
-    td_xy_bgColor_in_obj (obj.start_x, obj.start_y);
+    td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+    let next_x = obj.td_x;
+    let next_y = obj.tr_y;
     put_img = obj.copy_img;
-    x = obj.td_x - (put_img[0].length - 1);
-    y = obj.tr_y - (put_img.length - 1);
-    let range_x = obj.bef_x - obj.start_x;
-    let range_y = obj.bef_y - obj.start_y;
-    range_x = Math.floor(range_x / obj.range);
-    range_y = Math.floor(range_y / obj.range);
+    x = obj.start_td_x - (put_img[0].length - 1);
+    y = obj.start_tr_y - (put_img.length - 1);
+    let range_x = next_x - obj.start_td_x;
+    let range_y = next_y - obj.start_tr_y;
     if (isNaN(range_x) || isNaN(range_y)) {
       return true;
     }
@@ -4815,19 +4821,17 @@ function return_first_copyed_obj (e) {
     h = put_img.length + range_y;
   }
   if (obj.want_if === 'roll_area_with_rect') {
-    td_xy_bgColor_in_obj (obj.start_x, obj.start_y);
+    td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+    let next_x = obj.td_x;
+    let next_y = obj.tr_y;
     put_img = obj.copy_img;
     w = put_img[0].length;
     h = put_img.length;
-    xc = obj.td_x - w / 2;
-    yc = obj.tr_y - h / 2;
+    xc = obj.start_td_x - w / 2;
+    yc = obj.start_tr_y - h / 2;
     piBase = Math.atan(h / w);
-    let center_X = obj.start_x - obj.range * w / 2;
-    let center_Y = obj.start_y - obj.range * h / 2;
-    let range_x = obj.bef_x - center_X;
-    let range_y = obj.bef_y - center_Y;
-    range_x = Math.floor(range_x / obj.range);
-    range_y = Math.floor(range_y / obj.range);
+    let range_x = next_x - xc;
+    let range_y = next_y - yc;
     piMove = Math.atan(range_y / Math.abs(range_x));
     if (range_x < 0) {
       piMove = Math.PI - piMove;
@@ -4871,6 +4875,7 @@ function rect_FirstUp(e) {
 }
 function rect_SecondUp(e) {
   all_removeEventListener ();
+  $('#art_canvas td.selected').removeClass('selected');
   let copyed_obj = return_first_copyed_obj (e);
   if (obj.want_if === 'copy_area_with_rect') {
     for (let j = 0; j < copyed_obj.h; j++) {
@@ -4977,26 +4982,26 @@ function copy_area_with_rect(e) {
   }
   input_arry_into_art_canvas_td (e);
   if (obj.copy_img === '') {
+    td_xy_bgColor_in_obj (obj.bef_x, obj.bef_y);
+    let next_x = obj.td_x;
+    let next_y = obj.tr_y;
     let left_x, top_y;
-    if (obj.start_x <= obj.bef_x) {
-      left_x = obj.start_x;
+    if (obj.start_td_x <= next_x) {
+      left_x = obj.start_td_x;
     } else {
-      left_x = obj.bef_x;
+      left_x = next_x;
     }
-    if (obj.start_y <= obj.bef_y) {
-      top_y = obj.start_y;
+    if (obj.start_tr_y <= next_y) {
+      top_y = obj.start_tr_y;
     } else {
-      top_y = obj.bef_y;
+      top_y = next_y;
     }
-    td_xy_bgColor_in_obj (left_x, top_y);
-    let range_x = Math.abs(obj.bef_x - obj.start_x);
-    let range_y = Math.abs(obj.bef_y - obj.start_y);
-    range_x = Math.floor(range_x / obj.range);
-    range_y = Math.floor(range_y / obj.range);
+    let range_x = Math.abs(next_x - obj.start_td_x);
+    let range_y = Math.abs(next_y - obj.start_tr_y);
     for (let h = 0; h <= range_y; h++) {
       for (let w = 0; w <= range_x; w++) {
-        let x = obj.td_x + w;
-        let y = obj.tr_y + h;
+        let x = left_x + w;
+        let y = top_y + h;
         $('#art_canvas tr.y' + y + ' td.x' + x).addClass('selected');
       }
     }
@@ -5024,6 +5029,7 @@ function copy_area_with_rect(e) {
           }
           let img = copyed_obj.put_img[j][i];
           $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
+          $('#art_canvas tr.y' + y + ' td.x' + x).addClass('selected');
         }
       }
     }
@@ -5060,6 +5066,7 @@ function copy_area_with_rect(e) {
           }
           let img = copyed_obj.put_img[obj_h][obj_w];
           $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
+          $('#art_canvas tr.y' + y + ' td.x' + x).addClass('selected');
         }
       }
     }
@@ -5081,6 +5088,7 @@ function copy_area_with_rect(e) {
           }
           let img = copyed_obj.put_img[h][w];
           $('#art_canvas tr.y' + y + ' td.x' + x).html(img);
+          $('#art_canvas tr.y' + y + ' td.x' + x).addClass('selected');
         }
       }
     }
@@ -5137,23 +5145,55 @@ function return_want_if_at_tool (e) {
     return want_if;
   }
 }
+/*https://javascript.programmer-reference.com/js-getboundingclientrect/*/
+function scroll_canvas_at_edge (e) {
+  let element = document.querySelector('#editing_areas');
+  let c_h = element.clientHeight;
+  let c_t = element.getBoundingClientRect().top;
+  let c_w = element.clientWidth;
+  let c_l = element.getBoundingClientRect().left;
+  let move_x, move_y;
+  if (obj.use === 'mouse_at_art') {
+    move_x = e.clientX;
+    move_y = e.clientY;
+  }
+  if (obj.use === 'touch_at_art') {
+    move_x = e.touches[0].clientX;
+    move_y = e.touches[0].clientY;
+  }
+  if (move_x <= c_l + 40) {
+    element.scrollLeft -= 20;
+  }
+  if (move_y <= c_t + 40) {
+    element.scrollTop -= 20;
+  }
+  if (move_x >= c_w + c_l - 40) {
+    element.scrollLeft += 20;
+  }
+  if (move_y >= c_h + c_t - 40) {
+    element.scrollTop += 20;
+  }
+}
 function choose_fun (e) {
+  scroll_canvas_at_edge (e);
   if (obj.want_if === 'pen_tool' || obj.want_if === 'eraser_points_tool') {
     point_draw_action(e);
   }
-  if (obj.want_if === 'stroke_path_with_line') {
-    stroke_path_with_line(e);
-  }
-  if (obj.want_if === 'stroke_path_with_rect') {
-    stroke_path_with_rect(e);
-  }
-  if (obj.want_if === 'stroke_path_with_arc') {
-    stroke_path_with_arc(e);
-  }
-  if (obj.want_if === 'copy_area_with_rect' || obj.want_if === 'resize_area_with_rect' || obj.want_if === 'roll_area_with_rect') {
-    document.removeEventListener('mouseup', end_fun);
-    document.removeEventListener("touchend", end_fun);
-    copy_area_with_rect(e);
+  else {
+    if (obj.want_if === 'stroke_path_with_line') {
+      stroke_path_with_line(e);
+    }
+    if (obj.want_if === 'stroke_path_with_rect') {
+      stroke_path_with_rect(e);
+    }
+    if (obj.want_if === 'stroke_path_with_arc') {
+      stroke_path_with_arc(e);
+    }
+    if (obj.want_if === 'copy_area_with_rect' || obj.want_if === 'resize_area_with_rect' || obj.want_if === 'roll_area_with_rect') {
+      document.removeEventListener('mouseup', end_fun);
+      document.removeEventListener("touchend", end_fun);
+      copy_area_with_rect(e);
+    }
   }
 }
 function return_arry_of_art_canvas_td (e) {
@@ -5288,6 +5328,9 @@ ac.onmousedown = function (e) {
   }
   else {
     obj.start_img = return_arry_of_art_canvas_td (e);
+    td_xy_bgColor_in_obj (obj.start_x, obj.start_y);
+    obj.start_td_x = obj.td_x;
+    obj.start_tr_y = obj.tr_y;
     ac.addEventListener('mousemove', choose_fun);
     document.addEventListener('mouseup', end_fun);
   }
@@ -5336,6 +5379,9 @@ ac.addEventListener("touchstart", function (e) {
   }
   else {
     obj.start_img = return_arry_of_art_canvas_td (e);
+    td_xy_bgColor_in_obj (obj.start_x, obj.start_y);
+    obj.start_td_x = obj.td_x;
+    obj.start_tr_y = obj.tr_y;
     ac.addEventListener("touchmove", choose_fun);
     document.addEventListener("touchend", end_fun);
   }
