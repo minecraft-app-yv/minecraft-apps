@@ -11,6 +11,9 @@ $(document).scroll(function () {
   if (h >= 1000) {
     $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(../art/img/codePen_MineBK31.jpg)');
   }
+  if (h >= 1600) {
+    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(../3d_art/img/codePen_MineBK4.jpg)');
+  }
 });
 //close_button
 $('.close_button').click((e) => {
