@@ -1,0 +1,571 @@
+/*reserve css*/
+.hidden, .hide {
+  display: none;
+}
+/*reset*/
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+li {
+  list-style: none;
+}
+* {
+  margin:0;
+  padding: 0;
+  font-weight: normal;
+  font-size: medium;
+  line-height: normal;
+}
+/*style*/
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  background-image: radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(../img/BG.jpg);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+/*https://web.havincoffee.com/design/2020/09/2009281.html*/
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+/*header*/
+header {
+  width: 100%;
+  z-index: 50;
+  position: fixed;
+  top: 0;
+  height: 80px;
+  background: #404040;
+}
+#header_hanb, .header_hanb_icon {
+  display: none;
+}
+header .header_form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0 auto;
+  width: 1200px;
+}
+header .header_form nav {
+  text-align: center;
+  width: 40%;
+  font-size: 12px;
+}
+header .header_form nav ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+header .header_form nav ul li,
+header .header_form nav ul li a,
+header .header_form nav ul li label {
+  font-size: small;
+  font-weight: bold;
+  line-height: 80px;
+  margin: 0;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  text-decoration-color: #fff;
+  height: 80px;
+  position: relative;
+}
+/*acdn*/
+header .header_form .syncer-acdn {
+  cursor: pointer;
+}
+header .header_form .syncer-acdn span.arrow,
+header .header_form .syncer-acdn span.arrow::before,
+header .header_form .syncer-acdn span.arrow::after {
+  display: inline-block;
+  content: '';
+  height: 3px;
+  position: relative;
+  background: white;
+  line-height: 0;
+  transition: all 0.5s ease-in-out;
+}
+header .header_form .syncer-acdn span.arrow {
+  width: 20px;
+  height: 1px;
+  transform: translate(0,5px);
+  transform-origin: bottom center;
+}
+header .header_form .syncer-acdn span.arrow::before {
+  position: absolute;
+  width: 10px;
+  top: -15px;
+  left: 0;
+  transform: rotateZ(45deg) translate(4px,0);
+}
+header .header_form .syncer-acdn span.arrow::after {
+  position: absolute;
+  width: 10px;
+  top: -4px;
+  left: 0;
+  transform: rotateZ(-45deg) translate(11px,0);
+}
+header .header_form .syncer-acdn.open span.arrow {
+  width: 20px;
+  height: 1px;
+  transform: rotateX(180deg) translate(0,-5px);
+}
+header .header_form .syncer-acdn.open span.arrow::before {
+  top: 7px;
+}
+header .header_form .syncer-acdn.open span.arrow::after {
+  top: 18px;
+}
+header .header_form .syncer-acdn-child {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 80px;
+  left: 0;
+  display: none;
+}
+header .header_form .syncer-acdn-child li,
+header .header_form .syncer-acdn-child li a {
+  height: 30px;
+}
+header .header_form .syncer-acdn-child li a {
+  line-height: 30px;
+  white-space: nowrap;
+  display: block;
+  text-align: left;
+  text-decoration: none;
+  padding: 0 5%;
+  width: 110%;
+  background: #505050;
+  box-shadow: inset 0 1px 1px black;
+}
+header .header_form .syncer-acdn:hover {
+  color: yellowgreen;
+}
+header .header_form .syncer-acdn:hover span.arrow,
+header .header_form .syncer-acdn:hover span.arrow::before,
+header .header_form .syncer-acdn:hover span.arrow::after {
+  background: yellowgreen;
+}
+header .header_form .syncer-acdn-child li a:hover {
+  cursor: pointer;
+  background: yellowgreen;
+  color: black;
+}
+/*header decided*/
+header .header_form nav ul li .language,
+header .header_form nav ul li label.e_language {
+  line-height: 40px;
+  height: 40px;
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px -1px 1px rgba(0, 0, 0, 0.5);
+}
+header .header_form nav ul li p.language,
+header .header_form nav ul li label.j_language {
+  line-height: 40px;
+  height: 40px;
+  display: block;
+  cursor: pointer;
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), inset 0px -1px 1px rgba(255, 255, 255, 0.5);
+  background: yellowgreen;
+  color: black;
+}
+#display_language:checked ~ .header_form label.j_language {
+  box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px -1px 1px rgba(0, 0, 0, 0.5);
+  background: none;
+  color: #fff;
+}
+#display_language:checked ~ .header_form label.e_language {
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), inset 0px -1px 1px rgba(255, 255, 255, 0.5);
+  background: yellowgreen;
+  color: black;
+}
+header .header_form nav ul li i.fa-github {
+  line-height: 80px;
+  font-size: large;
+  color: transparent;
+  background: rgba(36,41,47,0.8);
+  text-shadow:0 0 0.1em rgba(255,255,255,0.05), 0.01em 0.04em 0.03em rgba(255,255,255,0.4);
+  -webkit-background-clip : text;
+}
+header .header_form nav ul li i.fa-twitter {
+  line-height: 80px;
+  font-size: large;
+  color: transparent;
+  background: rgba(0,255,255,0.2);
+  text-shadow:0 0 0.1em rgba(255,255,255,0.05),0.01em 0.04em 0.03em rgba(255,255,255,0.4);
+  -webkit-background-clip : text;
+}
+header .header_form nav ul li i.fa-file-shield {
+  line-height: 80px;
+  font-size: large;
+  color: transparent;
+  background: rgba(100,0,200,0.2);
+  text-shadow:0 0 0.1em rgba(255,255,255,0.05),0.01em 0.04em 0.03em rgba(255,255,255,0.4);
+  -webkit-background-clip : text;
+}
+header .header_form h1 {
+  margin:0;
+  text-align: center;
+  width: 20%;
+  height: 100%;
+  display: block;
+}
+header .header_form h1 img {
+  height: 80px;
+  object-fit: contain;
+}
+header img:hover {
+  opacity: 0.3;
+}
+header .header_form .app_language,
+header .header_form .text,
+header .header_2windows .text {
+  display: inline;
+}
+/*main*/
+main {
+  position: relative;
+  top: 80px;
+  text-align: center;
+  color: #fff;
+}
+main section {
+  position: relative;
+  display: block;
+  height: 600px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+main .center_form {
+  display: block;
+  width: 900px;
+}
+main h1 {
+  font-size: xx-large;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+main h2 {
+  font-size: x-large;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+main p {
+  width: 90%;
+  font-size: large;
+  font-weight: normal;
+  margin: 0 auto 10px auto;
+}
+/*footer*/
+footer {
+  position: relative;
+  text-align: center;
+  background: #404040;
+  height: 80px;
+  padding-top: 10px;
+  z-index: 50;
+  margin-top: 80px;
+}
+footer p {
+  margin-bottom: 10px;
+}
+footer small, footer a {
+  color: #fff;
+}
+footer a {
+  text-decoration: underline;
+}
+footer img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+/*for PC*/
+@media screen and (min-width: 1200px) {
+  header .header_2windows {
+    display: none;
+  }
+}
+@media screen and (min-width: 920px) {
+  main section .text_box {
+    position: absolute;
+    top: 50%;
+    -webkit-transform : translate(0,-50%);
+    transform : translate(0,-50%);
+    width: 450px;
+    color: #fff;
+    text-align: left;
+  }
+  main section:nth-child(even) img {
+    float: left;
+  }
+  main section:nth-child(even) .text_box {
+    right: 0;
+    float: left;
+    margin-left: 50px;
+  }
+  main section:nth-child(odd) img {
+    float: right;
+  }
+  main section:nth-child(odd) .text_box {
+    left: 0;
+    float: right;
+    margin-right: 50px;
+  }
+}
+/*for 2 windows*/
+@media screen and (max-width: 1200px) and (min-width: 640px) {
+  header .header_form h1,
+  header .header_2windows nav,
+  header .header_form nav li.header_pc {
+    display: none;
+  }
+  header .header_2windows img {
+    margin:0 auto;
+    display: block;
+    height: 60px;
+    object-fit: contain;
+  }
+  /*acdn*/
+  header .header_form .syncer-acdn-child {
+    top: 20px;
+  }
+  /*header decided*/
+  header .header_form,
+  header .header_form nav {
+    height: 20px;
+    width: 100%;
+  }
+  header .header_form nav.header_2windows_style {
+    width: 160%;
+  }
+  header .header_form nav ul li,
+  header .header_form nav ul li a,
+  header .header_form nav ul li label {
+    height: 20px;
+    font-size: small;
+    font-weight: bold;
+    line-height: 20px;
+    margin: 0;
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    text-decoration-color: #fff;
+  }
+  header .header_form nav ul li i.fa-github,
+  header .header_form nav ul li i.fa-twitter,
+  header .header_form nav ul li i.fa-file-shield {
+    line-height: 20px;
+    font-size: small;
+  }
+  header .header_form nav ul li p.language,
+  header .header_form nav ul li a.language,
+  header .header_form nav ul li label.j_language,
+  header .header_form nav ul li label.e_language {
+    line-height: 20px;
+    height: 20px;
+    width: 50%;
+    float: left;
+  }
+}
+@media screen and (max-width: 920px) {
+  main .center_form {
+    width: 100%;
+    position: relative;
+  }
+  main section .text_box {
+    color: #fff;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+/*for smartphone*/
+@media screen and (max-width: 640px) {
+  header .header_form {
+    display: none;
+  }
+  main h1 {
+    margin: 0 auto 10px auto;
+    width: 90%;
+    font-size: 120%;
+    border-bottom: 2px solid #fff;
+  }
+  main h2 {
+    margin: 0 auto 10px auto;
+    width: 90%;
+    font-size: 110%;
+    border-bottom: 2px solid #fff;
+  }
+  main p {
+    width: 90%;
+    margin: 0 auto 10px auto;
+    font-size: 90%;
+  }
+  header .header_2windows img {
+    margin:0 auto;
+    display: block;
+    object-fit: contain;
+    height: 80px;
+  }
+  /*header decided*/
+  header .header_2windows nav ul li,
+  header .header_2windows nav ul li a {
+    font-size: small;
+    font-weight: bold;
+    line-height: 25px;
+    margin: 0;
+    color: #fff;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    text-decoration-color: #fff;
+    display: block;
+  }
+  header .header_2windows nav ul li {
+    padding-left: 1em;
+    height: 25px;
+    border-bottom: 1px solid #fff;
+  }
+  header .header_2windows nav ul li:not(.parent):hover,
+  header .header_2windows nav ul li a:hover,
+  #display_language:checked ~ .header_2windows li.j_language:hover,
+  #display_language ~ .header_2windows li.e_language:hover {
+    background: #fff;
+    color: black;
+    text-decoration-color: black;
+    text-decoration-line: none;
+    cursor: pointer;
+  }
+  header .header_2windows nav ul li.selected_language,
+  #display_language ~ .header_2windows li.j_language,
+  #display_language:checked ~ .header_2windows li.e_language {
+    background: yellowgreen;
+    color: black;
+  }
+  #display_language:checked ~ .header_2windows li.j_language,
+  #display_language ~ .header_2windows li.e_language {
+    color: #fff;
+    background: none;
+  }
+  /*header hanburger button*/
+  header .header_2windows nav {
+    text-align: left;
+    position: fixed;
+    z-index: 25;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    transform-origin: top left;
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+  }
+  header .header_hanb_icon_form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+  }
+  .header_hanb_icon {
+    top: 20px;
+    left: 15px;
+    background: forestgreen;
+    cursor: pointer;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background-image: linear-gradient(45deg,forestgreen 0%,forestgreen 15%,darkslategray 15%,green 20%,green 80%,darkslategray 85%,forestgreen 85%,forestgreen 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header_hanb_icon span,
+  .header_hanb_icon span::before,
+  .header_hanb_icon span::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 5px;
+    background-image: linear-gradient(180deg,darkslategray 0%,darkgreen 25%,darkgreen 75%,mediumaquamarine 100%);
+    position: relative;
+    transition: all 0.5s ease-in-out;
+  }
+  .header_hanb_icon span::before {
+    top: -8px;
+  }
+  .header_hanb_icon span::after {
+    top: 3px;
+  }
+  #header_hanb:checked ~ .header_hanb_icon_form span {
+    background-image: none;
+    background-color: #fff;
+    transform: scale(0.25) rotateZ(90deg) translate(-20px, 0px);
+  }
+  #header_hanb:checked ~ .header_hanb_icon_form span::before {
+    background-image: none;
+    background-color: #fff;
+    transform: scale(4) rotateZ(-45deg) translate(5px, 0px);
+  }
+  #header_hanb:checked ~ .header_hanb_icon_form span::after {
+    background-image: none;
+    background-color: #fff;
+    transform: scale(4) rotateZ(-135deg) translate(-5px, 0px);
+  }
+  #header_hanb:checked ~ .header_hanb_icon_form .header_hanb_icon {
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
+    border-radius: 4px;
+    background-image: linear-gradient(green 0%, lightgreen 100%);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.8);
+    border-bottom: solid 2px green;
+  }
+  #header_hanb:checked ~ .header_hanb_icon_form .header_hanb_icon:active {
+    -webkit-transform: translateY(0px);
+    transform: translateY(0px);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.7);
+    border-bottom: none;
+  }
+  #header_hanb:checked ~ nav {
+    transform: scale(1);
+    opacity: 1;
+  }
+  header .header_2windows nav ul li.parent {
+    background: green;
+  }
+  header .header_2windows nav ul li:not(.parent)::before {
+    content: 'L';
+    float: left;
+    text-indent: 10px;
+    margin-right: 5px;
+    color: gray;
+    line-height: 20px;
+  }
+  /*main*/
+  article {
+    padding: 0 10px;
+  }
+}
+@media screen and (max-width: 450px) {
+  main section img {
+    width: 100%;
+    height: auto;
+  }
+}
