@@ -1322,7 +1322,7 @@ $(document).ready(function () {
   }
   //palette color img add crossorigin
   // WARNING: if can display img do -> crossorigin="anonymous
-  $('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
+  //$('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
   //make pixel table
   let layer_count = 30;
   let col = "";
