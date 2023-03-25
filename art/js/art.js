@@ -5225,7 +5225,14 @@ if (typeof sessionStorage === 'undefined') {
       })
       value_obj['top_menu_data'] = get_memorys_data;
       //color boxes of palette board cp
-      value_obj['cp_html'] = $('#CP').html();
+      let get_cp_data = {};
+      i = 0;
+      let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
+      arry_cp_class.forEach(function(value, index) {
+        get_cp_data['cpObj_data' + i] = $('#CP .' + arry_cp_class[i]).html();
+        i++;
+      });
+      value_obj['cp_html'] = get_cp_data;
       //input sample_view rgb
       value_obj['ratio_r'] = $('#sample_ratio_r').val();
       value_obj['ratio_g'] = $('#sample_ratio_g').val();
@@ -5269,8 +5276,20 @@ if (typeof sessionStorage === 'undefined') {
         i++;
       })
       //color boxes of palette board cp
-      $('#CP').html('');
-      $('#CP').append(getData['cp_html']);
+      let get_cp_obj = getData['cp_html'];
+      let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
+      for (let j = 0; j < arry_cp_class.length; j++) {
+        let html = get_cp_obj['cpObj_data' + j];
+        if (html === undefined || html === '') {
+          if (getData['cp_html'] !== undefined || getData['cp_html'] !== '') {
+            $('#CP').html('');
+            $('#CP').append(getData['cp_html']);
+            break;
+          }
+          continue;
+        }
+        $('#CP .' + arry_cp_class[j]).html(html);
+      }
       //input sample_view rgb
       $('#sample_ratio_r').val(getData['ratio_r']);
       $('#sample_ratio_g').val(getData['ratio_g']);
