@@ -2383,13 +2383,17 @@ $('.advanced_tool .sub_advanced_tool > label').click((e) => {
   let id = $('.advanced_tool .sub_advanced_tool > label:hover').attr('for');
   toggle_radio_at_area (id);
 });
-//pop up explain of roll_back_and_forward
-$('.roll_back_and_forward .roll_back, .roll_back_and_forward .roll_forward').on('mouseenter', function(e) {
-  obj.pop_text = $(this).children('span.shortcut').text();
+//pop up explain of roll_back_and_forward & ZoomUpDown
+let pop_text_selecter = '.roll_back_and_forward .roll_back';
+pop_text_selecter += ', .roll_back_and_forward .roll_forward';
+pop_text_selecter += ', .zoom_in_out_scope label[for="plus_scope_icon"]';
+pop_text_selecter += ', .zoom_in_out_scope label[for="minus_scope_icon"]';
+$(pop_text_selecter).on('mouseenter', function(e) {
+  obj.pop_text = $(this).children('span.shortcut').html();
   obj.use = 'mouse';
   pop_text_at_hover (e);
 });
-$('.roll_back_and_forward .roll_back, .roll_back_and_forward .roll_forward').on('mouseleave', function(e) {
+$(pop_text_selecter).on('mouseleave', function(e) {
   $('#CP_img_explanation').remove();
 });
 //pop up explain of sub_advanced_tool
@@ -4580,13 +4584,23 @@ function roll_forward (e) {
 $('.roll_back_and_forward .roll_forward').click((e) => {
   roll_forward (e);
 });
-//shortcuts for roll_back_and_forward
+//shortcuts for roll_back_and_forward & ZoomUpDown
 document.addEventListener('keydown', ctrl_keydown_event,false);
 document.addEventListener('keydown', ctrl_shift_keydown_event,false);
 function ctrl_keydown_event(e){
   if(event.ctrlKey && !event.shiftKey && event.code === "KeyZ") {
     e.preventDefault();
     $('.roll_back_and_forward .roll_back').click();
+  }
+  if(event.ctrlKey && !event.shiftKey && event.code === "NumpadAdd") {
+    event.preventDefault();
+    let scope = 'plus';
+    scope_action(scope, 'shortcut', 'shortcut');
+  }
+  if(event.ctrlKey && !event.shiftKey && event.code === "NumpadSubtract") {
+    event.preventDefault();
+    let scope = 'minus';
+    scope_action(scope, 'shortcut', 'shortcut');
   }
 }
 function ctrl_shift_keydown_event(e){
@@ -4722,22 +4736,30 @@ function ctrl_click_event(e){
 function move_to_click_point(scale, left, top) {
   let target_html = '<div id="to_move_point" style="position:absolute;"></div>';
   if ($('#map_art').prop('checked')) {
-    $('#map_art_canvas').append(target_html);
-    $('#to_move_point').css('top', top);
-    $('#to_move_point').css('left', left);
+    if (left !== 'shortcut') {
+      $('#map_art_canvas').append(target_html);
+      $('#to_move_point').css('top', top);
+      $('#to_move_point').css('left', left);
+    }
     $("#map_art_canvas").css("transform", "scale(" + scale + ")");
-    let target = document.getElementById('to_move_point');
-    target.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
+    if (left !== 'shortcut') {
+      let target = document.getElementById('to_move_point');
+      target.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
+    }
   }
   if ($('#pixel_art').prop('checked')) {
-    $('#pixel_art_canvas').append(target_html);
-    $('#to_move_point').css('top', top);
-    $('#to_move_point').css('left', left);
+    if (left !== 'shortcut') {
+      $('#pixel_art_canvas').append(target_html);
+      $('#to_move_point').css('top', top);
+      $('#to_move_point').css('left', left);
+    }
     $("#pixel_art_canvas").css("transform", "scale(" + scale + ")");
-    let target = document.getElementById('to_move_point');
-    target.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
+    if (left !== 'shortcut') {
+      let target = document.getElementById('to_move_point');
+      target.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
+    }
   }
-  if ($('#draw_art').prop('checked')) {
+  if ($('#draw_art').prop('checked') && left !== 'shortcut') {
     $('#draw_art_canvas_frame').append(target_html);
     $('#to_move_point').css('top', top);
     $('#to_move_point').css('left', left);
@@ -4760,9 +4782,11 @@ function scope_action(scope, x, y) {
     scale = $("#draw_art_scale").val();
   }
   scale = Number(scale);
-  if ($('#map_art').prop('checked') || $('#pixel_art').prop('checked')) {
-    y = (100 * y) / scale;
-    x = (100 * x) / scale;
+  if (x !== 'shortcut') {
+    if ($('#map_art').prop('checked') || $('#pixel_art').prop('checked')) {
+      y = (100 * y) / scale;
+      x = (100 * x) / scale;
+    }
   }
   if (scope === 'plus') {
     scale = scale * 1.1;
@@ -4793,15 +4817,21 @@ function scope_action(scope, x, y) {
     ctx.putImageData(value, 0, 0);
     let url = c.toDataURL();
     img = new Image();
-    img.src = url;
     img.onload = function (e) {
       dac.width = 600 * scale;
       dac.height = 600 * scale;
       dactx.drawImage(img, 0, 0, dac.width, dac.height);
-      left = x - dac.getBoundingClientRect().left;
-      top = y - dac.getBoundingClientRect().top;
+      if (x !== 'shortcut') {
+        left = x - dac.getBoundingClientRect().left;
+        top = y - dac.getBoundingClientRect().top;
+      }
+      if (x === 'shortcut') {
+        left = x;
+        top = y;
+      }
       move_to_click_point(scale, left, top);
     };
+    img.src = url;
   }
 }
 mac.addEventListener("mousedown", function (e) {

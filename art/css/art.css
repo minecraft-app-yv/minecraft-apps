@@ -1877,6 +1877,9 @@ input.appear:focus ~ label.appear {
   transform-origin: top left;
   transform: translate(0, 35px);
 }
+.zoom_in_out_scope span.shortcut {
+  display: none;
+}
 /*only normal_tool*/
 .normal_tool label[for="pen_tool"],
 .normal_tool label[for="fill_tool_of_paint_roller"],
