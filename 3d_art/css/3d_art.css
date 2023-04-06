@@ -1786,6 +1786,9 @@ aside button span {
   content: ':';
   right: 0;
 }
+#art_size:invalid {
+  color: red;
+}
 .input_forms .for_scroll {
   display: block;
   width: 100%;
@@ -2119,7 +2122,8 @@ aside button span {
   box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.2);
 }
 #CP_icons .CP_icons_form i {
-  line-height: 35px;
+  height: 100%;
+  line-height: 30px;
 }
 #CP_icons .CP_icons_form label[for="make_palette_board_compact"] {
   padding: 0 7.5px;
@@ -2735,7 +2739,7 @@ main {
   background: lightcyan;
 }
 #art_canvas td.selected * {
-  opacity: 0.7;
+  opacity: 0.8;
 }
 #art_canvas td img {
   display: none;
