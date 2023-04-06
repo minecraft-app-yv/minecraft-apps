@@ -3054,7 +3054,6 @@ function click_palette_color_boxes(id,x,y) {
   $('#CP_icons .rgb span.rgbR').text(obj_data.rgb[0]);
   $('#CP_icons .rgb span.rgbG').text(obj_data.rgb[1]);
   $('#CP_icons .rgb span.rgbB').text(obj_data.rgb[2]);
-  $('#CP_icons .selected_block_img').css('border-color', 'rgb(' + obj_data.rgb[0] + ',' + obj_data.rgb[1] + ',' + obj_data.rgb[2] + ')');
 }
 //drag and drop into selected same types
 function removeEvent_selected_color_box (e) {
@@ -4208,7 +4207,6 @@ function get_picked_colorBox_from_id(id) {
   $('#CP_icons .rgb span.rgbR').text(obj_data.rgb[0]);
   $('#CP_icons .rgb span.rgbG').text(obj_data.rgb[1]);
   $('#CP_icons .rgb span.rgbB').text(obj_data.rgb[2]);
-  $('#CP_icons .selected_block_img').css('border-color', 'rgb(' + obj_data.rgb[0] + ',' + obj_data.rgb[1] + ',' + obj_data.rgb[2] + ')');
 }
 function td_xy_bgColor_in_obj (clientX,clientY) {
   let td_x,tr_y,td_bgColor;
