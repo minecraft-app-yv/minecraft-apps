@@ -48,10 +48,12 @@ function toggle_radio_checked (id) {
     return true;
   }
 }
-function return_img_html (palette_color_box_id) {
+function return_img_html_arry_rgb (palette_color_box_id) {
   let img = $("#" + palette_color_box_id + " .CPimg").find('img.mImg');
   let html = jQuery("<div>").append(img.clone(true)).html();
-  return html;
+  let color = img.css('backgroundColor');
+  let arry_rgb = rgb_to_return_array_rgb (color);
+  return {html: html, rgb: arry_rgb};
 }
 function add_new_obj_to_memory_obj (key,value) {
   memory_obj[key] = value;
@@ -1246,8 +1248,7 @@ function rgb_to_return_array_rgb (rgb) {
   rgb = rgb.replace("rgb(", "");
   rgb = rgb.replace("rgba(", "");
   rgb = rgb.replace(")", "");
-  rgb = rgb.replace(" ", "");
-  rgb = rgb.replace(" ", "");
+  rgb = rgb.replaceAll(" ", "");
   rgb = rgb.split(",");
   return rgb;
 }
@@ -3048,8 +3049,12 @@ function click_palette_color_boxes(id,x,y) {
   $("#CP *").removeClass("check");
   $("#" + id).addClass("check");
   //pick color display
-  let img_html = return_img_html (id);
-  $('.palette .palette_button .selected_block_img, #CP_icons .selected_block_img').html(img_html);
+  let obj_data = return_img_html_arry_rgb (id);
+  $('.palette .palette_button .selected_block_img, #CP_icons .selected_block_img').html(obj_data.html);
+  $('#CP_icons .rgb span.rgbR').text(obj_data.rgb[0]);
+  $('#CP_icons .rgb span.rgbG').text(obj_data.rgb[1]);
+  $('#CP_icons .rgb span.rgbB').text(obj_data.rgb[2]);
+  $('#CP_icons .selected_block_img').css('border-color', 'rgb(' + obj_data.rgb[0] + ',' + obj_data.rgb[1] + ',' + obj_data.rgb[2] + ')');
 }
 //drag and drop into selected same types
 function removeEvent_selected_color_box (e) {
@@ -4198,8 +4203,12 @@ function get_picked_colorBox_from_id(id) {
   $("#CP *").removeClass("check");
   $("#" + id).addClass("check");
   //pick color display
-  let img_html = return_img_html (id);
-  $('.palette .palette_button .selected_block_img, #CP_icons .selected_block_img').html(img_html);
+  let obj_data = return_img_html_arry_rgb (id);
+  $('.palette .palette_button .selected_block_img, #CP_icons .selected_block_img').html(obj_data.html);
+  $('#CP_icons .rgb span.rgbR').text(obj_data.rgb[0]);
+  $('#CP_icons .rgb span.rgbG').text(obj_data.rgb[1]);
+  $('#CP_icons .rgb span.rgbB').text(obj_data.rgb[2]);
+  $('#CP_icons .selected_block_img').css('border-color', 'rgb(' + obj_data.rgb[0] + ',' + obj_data.rgb[1] + ',' + obj_data.rgb[2] + ')');
 }
 function td_xy_bgColor_in_obj (clientX,clientY) {
   let td_x,tr_y,td_bgColor;
