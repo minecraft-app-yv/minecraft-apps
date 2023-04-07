@@ -919,6 +919,7 @@ header {
   top: 0;
   height: 80px;
   background: #404040;
+  transition: top 0.5s ease-in-out;
 }
 #header_hanb, .header_hanb_icon {
   display: none;
@@ -929,6 +930,7 @@ header .header_form {
   justify-content: space-around;
   margin: 0 auto;
   width: 1200px;
+  position: relative;
 }
 header .header_form nav {
   text-align: center;
@@ -1109,6 +1111,29 @@ header .header_form nav ul li.roll_back i.fa-rotate-right {
   text-shadow:0 0 0.1em rgba(255,255,255,0.05), 0.01em 0.04em 0.03em rgba(255,255,255,0.4);
   background-color: rgba(0,255,50,0.5);
 }
+header .header_form label[for="close_header_form"] {
+  display: block;
+  position: absolute;
+  background: #404040;
+  bottom: -29px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+  border-radius: 0 0 50% 50%;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+header .header_form label[for="close_header_form"] i {
+  transition: transform 0.5s ease-in-out;
+}
+header .header_form label[for="close_header_form"]:hover,
+header .header_form label[for="close_header_form"]:active {
+  background: yellowgreen;
+  color: black;
+}
 #auto_download_storage:checked ~ .header_form nav ul li.roll_back,
 #auto_download_storage:checked ~ .header_2windows nav ul li.auto_storage {
   display: none;
@@ -1141,6 +1166,24 @@ header img:hover {
   top: 5.5px;
   color: #fff;
 }
+#close_header_form:checked ~ header {
+  top: -80px;
+}
+#close_header_form:checked ~ header .header_form label[for="close_header_form"] i {
+  transform: rotateX(180deg);
+}
+#close_header_form:checked ~ .top_menu {
+  top: 0;
+}
+#close_header_form:checked ~ aside,
+#close_header_form:checked ~ .icon_button_fixed_frame,
+#close_header_form:checked ~ main {
+  top: 30px;
+}
+#close_header_form:checked ~ aside .aside_menu,
+#close_header_form:checked ~ aside .aside_menu .hanb_icon_form {
+  height: 720px;
+}
 /*++top menu++*/
 .top_menu {
   position: fixed;
@@ -1150,6 +1193,7 @@ header img:hover {
   height: 10px;
   z-index: 30;
   background: #000;
+  transition: top 0.5s ease-in-out;
 }
 .top_menu input {
   display: none;
@@ -1299,6 +1343,7 @@ aside {
   width: 1200px;
   z-index: 25;
   transform: translate(-50%, 0);
+  transition: top 0.5s ease-in-out;
 }
 /*ForHanburgerButton*/
 #hanb {
@@ -1801,6 +1846,7 @@ aside button span {
   position: fixed;
   top: 110px;
   width: 100%;
+  transition: top 0.5s ease-in-out;
 }
 .icon_button_fixed_frame .icon_button_form {
   position: relative;
@@ -2637,6 +2683,7 @@ main {
   position: relative;
   top: 110px;
   box-shadow: 0 0 20px rgba(0 0, 0, 0.2);
+  transition: top 0.5s ease-in-out;
 }
 /*drag and drop images into web*/
 /*https://r17n.page/2020/10/24/html-js-drag-and-drop-file/*/
@@ -3232,6 +3279,9 @@ footer i.fa-circle-question:hover {
   }
   header .header_2windows nav ul li.share_buttons:active::before {
     color: white;
+  }
+  header .header_form label[for="close_header_form"] {
+    display: none;
   }
   /*header hanburger button*/
   header .header_2windows nav {
