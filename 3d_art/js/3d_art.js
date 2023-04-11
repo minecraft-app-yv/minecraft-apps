@@ -2916,6 +2916,17 @@ $("#palette_upload").change(function (e) {
 });
 //remove_CP_boxes
 $('#CP_icons .CP_icons_form button.remove_CP_box').click((e) => {
+  let str = '';
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = "選択したブロックを完全に消去してよろしいですか？";
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = "Are you sure you want to erase the selected block completely?";
+  }
+  let result = window.confirm(str);
+  if (!result) {
+    return false;
+  }
   let target_class = $('#CP label.check').parent().attr('class');
   if (target_class === 'color_named_blocks') {
     return false;
