@@ -2786,8 +2786,8 @@ $("#for_palette_resize").on('touchend', function(e) {
 /*make_palette_board_compact*/
 $('#CP_icons .CP_icons_form label[for="make_palette_board_compact"]').click(function (e) {
   if (!$('#make_palette_board_compact').prop('checked')) {
-    $('#CP label:not(label[for="add_new_blocks"], label.style_delete), #CP p.big_title').addClass('hidden');
-    $('#CP input:not(#add_new_blocks, #new_block_img)').each(function (e) {
+    $('#CP p.big_title').addClass('hidden');
+    $('#CP input').each(function (e) {
       let id = $(this).attr('id');
       $('#' + id).prop('checked', false);
     });
@@ -2795,15 +2795,14 @@ $('#CP_icons .CP_icons_form label[for="make_palette_board_compact"]').click(func
     obj.$icon = $("#for_palette_resize");
     obj.target_h = obj.$target.height();
     obj.icon_top = obj.$icon.offset().top - obj.$target.offset().top;
-    let cp_h = $('#CP').height();
     let cp_icons_h = $('#CP_icons').height();
-    let sum_h = cp_h + cp_icons_h + 50;
+    let sum_h = cp_icons_h + 150;
     let difference_h = sum_h - obj.target_h;
     obj.$target.css('height', obj.target_h + difference_h + 'px');
     obj.$icon.css('top', obj.icon_top + difference_h + 'px');
   }
   if ($('#make_palette_board_compact').prop('checked')) {
-    $('#CP label:not(label[for="add_new_blocks"], label.style_delete), #CP p.big_title').removeClass('hidden');
+    $('#CP p.big_title').removeClass('hidden');
     obj.$target = $(".palette .palette_board");
     obj.$icon = $("#for_palette_resize");
     obj.target_h = obj.$target.height();
