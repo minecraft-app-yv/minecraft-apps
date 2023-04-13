@@ -1438,6 +1438,17 @@ function otm_save(e) {
 }
 //one time memory delete action
 function otm_delete(e) {
+  let str = '';
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = "保存データが消えますがよろしいですか？";
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = "Saved data will be lost, is this OK?";
+  }
+  let result = window.confirm(str);
+  if (!result) {
+    return false;
+  }
   let target_id = $(e).parent().attr('id');
   if ($('#' + target_id).attr('data-check').length) {
     $('#' + target_id).removeAttr('data-check');
@@ -1535,6 +1546,17 @@ $('#add_memory').click((e) => {
 });
 //remove memorys to acdn
 $('#remove_memory').click((e) => {
+  let str = '';
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = "選択したメモリが消えますがよろしいですか？";
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = "Are you sure you want to erase the selected memory?";
+  }
+  let result = window.confirm(str);
+  if (!result) {
+    return false;
+  }
   let target_id = $('#syncer-acdn-03 li[data-target="target_memorys"] p.target').parent().attr('id');
   $('#' + target_id).remove();
   let key = target_id;
