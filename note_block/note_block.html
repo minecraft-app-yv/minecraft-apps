@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="keywords" content="マイクラ, 建築, ピクセルアート, ツール, 3D">
+  <meta name="description" content="
+  このページでは、マイクラで建築をする際に役に立つリアルの画像を簡単に3Dピクセルアートに落とし込めるアプリを充実させています。
+  平面画像を角度を調整して正面のピクセルアートにして、レイヤー複製等のツールを使い3Dアートにして行きます。
+  また、確認用の表示も3D表示にしてより本番に近い形でデータを確認出来ます。
+  最後に出来たデータをエクセルのデータにして、レイヤー毎のブロック配置とブロック必要個数を設計図データとしてダウンロード出来る所まで行えます。
+  ">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+  <title>マイクラの作曲用音符シミュレーター</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="shortcut icon" href="../index/img/web_icon.png" type="image/png" sizes="16x16">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap">
+  <link href="https://fonts.cdnfonts.com/css/ds-digital" rel="stylesheet">
+  <link rel="stylesheet" href="./css/note_block.css" media="screen">
+</head>
+<body>
+  <div id="wait" class="hidden"></div>
+  <div id="plan_to_download_Blueprint">
+    <div class="plan_to_download_Blueprint">
+      <input id="plan_menu_0" name="plan_menu" type="radio" class="hidden" checked>
+      <input id="plan_menu_1" name="plan_menu" type="radio" class="hidden">
+      <input id="plan_menu_2" name="plan_menu" type="radio" class="hidden">
+      <input id="plan_menu_3" name="plan_menu" type="radio" class="hidden">
+      <input id="Blueprint_direction_horizon" name="Blueprint_direction" type="radio" class="hidden" checked>
+      <input id="Blueprint_direction_vertical" name="Blueprint_direction" type="radio" class="hidden">
+      <input id="not_need_block_skins" name="want_block_skins" type="radio" class="hidden" checked>
+      <input id="need_block_skins" name="want_block_skins" type="radio" class="hidden">
+      <div class="plan_menu">
+        <div class="first plan">
+          <p>設計図の向きを選択して下さい</p>
+          <label class="left" for="Blueprint_direction_horizon">
+            <span>
+              <div class="multi_layers">
+                <div class="layer"></div>
+                <div class="layer first"></div>
+                <div class="layer second"></div>
+                <div class="layer third"></div>
+                <div class="layer fourth"></div>
+                <div class="layer fifth"></div>
+              </div>
+              水平輪切り
+            </span>
+          </label>
+          <label class="right" for="Blueprint_direction_vertical">
+            <span>
+              <div class="multi_layers">
+                <div class="layer"></div>
+                <div class="layer first"></div>
+                <div class="layer second"></div>
+                <div class="layer third"></div>
+              </div>
+              垂直輪切り
+            </span>
+          </label>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="second plan">
+          <p>ブロックのテクスチャが必要か選択して下さい</p>
+          <label class="left" for="not_need_block_skins">
+            <span>
+              <div class="color_box_img"></div>
+              テクスチャ不要<br>
+              <i class="fa-solid fa-shuttle-space fast"></i>
+            </span>
+          </label>
+          <label class="right" for="need_block_skins">
+            <span>
+              <img src="../art/img/blocks/Block_of_Diamond.jpg" alt="block">
+              テクスチャ必要<br>
+              <i class="fa-solid fa-shuttle-space fast"></i>
+            </span>
+          </label>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="third plan">
+          <p>問題がなければ開始をクリックして下さい</p>
+          <div class="frame">
+            <div class="title">設計図の向き</div>
+            <div class="response">
+              <span class="Blueprint_direction_horizon">水平輪切り</span>
+              <span class="Blueprint_direction_vertical">垂直輪切り</span>
+            </div>
+          </div>
+          <div class="frame">
+            <div class="title">ブロックのテクスチャ</div>
+            <div class="response">
+              <span class="not_need_block_skins">テクスチャ不要</span>
+              <span class="need_block_skins">テクスチャ必要</span>
+            </div>
+          </div>
+          <button type="button" id="check_datas_button">開始</button>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="fourth plan">
+          <p>問題がなければダウンロードをクリックして下さい</p>
+          <div class="frame">
+            <i class="fa-solid fa-angles-left"></i>
+            <i class="fa-solid fa-angles-right"></i>
+            <div class="canvas">
+            </div>
+          </div>
+          <button type="button" id="download_datas_button">ダウンロード</button>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="slideshow_icon">
+          <div class="back_plan">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <label class="slideshow" for="plan_menu_0"></label>
+          <label class="slideshow" for="plan_menu_1"></label>
+          <label class="slideshow" for="plan_menu_2"></label>
+          <label class="slideshow" for="plan_menu_3" data-id="last_plan"></label>
+          <div class="forward_plan">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+      <div class="close_button" data-close-id="plan_to_download_Blueprint">✕</div>
+    </div>
+  </div>
+  <div id="for_sample_view">
+    <div class="for_sample_view_form">
+      <input id="make_menu_0" name="make_menu" type="radio" class="hidden" checked>
+      <input id="make_menu_1" name="make_menu" type="radio" class="hidden">
+      <input id="make_menu_2" name="make_menu" type="radio" class="hidden">
+      <div class="make_menu">
+        <div class="first plan">
+          <div class="title">近似色を選んでボタンを押して下さい</div>
+          <label>
+            <input id="sample_view_0_input" name="sample_view" type="radio" class="hidden" checked>
+            <canvas id="sample_view_0" width="171" height="171" style="background:white;"></canvas>
+            <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
+          </label>
+          <label>
+            <input id="sample_view_1_input" name="sample_view" type="radio" class="hidden">
+            <canvas id="sample_view_1" width="171" height="171" style="background:white;"></canvas>
+            <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
+          </label>
+          <label>
+            <input id="sample_view_2_input" name="sample_view" type="radio" class="hidden">
+            <canvas id="sample_view_2" width="171" height="171" style="background:white;"></canvas>
+            <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
+          </label>
+          <label>
+            <input id="sample_view_3_input" name="sample_view" type="radio" class="hidden">
+            <canvas id="sample_view_3" width="171" height="171" style="background:white;"></canvas>
+            <p>r:<span class="r">0.30</span> g:<span class="g">0.59</span> b:<span class="b">0.11</span></p>
+          </label>
+          <div class="sample_view_rgb_input">
+            <input id="sample_ratio_r" type="number" value="0.30" step="0.01" max="1">
+            <input id="sample_ratio_g" type="number" value="0.59" step="0.01" max="1">
+            <input id="sample_ratio_b" type="number" value="0.11" step="0.01" max="1">
+          </div>
+          <button id="sample_view_default_ratio">数値初期化</button>
+          <button id="sample_view_retry">リトライ</button>
+          <button id="sample_view_to_go">選択して実行</button>
+        </div>
+        <div class="second plan">
+          <div class="title">正面に必要な画像を切り抜いて下さい</div>
+          <canvas id="check_photo" width="400" height="400"></canvas>
+          <p>xyz-サイズ&nbsp;<input id="art_size_in_make_plan" type="number" placeholder="最大64"></p>
+          <button type="button" id="check_photo_button">チェック</button>
+        </div>
+        <div class="third plan">
+          <div class="title">この画像でピクセル変換を行います</div>
+          <canvas id="change_to_pixel_sample" width="400" height="400"></canvas>
+          <button type="button" id="change_to_pixel_button">開始</button>
+        </div>
+        <div class="slideshow_icon">
+          <div class="back_plan">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <label class="slideshow" for="make_menu_0"></label>
+          <label class="slideshow" for="make_menu_1"></label>
+          <label class="slideshow" for="make_menu_2" data-id="last_plan"></label>
+          <div class="forward_plan">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+      <div class="sub_selected_sound_box">
+        <label for="add_new_blocks" class="box_selected">新ブロック</label>
+        <label for="color_named_blocks" class="box_selected">色の名前付きブロック</label>
+        <label for="easy_to_gather">入手易</label>
+        <label for="hard_in_overworld">入手難</label>
+        <label for="in_nether">ネザー</label>
+        <label for="in_end">エンド</label>
+      </div>
+      <div class="close_button" data-close-id="for_sample_view">✕</div>
+    </div>
+  </div>
+  <!--https://webdesign-trends.net/entry/3632-->
+  <div id="share_buttons">
+    <div class="share_buttons_form">
+      <a class="facebook" href="#" rel="nofollow noopener" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+      <a class="twitter" href="#" rel="nofollow" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+      <a class="hatena" href="#" rel="nofollow noopener" target="_blank">B!</a>
+      <a class="line" href="#" target="_blank" rel="nofollow noopener"><i class="fa-brands fa-line"></i></a>
+      <a class="getpocket" href="#" rel="nofollow" rel="nofollow" target="_blank"><i class="fa-brands fa-get-pocket"></i></a>
+      <div class="close_button" data-close-id="share_buttons">✕</div>
+    </div>
+  </div>
+  <div id="score_time_input">
+    <div class="score_time_input_form">
+      <div class="menu">
+        <div class="title">作成する楽譜の時間を入力して下さい</div>
+        <div class="time_display">00:05.0</div>
+        <div class="time-bar">
+          <div class="range minutes">
+            <input type="range" min="0" max="59" step="1" value="0">
+            <input type="text" maxlength="2" pattern="[0-5][0-9]" placeholder="mm" value="00">
+          </div>
+          <div class="mark">
+            <div class="line"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="space"></div>
+          </div>
+          <div class="range seconds">
+            <input type="range" min="0" max="59" step="1" value="5">
+            <input type="text" maxlength="2" pattern="[0-5][3-9]" placeholder="ss" value="05">
+          </div>
+          <div class="mark">
+            <div class="line"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="space"></div>
+          </div>
+          <div class="range point_seconds">
+            <input type="range" min="0" max="9" step="1" value="0">
+            <input type="text" maxlength="2" pattern=".[0-9]" placeholder=".s" value=".0">
+          </div>
+          <div class="mark point_seconds">
+            <div class="line"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="space"></div>
+          </div>
+        </div>
+        <div class="time-input">
+          <input type="text" maxlength="7" pattern="[0-5][0-9]:[0-5][0-9].[0-9]" placeholder="mm:ss.s">
+        </div>
+        <button type="button" id="change_score_time">変更</button>
+      </div>
+      <div class="close_button" data-close-id="score_time_input">✕</div>
+    </div>
+  </div>
+  <div id="for_add_new_group">
+    <div class="for_add_new_group_form">
+      <input id="add_new_group_0" name="new_group_menu" type="radio" class="hidden" checked>
+      <input id="add_new_group_1" name="new_group_menu" type="radio" class="hidden">
+      <input id="add_new_group_2" name="new_group_menu" type="radio" class="hidden">
+      <input id="add_new_sounds" type="file" accept="audio/*" class="hidden">
+      <div class="plan_menu">
+        <div class="first plan">
+          <p>アイコンに使う画像をアップロードして下さい</p>
+          <div id="drag-and-drop-area">
+            <div class="explain">
+              <i class="fa-solid fa-image"></i>
+              <div class="text">Drag here one image or Click</div>
+            </div>
+            <canvas width="100" height="100"></canvas>
+          </div>
+          <div class="title_name">
+            <input type="text" required minlength="1" maxlength="15" size="10" value="group name">
+          </div>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="second plan">
+          <p>新しいグループの音階をアップロードして下さい</p>
+          <table>
+            <thead>
+              <tr><th class="keyboard">Keyboard</th><th class="file_name">File name</th><th class="all_upload"><i class="fa-solid fa-down-long"></i>All</th></tr>
+            </thead>
+            <tbody>
+              <tr class="n0"><th>0 F#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n1"><th>1 G</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n2"><th>2 G#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n3"><th>3 A</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n4"><th>4 A#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n5"><th>5 B</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n6"><th>6 C</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n7"><th>7 C#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n8"><th>8 D</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n9"><th>9 D#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n10"><th>10 E</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n11"><th>11 F</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n12"><th>12 F#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n13"><th>13 G</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n14"><th>14 G#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n15"><th>15 A</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n16"><th>16 A#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n17"><th>17 B</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n18"><th>18 C</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n19"><th>19 C#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n20"><th>20 D</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n21"><th>21 D#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n22"><th>22 E</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n23"><th>23 F</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+              <tr class="n24"><th>24 F#</th><td class="file_name">----</td><td class="one_upload"><i class="fa-solid fa-file-import"></i></td></tr>
+            </tbody>
+          </table>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="third plan">
+          <p>問題がなければ開始をクリックして下さい</p>
+          <div class="frame">
+            <div class="title">設計図の向き</div>
+            <div class="response">
+              <span class="Blueprint_direction_horizon">水平輪切り</span>
+              <span class="Blueprint_direction_vertical">垂直輪切り</span>
+            </div>
+          </div>
+          <div class="frame">
+            <div class="title">ブロックのテクスチャ</div>
+            <div class="response">
+              <span class="not_need_block_skins">テクスチャ不要</span>
+              <span class="need_block_skins">テクスチャ必要</span>
+            </div>
+          </div>
+          <button type="button" id="check_datas_button">開始</button>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="fourth plan">
+          <p>問題がなければダウンロードをクリックして下さい</p>
+          <div class="frame">
+            <i class="fa-solid fa-angles-left"></i>
+            <i class="fa-solid fa-angles-right"></i>
+            <div class="canvas">
+            </div>
+          </div>
+          <button type="button" id="download_datas_button">ダウンロード</button>
+          <div class="for_scroll"></div>
+        </div>
+        <div class="slideshow_icon">
+          <div class="back_plan">
+            <i class="fa-solid fa-chevron-left"></i>
+          </div>
+          <label class="slideshow" for="add_new_group_0"></label>
+          <label class="slideshow" for="add_new_group_1"></label>
+          <label class="slideshow" for="add_new_group_2" data-id="last_plan"></label>
+          <div class="forward_plan">
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+      <div class="close_button" data-close-id="for_add_new_group">✕</div>
+    </div>
+  </div>
+  <input id="all_close_icons" type="checkbox" class="hidden">
+  <input id="close_header_form" type="checkbox" class="hidden">
+  <label id="selected_sound_box"></label>
+  <!--main code-->
+  <header>
+    <input id="auto_download_storage" type="checkbox" class="hidden" checked>
+    <div class="header_2windows">
+      <a href="../index/index.html"><img src="../index/img/AppMinecraft_logo.png" alt="Useful app for Minecraft"></a>
+      <input id="header_hanb" type="checkbox">
+      <div class="header_hanb_icon_form">
+        <label for="header_hanb" class="header_hanb_icon"><span></span></label>
+      </div>
+      <nav>
+        <ul>
+          <li class="parent">アプリ</li>
+          <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> チャンク境界チェッカー</a></li>
+          <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> マップ・ピクセルアート用シミュレーター</a></li>
+          <li><a href="../3d_art/3d_art.html"><i class="fa-solid fa-cube"></i> 建築・3Dピクセルアート用シミュレーター</a></li>
+          <li class="parent auto_storage">ストレージデータダウンロード</li>
+          <li class="roll_back auto_storage"><i class="fa-sharp fa-solid fa-database"></i>&nbsp;<i class="fa-solid fa-rotate-right" style="transform:rotateY(180deg);"></i></li>
+          <li class="share_buttons"><i class="fa-solid fa-share"></i> シェア</li>
+          <li class="parent">Language</li>
+          <li class="selected_language"><p class="language">Japanese</p></li>
+          <li><a href="./3d_art_eng.html" class="language">English</a></li>
+        </ul>
+      </nav>
+      <div class="sub_header_form">
+        <label for="auto_download_storage">
+          <div class="auto_download_storage"><i class="fa-sharp fa-solid fa-database"></i></div>
+        </label>
+        <label for="all_close_icons" class="close_tools"><i class="fa-solid fa-toolbox"></i></label>
+      </div>
+    </div>
+    <div class="header_form">
+      <nav class="header_2windows_style">
+        <ul>
+          <li class="syncer-acdn" data-target="syncer-acdn-02">
+            アプリ <span class="arrow"></span>
+            <ul id="syncer-acdn-02" class="syncer-acdn-child">
+              <li><a href="../chunk_checker/chunk_checker.html"><i class="fa-solid fa-check"></i> チャンク境界チェッカー</a></li>
+              <li><a href="../art/art.html"><i class="fa-solid fa-palette"></i> マップ・ピクセルアート用シミュレーター</a></li>
+              <li><a href="../3d_art/3d_art.html"><i class="fa-solid fa-cube"></i> 建築・3Dピクセルアート用シミュレーター</a></li>
+            </ul>
+          </li>
+          <li><a href="https://github.com/minecraft-app-yv/minecraft-apps"><i class="fa-brands fa-github"></i></a></li>
+          <li class="share_buttons"><i class="fa-solid fa-share"></i></li>
+          <li><a href="../index/privacy_policy.html"><i class="fa-solid fa-file-shield"></i></a></li>
+          <li class="roll_back">
+            <button type="button">
+              <i class="fa-sharp fa-solid fa-database"></i>
+              <i class="fa-solid fa-rotate-right" style="transform:rotateY(180deg);"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <h1>
+        <a href="../index/index.html"><img src="../index/img/AppMinecraft_logo.png" alt="Useful app for Minecraft"></a>
+      </h1>
+      <nav>
+        <ul>
+          <li>
+            <p class="language">Japanese</p>
+            <a href="./3d_art_eng.html" class="language">English</a></li>
+          </li>
+          <li class="header_pc">
+            <label for="auto_download_storage">
+              <div class="auto_download_storage"><i class="fa-sharp fa-solid fa-database"></i></div>
+            </label>
+            <label for="all_close_icons" class="close_tools"><i class="fa-solid fa-toolbox"></i></label>
+          </li>
+        </ul>
+      </nav>
+      <label for="close_header_form"><i class="fa-solid fa-chevron-up"></i></label>
+    </div>
+  </header>
+  <div class="top_menu">
+    <ul>
+      <li id="OTM" class="syncer-acdn" data-target="syncer-acdn-03">
+        <i class="fa-solid fa-bookmark"></i>
+        <span class="thin_text">&nbsp;保存</span>
+        <span class="wid_text">&nbsp;キャンパス一時保存</span>
+      </li>
+      <ul id="syncer-acdn-03" class="syncer-acdn-child">
+        <li class="top_menu_acdn_action_tool">
+          <div id="remove_memory"><i class="fa-solid fa-square-minus"></i></div>
+          <div id="add_memory"><i class="fa-solid fa-square-plus"></i></div>
+          <div id="change_memory_text"><span>AB&nbsp;</span></div>
+          <a id="download_memory" href="#"><i class="fa-solid fa-download"></i></a>
+          <label class="upload_memory">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <input type="file" id="upload_memory" accept="text/plain" class="hidden">
+          </label>
+        </li>
+        <li data-target="target_memorys" id="OTM_cell_1">
+          <p onclick="otm_check(this)">&#9633;</p>
+          <span onclick="otm_load(this)">1</span>
+          <i class="fa-solid fa-bookmark" onclick="otm_save(this)"></i>
+          <i class="fa-solid fa-delete-left" onclick="otm_delete(this)"></i>
+        </li>
+        <li data-target="target_memorys" id="OTM_cell_2">
+          <p onclick="otm_check(this)">&#9633;</p>
+          <span onclick="otm_load(this)">2</span>
+          <i class="fa-solid fa-bookmark" onclick="otm_save(this)"></i>
+          <i class="fa-solid fa-delete-left" onclick="otm_delete(this)"></i>
+        </li>
+        <li data-target="target_memorys" id="OTM_cell_3">
+          <p onclick="otm_check(this)">&#9633;</p>
+          <span onclick="otm_load(this)">3</span>
+          <i class="fa-solid fa-bookmark" onclick="otm_save(this)"></i>
+          <i class="fa-solid fa-delete-left" onclick="otm_delete(this)"></i>
+        </li>
+        <li data-target="target_memorys" id="OTM_cell_4">
+          <p onclick="otm_check(this)">&#9633;</p>
+          <span onclick="otm_load(this)">4</span>
+          <i class="fa-solid fa-bookmark" onclick="otm_save(this)"></i>
+          <i class="fa-solid fa-delete-left" onclick="otm_delete(this)"></i>
+        </li>
+        <li data-target="target_memorys" id="OTM_cell_5">
+          <p onclick="otm_check(this)">&#9633;</p>
+          <span onclick="otm_load(this)">5</span>
+          <i class="fa-solid fa-bookmark" onclick="otm_save(this)"></i>
+          <i class="fa-solid fa-delete-left" onclick="otm_delete(this)"></i>
+        </li>
+        <li data-target="target_memorys" id="OTM_cell_6">
+          <p onclick="otm_check(this)">&#9633;</p>
+          <span onclick="otm_load(this)">6</span>
+          <i class="fa-solid fa-bookmark" onclick="otm_save(this)"></i>
+          <i class="fa-solid fa-delete-left" onclick="otm_delete(this)"></i>
+        </li>
+      </ul>
+      <li id="upload_audio_file"><i class="fa-solid fa-file-audio"></i><span class="pc_text">&nbsp;Upload</span></li>
+      <li id="display_plan_of_Blueprint"><i class="fa-solid fa-file-excel"></i><span class="pc_text">&nbsp;Download</span></li>
+      <li id="clear_score"><i class="fa-solid fa-trash-can"></i><span class="pc_text">&nbsp;消去</span></li>
+    </ul>
+  </div>
+  <aside>
+    <input id="hanb" type="checkbox">
+    <div class="aside_menu">
+      <!--hanburgerButton-->
+      <div class="hanb_icon_form">
+        <label for="hanb" class="hanb_icon"><span></span></label>
+        <div class="included_instruments"></div>
+      </div>
+      <div class="selected_block_img">
+        <img src="../note_block/img/Pling_Electric_piano.png" alt="Pling_Electric_piano" data-parent="pling">
+      </div>
+      <div class="input_forms">
+        <div class="title">
+          <div class="upside_menu">
+            <input id="add_CP_group" type="file" accept="image/png" class="hidden">
+            <button type="button" id="add_CP_group_button"><i class="fa-solid fa-object-group"></i></button>
+            <input id="remove_CP_group" type="checkbox" class="hidden">
+            <label for="remove_CP_group"><i class="fa-solid fa-object-ungroup"></i></label>
+            <a class="palette_download" href="#"><i class="fa-solid fa-download"></i></a>
+            <label class="palette_upload">
+              <i class="fa-solid fa-file-arrow-up"></i>
+              <input type="file" id="palette_upload" accept="text/plain" class="hidden">
+            </label>
+          </div>
+          <div class="downside_menu">
+            <input id="change_instrument_icon" type="checkbox" class="hidden">
+            <label for="change_instrument_icon"><i class="fa-solid fa-image"></i></label>
+            <input id="change_CP_group_name" type="checkbox" class="hidden">
+            <label for="change_CP_group_name">T</label>
+            <button class="remove_CP_box"><i class="fa-solid fa-square-minus"></i></button>
+            <input id="make_palette_board_compact" type="checkbox" class="hidden">
+            <label for="make_palette_board_compact"><i class="fa-solid fa-angle-up"></i></label>
+          </div>
+        </div>
+        <div id="CP">
+          <p class="big_title">Instrument</p>
+          <input id="add_new_blocks" type="checkbox" class="hidden">
+          <label for="add_new_blocks" class="small_title">新ブロック</label>
+          <div class="add_new_blocks">
+            <input id="new_block_img" type="file" accept="image/*" class="hidden" multiple>
+            <button type="button"><i class="fa-solid fa-file-circle-plus"></i></button>
+          </div>
+          <input id="bass_drum" type="checkbox" class="hidden">
+          <label for="bass_drum" class="small_title">
+            <img src="../note_block/img/Bass_Drum_Kick.png" alt="Bass_Drum_Kick" data-parent="bass_drum">
+            <span>Bass Drum</span>
+          </label>
+          <div class="bass_drum" data-id="instrument">
+            <label id="CP1" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Stone.jpg" alt="Stone">
+              </div>
+            </label>
+            <label id="CP2">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Netherrack.jpg" alt="Netherrack">
+              </div>
+            </label>
+            <label id="CP3">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Obsidian.jpg" alt="Obsidian">
+              </div>
+            </label>
+            <label id="CP4">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Sandstone.jpg" alt="Sandstone">
+              </div>
+            </label>
+          </div>
+          <input id="snare_drum" type="checkbox" class="hidden">
+          <label for="snare_drum" class="small_title">
+            <img src="../note_block/img/Snare_Drum.png" alt="Snare_Drum" data-parent="snare_drum">
+            <span>Snare Drum</span>
+          </label>
+          <div class="snare_drum" data-id="instrument">
+            <label id="CP5" class="selected">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Sand.jpg" alt="Sand">
+              </div>
+            </label>
+            <label id="CP6">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Gravel.jpg" alt="Gravel">
+              </div>
+            </label>
+            <label id="CP7">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Pink_Concrete_Powder.jpg" alt="Concrete_Powder">
+              </div>
+            </label>
+          </div>
+          <input id="hihat" type="checkbox" class="hidden">
+          <label for="hihat" class="small_title">
+            <img src="../note_block/img/Clicks_and_Sticks_Hihat.png" alt="Clicks_and_Sticks_Hihat" data-parent="hihat">
+            <span>Clicks and Sticks</span>
+          </label>
+          <div class="hihat" data-id="instrument">
+            <label id="CP8" class="selected">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Glass.jpg" alt="Glass">
+              </div>
+            </label>
+            <label id="CP9">
+              <div class="CPimg">
+                <img src="../3d_art/img/blocks/Sea_Lantern.jpg" alt="Sea_Lantern">
+              </div>
+            </label>
+            <label id="CP10">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Beacon.jpg" alt="Beacon">
+              </div>
+            </label>
+          </div>
+          <input id="string_bass" type="checkbox" class="hidden">
+          <label for="string_bass" class="small_title">
+            <img src="../note_block/img/Bass_String_Bass.png" alt="Bass_String_Bass" data-parent="string_bass">
+            <span>Bass</span>
+          </label>
+          <div class="string_bass" data-id="instrument">
+            <label id="CP11" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Oak_Planks.jpg" alt="Wood">
+              </div>
+            </label>
+          </div>
+          <input id="guitar" type="checkbox" class="hidden">
+          <label for="guitar" class="small_title">
+            <img src="../note_block/img/Guitar.png" alt="Guitar" data-parent="guitar">
+            <span>Guitar</span>
+          </label>
+          <div class="guitar" data-id="instrument">
+            <label id="CP12" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Gray_Wool.jpg" alt="Wool">
+              </div>
+            </label>
+          </div>
+          <input id="banjo" type="checkbox" class="hidden">
+          <label for="banjo" class="small_title">
+            <img src="../note_block/img/Banjo.png" alt="Banjo" data-parent="banjo">
+            <span>Banjo</span>
+          </label>
+          <div class="banjo" data-id="instrument">
+            <label id="CP13" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Hay_Bale.jpg" alt="Hay_Bale">
+              </div>
+            </label>
+          </div>
+          <input id="flute" type="checkbox" class="hidden">
+          <label for="flute" class="small_title">
+            <img src="../note_block/img/Flute.png" alt="Flute" data-parent="flute">
+            <span>Flute</span>
+          </label>
+          <div class="flute" data-id="instrument">
+            <label id="CP14">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Clay.jpg" alt="Clay">
+              </div>
+            </label>
+            <label id="CP15" class="selected">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Honeycomb_Block.jpg" alt="Honeycomb_Block">
+              </div>
+            </label>
+          </div>
+          <input id="didgeridoo" type="checkbox" class="hidden">
+          <label for="didgeridoo" class="small_title">
+            <img src="../note_block/img/Didgeridoo.png" alt="Didgeridoo" data-parent="didgeridoo">
+            <span>Didgeridoo</span>
+          </label>
+          <div class="didgeridoo" data-id="instrument">
+            <label id="CP16" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Pumpkin.jpg" alt="Pumpkin">
+              </div>
+            </label>
+          </div>
+          <input id="xylophone" type="checkbox" class="hidden">
+          <label for="xylophone" class="small_title">
+            <img src="../note_block/img/Xylophone.png" alt="Xylophone" data-parent="xylophone">
+            <span>Xylophone</span>
+          </label>
+          <div class="xylophone" data-id="instrument">
+            <label id="CP17" class="selected">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Bone_Block.jpg" alt="Bone_Block">
+              </div>
+            </label>
+          </div>
+          <input id="vibraphone" type="checkbox" class="hidden">
+          <label for="vibraphone" class="small_title">
+            <img src="../note_block/img/Iron_Xylophone_Vibraphone.png" alt="Iron_Xylophone_Vibraphone" data-parent="vibraphone">
+            <span>Iron Xylophone</span>
+          </label>
+          <div class="vibraphone" data-id="instrument">
+            <label id="CP18" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Block_of_Iron.jpg" alt="Block_of_Iron">
+              </div>
+            </label>
+          </div>
+          <input id="bells" type="checkbox" class="hidden">
+          <label for="bells" class="small_title">
+            <img src="../note_block/img/Bells_Glockenspiel.png" alt="Bells_Glockenspiel" data-parent="bells">
+            <span>Bells</span>
+          </label>
+          <div class="bells" data-id="instrument">
+            <label id="CP19" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Block_of_Gold.jpg" alt="Block_of_Gold">
+              </div>
+            </label>
+          </div>
+          <input id="cow_bell" type="checkbox" class="hidden">
+          <label for="cow_bell" class="small_title">
+            <img src="../note_block/img/Cow_Bell.png" alt="Cow_Bell" data-parent="cow_bell">
+            <span>Cow Bell</span>
+          </label>
+          <div class="cow_bell" data-id="instrument">
+            <label id="CP20" class="selected">
+              <div class="CPimg">
+                <img src="../note_block/img/blocks/Soul_Sand.jpg" alt="Soul_Sand">
+              </div>
+            </label>
+          </div>
+          <input id="chimes" type="checkbox" class="hidden">
+          <label for="chimes" class="small_title">
+            <img src="../note_block/img/Chimes.png" alt="Chimes" data-parent="chimes">
+            <span>Chimes</span>
+          </label>
+          <div class="chimes" data-id="instrument">
+            <label id="CP21" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Packed_Ice.jpg" alt="Packed_Ice">
+              </div>
+            </label>
+          </div>
+          <input id="bit" type="checkbox" class="hidden">
+          <label for="bit" class="small_title">
+            <img src="../note_block/img/Bit_Square_wave.png" alt="Bit_Square_wave" data-parent="bit">
+            <span>"Bit"</span>
+          </label>
+          <div class="bit" data-id="instrument">
+            <label id="CP22" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Block_of_Emerald.jpg" alt="Block_of_Emerald">
+              </div>
+            </label>
+          </div>
+          <input id="pling" type="checkbox" class="hidden">
+          <label for="pling" class="small_title">
+            <img src="../note_block/img/Pling_Electric_piano.png" alt="Pling_Electric_piano" data-parent="pling">
+            <span>"Pling"</span>
+          </label>
+          <div class="pling" data-id="instrument">
+            <label id="CP23" class="check selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Glowstone.jpg" alt="Glowstone">
+              </div>
+            </label>
+          </div>
+          <input id="harp" type="checkbox" class="hidden">
+          <label for="harp" class="small_title">
+            <img src="../note_block/img/Harp_piano.png" alt="Harp_piano" data-parent="harp">
+            <span>Harp</span>
+          </label>
+          <div class="harp" data-id="instrument">
+            <label id="CP24" class="selected">
+              <div class="CPimg">
+                <img src="../art/img/blocks/Dirt.jpg" alt="Any_other_blocks">
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="for_scroll"></div>
+      </div>
+    </div>
+  </aside>
+  <main>
+    <div id="editing_areas">
+      <div class="musical_score_form">
+        <table id="musical_score" data-fileName="">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+        <div class="for_scroll"></div>
+      </div>
+      <div id="control_panel">
+        <div class="volume_form">
+          <input id="volume_icons" type="checkbox" class="hidden">
+          <label for="volume_icons">
+            <i class="fa-solid fa-volume-high"></i>
+            <i class="fa-solid fa-volume-low"></i>
+            <i class="fa-solid fa-volume-xmark"></i>
+          </label>
+          <input type="range" id="volume_bar" value="50" min="0" max="100" orient="vertical">
+        </div>
+        <div class="backward-fast">
+          <i class="fa-solid fa-backward-fast"></i><span class="shortcut">Ctrl + &#8592;</span>
+        </div>
+        <div class="backward-step">
+          <i class="fa-solid fa-backward-step"></i><span class="shortcut">&#8592;</span>
+        </div>
+        <div class="player">
+          <input id="start_to_player" name="player" type="radio" class="hidden">
+          <input id="pause_to_player" name="player" type="radio" class="hidden" checked>
+          <label for="start_to_player"><i class="fa-solid fa-play"></i></label>
+          <label for="pause_to_player"><i class="fa-solid fa-pause"></i></label>
+          <span class="shortcut">Space</span>
+        </div>
+        <div class="forward-step">
+          <i class="fa-solid fa-forward-step"></i><span class="shortcut">&#8594;</span>
+        </div>
+        <div class="forward-fast">
+          <i class="fa-solid fa-forward-fast"></i><span class="shortcut">Ctrl + &#8594;</span>
+        </div>
+        <div class="hanb_menu_form">
+          <input id="hanb_menu" type="checkbox" class="hidden">
+          <label for="hanb_menu"><span></span></label>
+          <div class="hanb_menu">
+            <div class="score_time">
+              <i class="fa-solid fa-hourglass-end"></i> Time
+              <span class="shortcut">Ctrl + H</span>
+            </div>
+            <div class="copy_score">
+              <i class="fa-solid fa-copy"></i> Copy
+              <span class="shortcut">Ctrl + C</span>
+            </div>
+            <div class="paste_score">
+              <i class="fa-solid fa-paste"></i> Paste
+              <span class="shortcut">Ctrl + V</span>
+            </div>
+            <div class="roll_back">
+              <i class="fa-solid fa-rotate-right" style="transform:rotateY(180deg);"></i> Undo
+              <span class="shortcut">Ctrl + Z</span>
+            </div>
+            <div class="roll_forward">
+              <i class="fa-solid fa-rotate-right"></i> Redo
+              <span class="shortcut">Ctrl + Shift + Z</span>
+            </div>
+            <input id="play_mode" type="checkbox" class="hidden">
+            <label for="play_mode">
+              <div class="solo"><i class="fa-solid fa-user"></i> Solo</div>
+              <div class="ensemble"><i class="fa-solid fa-users"></i> Ensemble</div>
+            </label>
+            <input id="play_style" type="checkbox" class="hidden">
+            <label for="play_style">
+              <div class="repeat"><i class="fa-solid fa-repeat"></i> Repeat</div>
+              <div class="normal"><i class="fa-solid fa-arrow-turn-down" style="transform: rotate(-90deg);"></i> Normal</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p><a href="https://github.com/minecraft-app-yv/minecraft-apps"><small><i class="fa-brands fa-github"></i> GitHub</small></a></p>
+    <p><small>Written by <a href="https://twitter.com/yusuke5028198">@Yusuke M</a></small></p>
+    <p><a href="../index/privacy_policy.html">Privacy policy</a></p>
+    <label>
+      <input id="question_to_use" type="checkbox" class="hidden">
+      <div id="answer_to_questions"></div>
+      <input type="text" class="dummy_text hidden">
+      <i class="fa-solid fa-circle-question"></i>
+    </label>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.2/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="./js/note_block.js" charset="utf-8"></script>
+</body>
+</html>
