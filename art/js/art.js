@@ -849,6 +849,17 @@ $('#change_memory_text').click((e) => {
 });
 //canvas clear action
 $('#clear_canvas').click((e) => {
+  let str = '';
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = "キャンバスを消去します。";
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = "Clear the canvas.";
+  }
+  let result = window.confirm(str);
+  if (!result) {
+    return false;
+  }
   if($('#pixel_art').prop('checked') && !$('#map_canvas_open_icon').prop('checked')) {
     $('#pixel_art_canvas').attr('data-fileName', '');
     $("#pixel_art_canvas tbody td img").remove();
