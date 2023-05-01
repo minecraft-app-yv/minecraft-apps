@@ -1695,6 +1695,17 @@ $('#change_memory_text').click((e) => {
 });
 //canvas clear action
 $('#clear_canvas').click((e) => {
+  let str = '';
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = "キャンバスを消去します。";
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = "Clear the canvas.";
+  }
+  let result = window.confirm(str);
+  if (!result) {
+    return false;
+  }
   if ($('#art_size').val() === '') {
     $('#art_size').val(30);
   }
