@@ -723,7 +723,11 @@ function return_obj_make_Blueprint (e) {
   arry_block_score.unshift(key_text);
   //count block needed
   arry_block_needed = return_arry_count_block_needed(arry_block_needed);
-  return {p: arry_block_score, n: arry_block_needed, table: table_url_for_circuit};
+  return {
+    p: {name: 'music_sheet', sheet: arry_block_score},
+    n: {name: 'items_needed', sheet: arry_block_needed},
+    table: table_url_for_circuit
+  };
 }
 // WARNING: check crossorigin="anonymous" is active
 function folder_into_skin_canvas (zip, direction, arry) {
@@ -876,11 +880,17 @@ function s2ab(s) {
   }
   return buf;
 }
+function export_xlsx_from_files (obj) {
+  XLSX.readFile('../note_block/files/music_sheet.xlsx', { bookType: 'xlsx', bookSST: false, type: 'binary'});
+}
 function export_xlsx(obj) {
   let wopts = { bookType: 'xlsx', bookSST: false, type: 'binary'};
-  const workbook = XLSX.readFile('../note_block/files/music_sheet.xlsx');
-  workbook.Sheets[0] = XLSX.utils.aoa_to_sheet(obj.p);
-  workbook.Sheets[1] = XLSX.utils.aoa_to_sheet(obj.n);
+  let workbook = {SheetNames: [], Sheets: {}};
+  //input sheetname
+  let n = '';
+  n = (n)?n:obj.name;
+  workbook.SheetNames.push(n);
+  workbook.Sheets[n] = XLSX.utils.aoa_to_sheet(obj.sheet);
   let wbout = XLSX.write(workbook, wopts);
   let blob = new Blob([s2ab(wbout)], {type: 'application/octet-stream'});
   return blob;
@@ -898,12 +908,14 @@ function imgblob(url) {
 //download actions
 function downBlueprint(e) {
   let obj = return_obj_make_Blueprint ();
-  if (obj.n.length <= 0) {
+  if (obj.n.sheet.length <= 0) {
     return false;
   }
   //download data
   let zip = new JSZip();
-  zip.file('music_sheet.xlsx', export_xlsx(obj));
+  zip.file('items_needed.xlsx', export_xlsx_from_files(obj));
+  //zip.file('items_needed.xlsx', export_xlsx(obj.n));
+  //zip.file('music_sheet.xlsx', export_xlsx(obj.p));
   if ($('#not_need_circuit').prop('checked')) {
     //zipDownload
     zip.generateAsync({ type: "blob" }).then(function (content) {
