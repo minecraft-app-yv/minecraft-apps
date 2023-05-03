@@ -881,7 +881,7 @@ function s2ab(s) {
   return buf;
 }
 function export_xlsx_from_files (obj) {
-  XLSX.readFile('../note_block/files/music_sheet.xlsx', { bookType: 'xlsx', bookSST: false, type: 'binary'});
+  XLSX.readFile('../files/music_sheet.xlsx', { bookType: 'xlsx', bookSST: false, type: 'binary'});
 }
 function export_xlsx(obj) {
   let wopts = { bookType: 'xlsx', bookSST: false, type: 'binary'};
