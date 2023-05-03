@@ -24,87 +24,37 @@
     <div class="plan_to_download_Blueprint">
       <input id="plan_menu_0" name="plan_menu" type="radio" class="hidden" checked>
       <input id="plan_menu_1" name="plan_menu" type="radio" class="hidden">
-      <input id="plan_menu_2" name="plan_menu" type="radio" class="hidden">
-      <input id="plan_menu_3" name="plan_menu" type="radio" class="hidden">
-      <input id="Blueprint_direction_horizon" name="Blueprint_direction" type="radio" class="hidden" checked>
-      <input id="Blueprint_direction_vertical" name="Blueprint_direction" type="radio" class="hidden">
-      <input id="not_need_block_skins" name="want_block_skins" type="radio" class="hidden" checked>
-      <input id="need_block_skins" name="want_block_skins" type="radio" class="hidden">
+      <input id="not_need_circuit" name="want_block_skins" type="radio" class="hidden" checked>
+      <input id="need_circuit" name="want_block_skins" type="radio" class="hidden">
       <div class="plan_menu">
         <div class="first plan">
-          <p>設計図の向きを選択して下さい</p>
-          <label class="left" for="Blueprint_direction_horizon">
-            <span>
-              <div class="multi_layers">
-                <div class="layer"></div>
-                <div class="layer first"></div>
-                <div class="layer second"></div>
-                <div class="layer third"></div>
-                <div class="layer fourth"></div>
-                <div class="layer fifth"></div>
-              </div>
-              水平輪切り
-            </span>
+          <p>必要な設計図を選んで下さい</p>
+          <label class="left" for="not_need_circuit">
+            <div class="selector">
+              <div class="plan_img"><i class="fa-solid fa-file-excel"></i></div>
+              <div class="text_block"><span>ブロック</span><span>配置</span><span>のみ</span></div>
+              <i class="fa-solid fa-shuttle-space fast"></i>
+            </div>
           </label>
-          <label class="right" for="Blueprint_direction_vertical">
-            <span>
-              <div class="multi_layers">
-                <div class="layer"></div>
-                <div class="layer first"></div>
-                <div class="layer second"></div>
-                <div class="layer third"></div>
-              </div>
-              垂直輪切り
-            </span>
+          <label class="right" for="need_circuit">
+            <div class="selector">
+              <img src="../note_block/img/repeater_above.jpg" alt="repeater_above">
+              <div class="text_block"><span>サンプル</span><span>回路</span><span>あり</span></div>
+              <i class="fa-solid fa-shuttle-space fast"></i>
+            </div>
           </label>
           <div class="for_scroll"></div>
         </div>
         <div class="second plan">
-          <p>ブロックのテクスチャが必要か選択して下さい</p>
-          <label class="left" for="not_need_block_skins">
-            <span>
-              <div class="color_box_img"></div>
-              テクスチャ不要<br>
-              <i class="fa-solid fa-shuttle-space fast"></i>
-            </span>
-          </label>
-          <label class="right" for="need_block_skins">
-            <span>
-              <img src="../art/img/blocks/Block_of_Diamond.jpg" alt="block">
-              テクスチャ必要<br>
-              <i class="fa-solid fa-shuttle-space fast"></i>
-            </span>
-          </label>
-          <div class="for_scroll"></div>
-        </div>
-        <div class="third plan">
           <p>問題がなければ開始をクリックして下さい</p>
           <div class="frame">
-            <div class="title">設計図の向き</div>
+            <div class="title">設計図の種類</div>
             <div class="response">
-              <span class="Blueprint_direction_horizon">水平輪切り</span>
-              <span class="Blueprint_direction_vertical">垂直輪切り</span>
-            </div>
-          </div>
-          <div class="frame">
-            <div class="title">ブロックのテクスチャ</div>
-            <div class="response">
-              <span class="not_need_block_skins">テクスチャ不要</span>
-              <span class="need_block_skins">テクスチャ必要</span>
+              <span class="not_need_circuit">ブロック配置のみ</span>
+              <span class="need_circuit">サンプル回路あり</span>
             </div>
           </div>
           <button type="button" id="check_datas_button">開始</button>
-          <div class="for_scroll"></div>
-        </div>
-        <div class="fourth plan">
-          <p>問題がなければダウンロードをクリックして下さい</p>
-          <div class="frame">
-            <i class="fa-solid fa-angles-left"></i>
-            <i class="fa-solid fa-angles-right"></i>
-            <div class="canvas">
-            </div>
-          </div>
-          <button type="button" id="download_datas_button">ダウンロード</button>
           <div class="for_scroll"></div>
         </div>
         <div class="slideshow_icon">
@@ -113,8 +63,6 @@
           </div>
           <label class="slideshow" for="plan_menu_0"></label>
           <label class="slideshow" for="plan_menu_1"></label>
-          <label class="slideshow" for="plan_menu_2"></label>
-          <label class="slideshow" for="plan_menu_3" data-id="last_plan"></label>
           <div class="forward_plan">
             <i class="fa-solid fa-chevron-right"></i>
           </div>
@@ -221,7 +169,7 @@
           </div>
           <div class="range seconds">
             <input type="range" min="0" max="59" step="1" value="5">
-            <input type="text" maxlength="2" pattern="[0-5][3-9]" placeholder="ss" value="05">
+            <input type="text" maxlength="2" pattern="[0-5][0-9]" placeholder="ss" value="05">
           </div>
           <div class="mark">
             <div class="line"><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -249,7 +197,7 @@
       <input id="add_new_group_0" name="new_group_menu" type="radio" class="hidden" checked>
       <input id="add_new_group_1" name="new_group_menu" type="radio" class="hidden">
       <input id="add_new_group_2" name="new_group_menu" type="radio" class="hidden">
-      <input id="add_new_sounds" type="file" accept="audio/*" class="hidden">
+      <input id="add_new_sounds" type="file" accept="audio/*" class="hidden" multiple>
       <div class="plan_menu">
         <div class="first plan">
           <p>アイコンに使う画像をアップロードして下さい</p>
@@ -304,31 +252,17 @@
         <div class="third plan">
           <p>問題がなければ開始をクリックして下さい</p>
           <div class="frame">
-            <div class="title">設計図の向き</div>
-            <div class="response">
-              <span class="Blueprint_direction_horizon">水平輪切り</span>
-              <span class="Blueprint_direction_vertical">垂直輪切り</span>
-            </div>
+            <div class="title">アイコン画像</div>
+            <div class="response img"></div>
           </div>
           <div class="frame">
-            <div class="title">ブロックのテクスチャ</div>
+            <div class="title">アップロードした音階</div>
             <div class="response">
-              <span class="not_need_block_skins">テクスチャ不要</span>
-              <span class="need_block_skins">テクスチャ必要</span>
+              <span class="can">問題ありません</span>
+              <span class="cannot choose">不足している音階があります</span>
             </div>
           </div>
-          <button type="button" id="check_datas_button">開始</button>
-          <div class="for_scroll"></div>
-        </div>
-        <div class="fourth plan">
-          <p>問題がなければダウンロードをクリックして下さい</p>
-          <div class="frame">
-            <i class="fa-solid fa-angles-left"></i>
-            <i class="fa-solid fa-angles-right"></i>
-            <div class="canvas">
-            </div>
-          </div>
-          <button type="button" id="download_datas_button">ダウンロード</button>
+          <button type="button" id="add_new_group_button">開始</button>
           <div class="for_scroll"></div>
         </div>
         <div class="slideshow_icon">
@@ -767,7 +701,6 @@
           <thead></thead>
           <tbody></tbody>
         </table>
-        <div class="for_scroll"></div>
       </div>
       <div id="control_panel">
         <div class="volume_form">
@@ -780,23 +713,28 @@
           <input type="range" id="volume_bar" value="50" min="0" max="100" orient="vertical">
         </div>
         <div class="backward-fast">
-          <i class="fa-solid fa-backward-fast"></i><span class="shortcut">Ctrl + &#8592;</span>
+          <i class="fa-solid fa-arrow-right-to-bracket" style="transform: rotateY(180deg);"></i>
+          <span class="shortcut">Shift + Ctrl + &#8592;</span>
         </div>
         <div class="backward-step">
-          <i class="fa-solid fa-backward-step"></i><span class="shortcut">&#8592;</span>
+          <i class="fa-solid fa-backward-step"></i>
+          <span class="shortcut">Shift + &#8592;</span>
         </div>
         <div class="player">
-          <input id="start_to_player" name="player" type="radio" class="hidden">
-          <input id="pause_to_player" name="player" type="radio" class="hidden" checked>
-          <label for="start_to_player"><i class="fa-solid fa-play"></i></label>
-          <label for="pause_to_player"><i class="fa-solid fa-pause"></i></label>
+          <input id="start_to_player" type="checkbox" class="hidden">
+          <label for="start_to_player">
+            <i class="fa-solid fa-play"></i>
+            <i class="fa-solid fa-pause"></i>
+          </label>
           <span class="shortcut">Space</span>
         </div>
         <div class="forward-step">
-          <i class="fa-solid fa-forward-step"></i><span class="shortcut">&#8594;</span>
+          <i class="fa-solid fa-forward-step"></i>
+          <span class="shortcut">Shift + &#8594;</span>
         </div>
         <div class="forward-fast">
-          <i class="fa-solid fa-forward-fast"></i><span class="shortcut">Ctrl + &#8594;</span>
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          <span class="shortcut">Shift + Ctrl + &#8594;</span>
         </div>
         <div class="hanb_menu_form">
           <input id="hanb_menu" type="checkbox" class="hidden">
@@ -822,7 +760,7 @@
               <i class="fa-solid fa-rotate-right"></i> Redo
               <span class="shortcut">Ctrl + Shift + Z</span>
             </div>
-            <input id="play_mode" type="checkbox" class="hidden">
+            <input id="play_mode" type="checkbox" class="hidden" checked>
             <label for="play_mode">
               <div class="solo"><i class="fa-solid fa-user"></i> Solo</div>
               <div class="ensemble"><i class="fa-solid fa-users"></i> Ensemble</div>
@@ -834,6 +772,7 @@
             </label>
           </div>
         </div>
+        <div class="form_resize"></div>
       </div>
     </div>
   </main>

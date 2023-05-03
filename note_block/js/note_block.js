@@ -32,7 +32,7 @@ function pop_text_at_hover (e) {
 }
 function return_img_html (parent_class) {
   let img = $('#CP label[for="' + parent_class + '"]').children('img');
-  let html = jQuery("<div>").append(img.clone(true)).html();
+  let html = jQuery('<div>').append(img.clone(true)).html();
   return html;
 }
 function add_new_obj_to_memory_obj (key,value) {
@@ -60,9 +60,6 @@ function do_play_audio (parent_class, tr_y) {
   let volume = $('#volume_bar').val() / 100;
   music.volume = volume;
   music.play();
-  // WARNING: if can play src do -> fun change_same_volume
-  //let range_val = $('#volume_bar').val() / 50;
-  //change_same_volume (src, range_val);
 }
 function return_str_escape_html(string) {
   if (typeof string !== "string") {
@@ -111,7 +108,52 @@ function hslToRgb(h, s, l) {
 
   return [r, g, b];
 }
-function change_same_volume (audioUrl, range_val) {
+function exportWAV(audioBuffer) {
+  const numberOfChannels = audioBuffer.numberOfChannels;
+  const sampleRate = audioBuffer.sampleRate;
+  const length = audioBuffer.length * numberOfChannels;
+  const pcmData = new Float32Array(length);
+
+  // AudioBufferをFloat32Arrayに変換
+  for (let i = 0; i < numberOfChannels; i++) {
+    pcmData.set(audioBuffer.getChannelData(i), i * audioBuffer.length);
+  }
+
+  // Float32ArrayをInt16Arrayに変換
+  const intData = new Int16Array(length);
+  for (let i = 0; i < length; i++) {
+    let s = Math.max(-1, Math.min(1, pcmData[i]));
+    intData[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+  }
+
+  // WAVファイルのヘッダー情報を作成
+  const header = new ArrayBuffer(44);
+  const view = new DataView(header);
+  writeString(view, 0, 'RIFF');
+  view.setUint32(4, 36 + intData.byteLength, true);
+  writeString(view, 8, 'WAVE');
+  writeString(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numberOfChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * numberOfChannels * 2, true);
+  view.setUint16(32, numberOfChannels * 2, true);
+  view.setUint16(34, 16, true);
+  writeString(view, 36, 'data');
+  view.setUint32(40, intData.byteLength, true);
+
+  // WAVファイルのヘッダー情報とInt16Arrayを連結
+  const blob = new Blob([header, intData], { type: 'audio/wav' });
+
+  return blob;
+}
+function writeString(dataView, offset, string) {
+  for (let i = 0; i < string.length; i++) {
+    dataView.setUint8(offset + i, string.charCodeAt(i));
+  }
+}
+function change_same_volume (audioUrl, key, save_obj, end_sign) {
   // AudioContextを作成する
   let audioContext = new AudioContext();
   // XMLHttpRequestを使用して音声データを取得する
@@ -123,6 +165,7 @@ function change_same_volume (audioUrl, range_val) {
     audioContext.decodeAudioData(xhr.response, function(buffer) {
       // 各音声データの音量を取得する
       let channels = buffer.numberOfChannels;
+      channels = 1;
       let volumes = [];
       for (let c = 0; c < channels; c++) {
         let data = buffer.getChannelData(c);
@@ -132,28 +175,29 @@ function change_same_volume (audioUrl, range_val) {
         let volume = sum / data.length;
         volumes.push(volume);
       }
-      // 音量を統一した音量に変換する
+      // 音量を統一した音声データを生成する
       let maxVolume = Math.max(...volumes);
-      let targetVolume = 0.1 * range_val;
+      let targetVolume = 0.1;
       let volumeRatio = targetVolume / maxVolume;
-      // 各音声データに音量を適用するGainNodeを作成する
-      let gainNodes = [];
+      let newBuffer = audioContext.createBuffer(channels, buffer.length, buffer.sampleRate);
       for (let c = 0; c < channels; c++) {
-        let gainNode = audioContext.createGain();
-        gainNode.gain.value = volumeRatio;
-        gainNodes.push(gainNode);
+        let data = buffer.getChannelData(c);
+        let newData = newBuffer.getChannelData(c);
+        for (let i = 0; i < data.length; i++) {
+          newData[i] = data[i] * volumeRatio;
+        }
       }
-      // GainNodeをAudioContextに接続する
-      let source = audioContext.createBufferSource();
-      source.buffer = buffer;
-      for (let c = 0; c < channels; c++) {
-        source.connect(gainNodes[c], 0, 0);
-        gainNodes[c].connect(audioContext.destination);
-      }
-      let blob = new Blob([xhr.response], {type: 'audio/mp3'});
-      let objectUrl = URL.createObjectURL(blob);
-      let music = new Audio(objectUrl);
-      music.play();
+      //chagen to WAV style
+      let blob = exportWAV(newBuffer);
+      //save save_obj at using key to url
+      let reader = new FileReader();
+      reader.onload = function (evt) {
+        save_obj[key] = evt.target.result;
+        if (end_sign === 'fin') {
+          $('#wait').addClass('hidden');
+        }
+      };
+      reader.readAsDataURL(blob);
     });
   };
   xhr.send();
@@ -181,27 +225,18 @@ $(document).ready(function () {
   if (ww >= 1200) {
     $('#hanb').prop('checked', true);
   }
+  let wh = window.innerHeight;
+  wh -= $('header').outerHeight();
+  wh -= $('.top_menu').outerHeight();
+  wh -= $('.top_menu ul').outerHeight();
+  let score_h = wh - $('#control_panel').outerHeight();
+  if (wh < 555) {
+    $('#editing_areas').css('height', wh);
+    $('#editing_areas .musical_score_form').css('height', score_h);
+  }
   //palette color img add crossorigin
   // WARNING: if can display img do -> crossorigin="anonymous
   //$('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
-  //make sound_obj
-  let name = ['bass_drum', 'snare_drum', 'hihat',
-  'string_bass', 'guitar', 'banjo', 'flute', 'didgeridoo',
-  'xylophone', 'vibraphone', 'bells', 'cow_bell', 'chimes',
-  'bit', 'pling', 'harp'];
-  for (let i = 0; i < name.length; i++) {
-    for (let j = 0; j < 25; j++) {
-      let url = './audio/' + name[i] + '/';
-      if (j < 10) {
-        url += name[i] + '_0' + j + '.mp3'
-      }
-      else {
-        url += name[i] + '_' + j + '.mp3'
-      }
-      let key = name[i] + '_' + j;
-      sound_obj[key] = url;
-    }
-  }
   //make pixel table
   let col = "";
   let colHead = '<tr><th class="FirstBlank"></th>';
@@ -219,6 +254,27 @@ $(document).ready(function () {
   $("#musical_score thead").html(colHead);
   $("#musical_score tbody").html(table);
   add_score_to_roll_back_obj ($('#musical_score').html());
+  //make sound_obj
+  let name = ['bass_drum', 'snare_drum', 'hihat',
+  'string_bass', 'guitar', 'banjo', 'flute', 'didgeridoo',
+  'xylophone', 'vibraphone', 'bells', 'cow_bell', 'chimes',
+  'bit', 'pling', 'harp'];
+  for (let i = 0; i < name.length; i++) {
+    for (let j = 0; j < 25; j++) {
+      let url = './audio/' + name[i] + '/';
+      if (j < 10) {
+        url += name[i] + '_0' + j + '.mp3'
+      }
+      else {
+        url += name[i] + '_' + j + '.mp3'
+      }
+      let key = name[i] + '_' + j;
+      let end_sign = '';
+      // WARNING: if can use url do -> fun change_same_volume
+      //change_same_volume (url, key, sound_obj, end_sign);
+      sound_obj[key] = url;
+    }
+  }
 });
 /*++window resize++*/
 $(window).resize(function() {
@@ -233,6 +289,19 @@ $(window).resize(function() {
     if ($('#hanb').prop('checked')) {
       $('#hanb').prop('checked', false);
     }
+  }
+  let wh = window.innerHeight;
+  wh -= $('header').outerHeight();
+  wh -= $('.top_menu').outerHeight();
+  wh -= $('.top_menu ul').outerHeight();
+  let score_h = wh - $('#control_panel').outerHeight();
+  if (wh < 555) {
+    $('#editing_areas').css('height', wh);
+    $('#editing_areas .musical_score_form').css('height', score_h);
+  }
+  if (wh >= 555) {
+    $('#editing_areas').css('height', 555);
+    $('#editing_areas .musical_score_form').css('height', 505);
   }
 });
 /*++all action++*/
@@ -275,8 +344,23 @@ function otm_save(e) {
     $(e).css('display', 'none');
     $('#' + target_id).children('i.fa-delete-left').css('display', 'inline-block');
     let key = target_id;
-    let value = roll_back_obj.art[roll_back_obj.art.length - 1 - roll_back_obj.c_art];
-    value = copyMatrix(value);
+    let value = [];
+    $('#musical_score tbody td').each(function(index, ele) {
+      let tr_y = $(ele).parent().attr('class');
+      let td_x = $(ele).attr('class');
+      tr_y = tr_y.substring(1);
+      td_x = td_x.substring(1);
+      tr_y = Number(tr_y);
+      td_x = Number(td_x);
+      if (!value[tr_y]) {
+        value[tr_y] = [];
+      }
+      if (!$(ele).children('img').length) {
+        value[tr_y][td_x] = 'undefined';
+        return true;
+      }
+      value[tr_y][td_x] = $(ele).html();
+    });
     add_new_obj_to_memory_obj (key,value);
   } else {
     return true;
@@ -311,58 +395,52 @@ function otm_delete(e) {
   }
 }
 //one time memory load action
-let add_load_title_name = function (e) {
-  let name = $('#musical_score').attr('data-fileName');
-  let nL = name.length;
-  if (nL <= 20) {
-    nL = 20;
-  }
-  nL = 20 / nL + "em";
-  if (name === '') {
-    if ($('header .header_form p.language').text() === 'Japanese') {
-      name = 'ファイル名';
-    }
-    if ($('header .header_form p.language').text() === '英語') {
-      name = 'File Name';
-    }
-  }
-  $(".input_forms .load_title span").css("font-size", nL);
-  $(".input_forms .load_title span").text(name);
-};
-function memory_value_into_canvas (key, name) {
+function memory_value_into_score (key, name) {
   // change name
   $('#musical_score').attr('data-fileName', '');
   if (name !== null) {
     $('#musical_score').attr('data-fileName', name);
   }
-  setTimeout((e) => {
-    add_load_title_name();
-  }, 1)
   // change values
-  let value = copyMatrix(memory_obj[key]);
-  $('#art_size').val(value.length);
-  let layer_count = value.length;
-  //make select_layers options
-  let vertical_layer_html = '';
-  let horizontal_layer_html = '';
-  for (let k = 0; k < layer_count; k++) {
-    let reverse_c = layer_count - k - 1;
-    if (k == Math.floor(layer_count / 2) - 1) {
-      vertical_layer_html += '<option value="' + reverse_c + '" autofocus selected class="selected">' + reverse_c + '</option>';
-      horizontal_layer_html += '<option value="' + k + '" autofocus selected class="selected">' + k + '</option>';
-    }
-    else {
-      vertical_layer_html += '<option value="' + reverse_c + '">' + reverse_c + '</option>';
-      horizontal_layer_html += '<option value="' + k + '">' + k + '</option>';
-    }
-  }
-  $('#select_vertical_layers').html(vertical_layer_html);
-  $('#select_horizon_layers').html(horizontal_layer_html);
-  add_score_to_roll_back_obj (value);
-  //create memory into 3d check veiw
-  arry_into_check_view ();
-  //create memory into arts
-  change_select_layer ();
+  let value = memory_obj[key];
+  let colHead = '<tr><th class="FirstBlank"></th>';
+  let table = '';
+  let th_text = ['0 F#', '1 G', '2 G#', '3 A', '4 A#', '5 B', '6 C', '7 C#', '8 D', '9 D#',
+'10 E', '11 F', '12 F#', '13 G', '14 G#', '15 A', '16 A#', '17 B', '18 C', '19 C#', '20 D', '21 D#', '22 E', '23 F', '24 F#'];
+  value.forEach((layer_y, y) => {
+    let col = '';
+    layer_y.forEach((layer_x, x) => {
+      if (y == 0) {
+        colHead += '<th class="headCol"></th>';
+      }
+      if (value[y][x] === 'undefined') {
+        col += '<td class="x' + x + '"></td>';
+      }
+      else {
+        col += '<td class="x' + x + '" data-class="selected">' + value[y][x] + '</td>';
+      }
+    });
+    table += '<tr class="y' + y + '"><th class="n' + y + '">' + th_text[y] + '</th>' + col + "</tr>";
+  });
+  colHead += '</tr>';
+  $("#musical_score thead").html(colHead);
+  $("#musical_score tbody").html(table);
+  add_score_to_roll_back_obj ($('#musical_score').html());
+  setTimeout((e) => {
+    $('#musical_score tbody td img').each(function(index, ele) {
+      let parent_class = $(ele).attr('data-parent');
+      if (!$('.hanb_icon_form .included_instruments img[data-parent="' + parent_class + '"]').length) {
+        $('#CP label[for="' + parent_class + '"]').addClass('used');
+        let img = $('#CP label[for="' + parent_class + '"]').children('img');
+        img = jQuery('<div>').append(img.clone(true)).html();
+        $('.hanb_icon_form .included_instruments').append(img);
+      }
+    });
+    let main = $('#musical_score tbody td img.mImg').attr('data-parent');
+    let main_img = $('#CP label[for="' + main + '"]').children('img');
+    main_img = jQuery('<div>').append(main_img.clone(true)).html();
+    $('.aside_menu .selected_block_img').html(main_img);
+  }, 1)
 }
 function otm_load(e) {
   let target_id = $(e).parent().attr('id');
@@ -375,7 +453,7 @@ function otm_load(e) {
     if ($('#' + target_id).children('span.titled').length) {
       name = $('#' + target_id).children('span.titled').text();
     }
-    memory_value_into_canvas (key, name);
+    memory_value_into_score (key, name);
   }
 }
 //add memorys to acdn
@@ -429,24 +507,29 @@ $('#download_memory').click((e) => {
     return false;
   }
   let value = memory_obj[target_id];
-  let getStr = "";
-  value.forEach((layer_z, z) => {
-    layer_z.forEach((layer_y, y) => {
-      layer_y.forEach((layer_x, x) => {
-        let color = value[z][y][x];
-        if (color === '') {
-          getStr = getStr + "_layerX_";
-          return true;
+  let getStr = '';
+  value.forEach((layer_y, y) => {
+    layer_y.forEach((layer_x, x) => {
+      let html = value[y][x];
+      if (html === 'undefined') {
+        getStr += '_layerX_';
+        return true;
+      }
+      $('body').append('<div id="once_time_target" style="display:none;"></div>');
+      $('#once_time_target').html(html);
+      $('#once_time_target').children('img').each(function(index, ele) {
+        let mImg = $(ele).attr('class');
+        let parent_class = $(ele).attr('data-parent');
+        if (mImg.length) {
+          getStr += '_mainImg_' + mImg + '_mainImg_';
         }
-        let rgb = color.split("rgb(").slice(1);
-        rgb = rgb[0].replace(")", "");
-        rgb = rgb.split(",");
-        getStr = getStr + "_r_" + rgb[0] + "_r_" + "_g_" + rgb[1] + "_g_" + "_b_" + rgb[2] + "_b_";
-        getStr = getStr + "_layerX_";
+        getStr += '_parentC_' + parent_class + '_parentC_';
+        getStr += '_split_';
       });
-      getStr = getStr + "_layerY_";
+      $('#once_time_target').remove();
+      getStr += '_layerX_';
     });
-    getStr = getStr + "_layerZ_";
+    getStr += '_layerY_';
   });
   let getTitle = $('#' + target_id).children("span").text();
   let blob = new Blob([getStr], { type: "text/plain" });
@@ -461,13 +544,14 @@ $('#download_memory').click((e) => {
 $('#upload_memory').change((e) => {
   let target_id = $('#syncer-acdn-03 li[data-target="target_memorys"] p.target').parent().attr('id');
   if (target_id === undefined || target_id === '') {
-    $('#upload_memory').val("");
+    $('#upload_memory').val('');
     return false;
   }
   $('#' + target_id + ' span').addClass('titled');
   const title_in_it = document.querySelector('#' + target_id + ' span.titled');
   const file = e.target.files[0];
   if (file === undefined) {
+    $('#upload_memory').val('');
     return false;
   }
   let str1 = file.name;
@@ -476,26 +560,33 @@ $('#upload_memory').change((e) => {
     let upText = reader.result;
     upText = return_str_escape_html(upText);
     let table = upText;
-    table = table.split("_layerZ_");
+    table = table.split('_layerY_');
     table.pop();
-    table.forEach(function(value, index) {
-      table[index] = table[index].split("_layerY_");
-      table[index].pop();
-    });
-    table.forEach((layer_z, z) => {
-      layer_z.forEach((layer_y, y) => {
-        table[z][y] = table[z][y].split("_layerX_");
-        table[z][y].pop();
-        table[z][y].forEach((layer_x, x) => {
-          if (table[z][y][x] === '') {
-            return true;
+    table.forEach((layer_y, y) => {
+      table[y] = table[y].split('_layerX_');
+      table[y].pop();
+      table[y].forEach((layer_x, x) => {
+        if (table[y][x] === '') {
+          table[y][x] = 'undefined';
+          return true;
+        }
+        table[y][x] = table[y][x].split('_split_');
+        table[y][x].pop();
+        let str = '';
+        table[y][x].forEach((item, i) => {
+          let mImg = table[y][x][i].split('_mainImg_').slice(1, 2);
+          let parent_class = table[y][x][i].split('_parentC_').slice(1, 2);
+          let img = $('#CP label[for="' + parent_class + '"] img');
+          let html = '';
+          if (mImg.length) {
+            html = jQuery('<div>').append(img.clone(true).addClass('mImg')).html();
           }
-          table[z][y][x] = table[z][y][x].replaceAll(" ", "");
-          let r = table[z][y][x].split("_r_").slice(1, 2);
-          let g = table[z][y][x].split("_g_").slice(1, 2);
-          let b = table[z][y][x].split("_b_").slice(1, 2);
-          table[z][y][x] = 'rgb(' + r + ", " + g + ", " + b + ')';
+          else {
+            html = jQuery('<div>').append(img.clone(true)).html();
+          }
+          str += html;
         });
+        table[y][x] = str;
       });
     });
     $('#' + target_id).attr('data-check', 'checked');
@@ -503,9 +594,9 @@ $('#upload_memory').change((e) => {
     $('#' + target_id).children('i.fa-delete-left').css('display', 'inline-block');
     let key = target_id;
     add_new_obj_to_memory_obj (key, table);
-    str1 = str1.split(".").slice(0, 1);
+    str1 = str1.split('.').slice(0, 1);
     title_in_it.innerText = str1;
-    $('#upload_memory').val("");
+    $('#upload_memory').val('');
   };
   reader.readAsText(file);
 });
@@ -541,131 +632,29 @@ $('#change_memory_text').click((e) => {
 });
 //canvas clear action
 $('#clear_score').click((e) => {
+  let str = '';
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = "楽譜を消去します。";
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = "Erase the music sheet.";
+  }
+  let result = window.confirm(str);
+  if (!result) {
+    return false;
+  }
   $('#musical_score tbody td img').remove();
   $('#musical_score td[data-class="selected"]').removeAttr('data-class');
   $('.hanb_icon_form .included_instruments img').remove();
   $('#CP .used').removeClass('used');
   add_score_to_roll_back_obj($('#musical_score').html());
 });
-/*change canvas layer*/
-/*https://magazine.techacademy.jp/magazine/22795*/
-function change_layer_select_options(e) {
-  let arry = roll_back_obj.art[roll_back_obj.art.length - 1 - roll_back_obj.c_art];
-  if ($('#vertical_layer').prop('checked')) {
-    let vertical_layer_html = '';
-    arry.forEach((row, z) => {
-      let reverse_c = arry.length - z - 1;
-      if (z == Math.floor(arry.length / 2) - 1) {
-        vertical_layer_html += '<option value="' + reverse_c + '" autofocus selected class="selected">' + reverse_c + '</option>';
-      }
-      else {
-        vertical_layer_html += '<option value="' + reverse_c + '">' + reverse_c + '</option>';
-      }
-    });
-    $('#select_vertical_layers').html(vertical_layer_html);
-    if (obj.focus_layer !== '') {
-      if (obj.focus_layer.layer === 'horizontal') {
-        let select = document.getElementById("select_vertical_layers");
-        select.options[arry.length - 1 - obj.focus_layer.y].selected = true;
-        select.options[arry.length - 1 - obj.focus_layer.y].autofocus = true;
-      }
-      if (obj.focus_layer.layer === 'side') {
-        let select = document.getElementById("select_vertical_layers");
-        select.options[arry.length - 1 - obj.focus_layer.x].selected = true;
-        select.options[arry.length - 1 - obj.focus_layer.x].autofocus = true;
-      }
-    }
-  }
-  if ($('#side_layer').prop('checked')) {
-    let side_layer_html = '';
-    arry[0][0].forEach((row, x) => {
-      if (x == Math.floor(arry[0][0].length / 2) - 1) {
-        side_layer_html += '<option value="' + x + '" autofocus selected class="selected">' + x + '</option>';
-      }
-      else {
-        side_layer_html += '<option value="' + x + '">' + x + '</option>';
-      }
-    });
-    $('#select_side_layers').html(side_layer_html);
-    if (obj.focus_layer !== '') {
-      if (obj.focus_layer.layer === 'vertical') {
-        let select = document.getElementById("select_side_layers");
-        select.options[obj.focus_layer.x].selected = true;
-        select.options[obj.focus_layer.x].autofocus = true;
-      }
-      if (obj.focus_layer.layer === 'horizontal') {
-        let select = document.getElementById("select_side_layers");
-        select.options[obj.focus_layer.x].selected = true;
-        select.options[obj.focus_layer.x].autofocus = true;
-      }
-    }
-  }
-  if ($('#horizontal_layer').prop('checked')) {
-    let horizontal_layer_html = '';
-    arry[0].forEach((row, y) => {
-      if (y == Math.floor(arry[0].length / 2) - 1) {
-        horizontal_layer_html += '<option value="' + y + '" autofocus selected class="selected">' + y + '</option>';
-      }
-      else {
-        horizontal_layer_html += '<option value="' + y + '">' + y + '</option>';
-      }
-    });
-    $('#select_horizon_layers').html(horizontal_layer_html);
-    if (obj.focus_layer !== '') {
-      if (obj.focus_layer.layer === 'vertical') {
-        let select = document.getElementById("select_horizon_layers");
-        select.options[obj.focus_layer.y].selected = true;
-        select.options[obj.focus_layer.y].autofocus = true;
-      }
-      if (obj.focus_layer.layer === 'side') {
-        let select = document.getElementById("select_horizon_layers");
-        select.options[obj.focus_layer.y].selected = true;
-        select.options[obj.focus_layer.y].autofocus = true;
-      }
-    }
-  }
-  setTimeout((e) => {
-    change_select_layer (e);
-    cancel_jump_layer_point(e);
-  }, 1)
-}
-$('#vertical_layer ~ label[for="vertical_layer"]').click((e) => {
-  change_to_vertical_layer (e);
-  setTimeout((e) => {
-    change_layer_select_options(e);
-  }, 1)
-});
-$('#side_layer ~ label[for="side_layer"]').click((e) => {
-  change_to_side_layer (e);
-  setTimeout((e) => {
-    change_layer_select_options(e);
-  }, 1)
-});
-$('#horizontal_layer ~ label[for="horizontal_layer"]').click((e) => {
-  change_to_horizon_layers (e);
-  setTimeout((e) => {
-    change_layer_select_options(e);
-  }, 1)
-});
-/*++aside++*/
 //file download
 /*https://blog.agektmr.com/2013/09/canvas-png-blob.html*/
 /*https://symfoware.blog.fc2.com/blog-entry-2578.html*/
 /*https://qiita.com/saka212/items/408bb17dddefc09004c8*/
 /*https://r17n.page/2020/01/12/js-download-zipped-images-to-local/#jszip-%E3%82%92-CDN-%E3%81%8B%E3%82%89%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF-loadJSZipFromCDN*/
 /*https://webfrontend.ninja/js-find/#:~:text=%E3%80%90JavaScript%E3%80%91%E9%85%8D%E5%88%97%E3%81%8B%E3%82%89%E8%A6%81%E7%B4%A0%E3%82%92%E6%A4%9C%E7%B4%A2%E3%81%99%E3%82%8B%206%20%E3%81%A4%E3%81%AE%E6%96%B9%E6%B3%95%201%20%E9%85%8D%E5%88%97%E3%81%8B%E3%82%89%E8%A6%81%E7%B4%A0%E3%82%92%E7%99%BA%E8%A6%8B%E3%81%99%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%202%20indexOf%20%28%29,findIndex%20%28%29%207%20filter%20%28%29%208%20%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E9%85%8D%E5%88%97%E3%81%8B%E3%82%89%E6%A4%9C%E7%B4%A2%E3%81%99%E3%82%8B%20%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%82%A2%E3%82%A4%E3%83%86%E3%83%A0*/
-function return_arry_of_color_and_obj_src_alt (e) {
-  let arry_color = [];
-  let arry_obj = [];
-  $('#CP .CPimg img').each(function(index) {
-    let color = $(this).css('backgroundColor');
-    let src = $(this).attr('src');
-    let alt = $(this).attr('alt');
-    arry_color.push(color);
-    arry_obj.push({src: src, alt: alt});
-  });
-  return {color: arry_color, obj: arry_obj};
-}
 function return_arry_count_block_needed(arry_block_needed) {
   let count = {};
   arry_block_needed.forEach(function (i) {
@@ -681,200 +670,60 @@ function return_arry_count_block_needed(arry_block_needed) {
   arry_block_needed.push(keyArray);
   arry_block_needed.push(valArray);
   arry_block_needed.shift();
-  return {name: 'items_needed', sheet: arry_block_needed};
+  return arry_block_needed;
 }
 /*https://teratail.com/questions/315143*/
 /*https://qiita.com/FumioNonaka/items/678a1e74ab73e23d6f14*/
-function return_obj_make_Blueprint_direction_horizon (arry, palette) {
-  let arry_block_position = [1];
-  let arry_block_needed = [2];
-  let table_url_for_skins = [];
-  let arry_url_for_rough = [];
-  let count = 0;
-  for (let l_y = 0; l_y < arry.length; l_y++) {
-    let c = document.createElement("canvas");
-    let ctx = c.getContext("2d");
-    c.width = arry.length * 20;
-    c.height = arry.length * 20;
-    let arry_one_layer_p = [1];
-    if (!table_url_for_skins[l_y]) {
-      table_url_for_skins[l_y] = [];
+function return_obj_make_Blueprint (e) {
+  let arry_block_score = [];
+  let arry_block_needed = [];
+  let table_url_for_circuit = [];
+  $('#musical_score tbody td').each(function(index, ele) {
+    let tr_y = $(ele).parent().attr('class');
+    let td_x = $(ele).attr('class');
+    td_x = td_x.substring(1);
+    tr_y = tr_y.substring(1);
+    td_x = Number(td_x);
+    tr_y = Number(tr_y);
+    if (!arry_block_score[tr_y]) {
+      arry_block_score[tr_y] = [];
+      table_url_for_circuit[tr_y] = [];
     }
-    arry.forEach((layer_z, z) => {
-      let arrayCol = [];
-      if (!table_url_for_skins[l_y][z]) {
-        table_url_for_skins[l_y][z] = [];
+    if (!$(ele).children('img').length) {
+      arry_block_score[tr_y][td_x] = '';
+      table_url_for_circuit[tr_y][td_x] = 'none';
+      return true;
+    }
+    let cell_text = '';
+    $(ele).children('img').each(function(j, img) {
+      if (!table_url_for_circuit[tr_y][td_x]) {
+        table_url_for_circuit[tr_y][td_x] = [];
       }
-      layer_z[l_y].forEach((layer_x, x) => {
-        let color = arry[z][l_y][x];
-        let index = palette.color.indexOf(color);
-        let alt, src;
-        if (index < 0) {
-          alt = 'none';
-          src = 'none';
-          ctx.strokeStyle = 'black';
-          ctx.lineWidth = 0.1;
-          ctx.strokeRect(x * 20, z * 20, 20, 20);
-        }
-        else {
-          alt = palette.obj[index].alt;
-          src = palette.obj[index].src;
-          //rough_Blueprint
-          ctx.fillStyle = color;
-          ctx.fillRect(x * 20, z * 20, 20, 20);
-          ctx.strokeStyle = 'black';
-          ctx.lineWidth = 0.1;
-          ctx.strokeRect(x * 20, z * 20, 20, 20);
-        }
-        //add arrys
-        table_url_for_skins[l_y][z][x] = src;
-        arrayCol.push(alt);
-      });
-      arry_block_needed = arry_block_needed.concat(arrayCol);
-      arrayCol = arrayCol.reduce((resultArray, num, id) => {
-        if (num === 'none') {
-          resultArray[id] = '';
-        }
-        else {
-          resultArray[id] = num;
-        }
-        return resultArray;
-      }, []);
-      arry_one_layer_p.push(arrayCol);
+      let parent_class = $(img).attr('data-parent');
+      let alt = $('#CP .' + parent_class + ' label.selected .CPimg img').attr('alt');
+      let src = $('#CP .' + parent_class + ' label.selected .CPimg img').attr('src');
+      arry_block_needed.push(alt);
+      table_url_for_circuit[tr_y][td_x][j] = src;
+      cell_text += '[ ' + alt + ' ] ';
     });
-    //if all x-y is none, do no action
-    arry_one_layer_p.shift();
-    for (let i = 0; i < arry_one_layer_p.length; i++) {
-      if (arry_one_layer_p[i].filter(x => x !== '').length) {
-        //delete unuse number
-        arry_block_position.push({name: 'horizon_top_' + count, sheet: arry_one_layer_p});
-        count++;
-        //rough_Blueprint URL
-        let type = "image/png";
-        let dataurl = c.toDataURL(type);
-        arry_url_for_rough.push(dataurl);
-        break;
-      }
-    }
-  }
-  //delete unuse number
-  arry_block_position.shift();
-  arry_block_needed.shift();
-  //count block needed
-  if (arry_block_needed.length) {
-    let obj = return_arry_count_block_needed(arry_block_needed);
-    arry_block_needed = [];
-    arry_block_needed.push(obj);
-  }
-  //remove none layer from table
-  let new_table = [];
-  table_url_for_skins.forEach((arry_xy, i) => {
-    let this_layer = [];
-    arry_xy.forEach((item, i) => {
-      this_layer = this_layer.concat(item);
-    });
-    if (this_layer.filter(x => x !== 'none').length) {
-      new_table.push(arry_xy);
-    }
+    arry_block_score[tr_y][td_x] = cell_text;
   });
-  table_url_for_skins = new_table;
-  return {p: arry_block_position, n: arry_block_needed, table: table_url_for_skins, r: arry_url_for_rough};
-}
-function return_obj_make_Blueprint_direction_vertical (arry, palette) {
-  let arry_block_position = [1];
-  let arry_block_needed = [2];
-  let table_url_for_skins = [];
-  let arry_url_for_rough = [];
-  let count = 0;
-  for (let l_z = arry.length - 1; l_z >= 0; l_z--) {
-    let z = arry.length - (l_z + 1);
-    let c = document.createElement("canvas");
-    let ctx = c.getContext("2d");
-    c.width = arry.length * 20;
-    c.height = arry.length * 20;
-    let arry_one_layer_p = [1];
-    if (!table_url_for_skins[z]) {
-      table_url_for_skins[z] = [];
-    }
-    arry[l_z].forEach((layer_y, y) => {
-      let arrayCol = [];
-      if (!table_url_for_skins[z][y]) {
-        table_url_for_skins[z][y] = [];
-      }
-      layer_y.forEach((layer_x, x) => {
-        let color = arry[l_z][y][x];
-        let index = palette.color.indexOf(color);
-        let alt, src;
-        if (index < 0) {
-          alt = 'none';
-          src = 'none';
-          ctx.strokeStyle = 'black';
-          ctx.lineWidth = 0.1;
-          ctx.strokeRect(x * 20, y * 20, 20, 20);
-        }
-        else {
-          alt = palette.obj[index].alt;
-          src = palette.obj[index].src;
-          //rough_Blueprint
-          ctx.fillStyle = color;
-          ctx.fillRect(x * 20, y * 20, 20, 20);
-          ctx.strokeStyle = 'black';
-          ctx.lineWidth = 0.1;
-          ctx.strokeRect(x * 20, y * 20, 20, 20);
-        }
-        //add arrys
-        table_url_for_skins[z][y][x] = src;
-        arrayCol.push(alt);
-      });
-      arry_block_needed = arry_block_needed.concat(arrayCol);
-      arrayCol = arrayCol.reduce((resultArray, num, id) => {
-        if (num === 'none') {
-          resultArray[id] = '';
-        }
-        else {
-          resultArray[id] = num;
-        }
-        return resultArray;
-      }, []);
-      arry_one_layer_p.push(arrayCol);
-    });
-    //if all x-y is none, do no action
-    arry_one_layer_p.shift();
-    for (let i = 0; i < arry_one_layer_p.length; i++) {
-      if (arry_one_layer_p[i].filter(x => x !== '').length) {
-        //delete unuse number
-        arry_block_position.push({name: 'vertical_front_' + count, sheet: arry_one_layer_p});
-        count++;
-        //rough_Blueprint URL
-        let type = "image/png";
-        let dataurl = c.toDataURL(type);
-        arry_url_for_rough.push(dataurl);
-        break;
-      }
-    }
+  if (!arry_block_needed.length) {
+    return false;
   }
-  //delete unuse number
-  arry_block_position.shift();
-  arry_block_needed.shift();
+  let key_text = ['[click] [repeater delay]'];
+  for (let i = 0; i < arry_block_score[0].length; i++) {
+    key_text.push(i);
+  }
+  let th_text = ['0 F#', '1 G', '2 G#', '3 A', '4 A#', '5 B', '6 C', '7 C#', '8 D', '9 D#',
+'10 E', '11 F', '12 F#', '13 G', '14 G#', '15 A', '16 A#', '17 B', '18 C', '19 C#', '20 D', '21 D#', '22 E', '23 F', '24 F#'];
+  for (let i = 0; i < th_text.length; i++) {
+    arry_block_score[i].unshift(th_text[i]);
+  }
+  arry_block_score.unshift(key_text);
   //count block needed
-  if (arry_block_needed.length) {
-    let obj = return_arry_count_block_needed(arry_block_needed);
-    arry_block_needed = [];
-    arry_block_needed.push(obj);
-  }
-  //remove none layer from table
-  let new_table = [];
-  table_url_for_skins.forEach((arry_xy, i) => {
-    let this_layer = [];
-    arry_xy.forEach((item, i) => {
-      this_layer = this_layer.concat(item);
-    });
-    if (this_layer.filter(x => x !== 'none').length) {
-      new_table.push(arry_xy);
-    }
-  });
-  table_url_for_skins = new_table;
-  return {p: arry_block_position, n: arry_block_needed, table: table_url_for_skins, r: arry_url_for_rough};
+  arry_block_needed = return_arry_count_block_needed(arry_block_needed);
+  return {p: arry_block_score, n: arry_block_needed, table: table_url_for_circuit};
 }
 // WARNING: check crossorigin="anonymous" is active
 function folder_into_skin_canvas (zip, direction, arry) {
@@ -1027,16 +876,11 @@ function s2ab(s) {
   }
   return buf;
 }
-function export_xlsx(arry) {
+function export_xlsx(obj) {
   let wopts = { bookType: 'xlsx', bookSST: false, type: 'binary'};
-  let workbook = {SheetNames: [], Sheets: {}};
-  arry.forEach((obj, i) => {
-    //input sheetname
-    let n = '';
-    n = (n)?n:obj.name;
-    workbook.SheetNames.push(n);
-    workbook.Sheets[n] = XLSX.utils.aoa_to_sheet(obj.sheet);
-  });
+  const workbook = XLSX.readFile('../note_block/files/music_sheet.xlsx');
+  workbook.Sheets[0] = XLSX.utils.aoa_to_sheet(obj.p);
+  workbook.Sheets[1] = XLSX.utils.aoa_to_sheet(obj.n);
   let wbout = XLSX.write(workbook, wopts);
   let blob = new Blob([s2ab(wbout)], {type: 'application/octet-stream'});
   return blob;
@@ -1052,24 +896,15 @@ function imgblob(url) {
   return new Blob([buffer.buffer], { type: type });
 }
 //download actions
-function download_Blueprint_data (direction, obj) {
+function downBlueprint(e) {
+  let obj = return_obj_make_Blueprint ();
+  if (obj.n.length <= 0) {
+    return false;
+  }
+  //download data
   let zip = new JSZip();
-  zip.file('items_needed.xlsx', export_xlsx(obj.n));
-  zip.file('block_placement.xlsx', export_xlsx(obj.p));
-  //new folder
-  //rough img
-  let folderName = 'rough_layer_images';
-  let rough_folder = zip.folder(folderName);
-  obj.r.forEach((url, i) => {
-    let c_Blob = imgblob(url);
-    if (direction === 'horizon') {
-      rough_folder.file('horizon_top_' + i, c_Blob);
-    }
-    if (direction === 'vertical') {
-      rough_folder.file('vertical_front_' + i, c_Blob);
-    }
-  });
-  if ($('#not_need_block_skins').prop('checked')) {
+  zip.file('music_sheet.xlsx', export_xlsx(obj));
+  if ($('#not_need_circuit').prop('checked')) {
     //zipDownload
     zip.generateAsync({ type: "blob" }).then(function (content) {
       if (window.navigator.msSaveBlob) {
@@ -1088,76 +923,11 @@ function download_Blueprint_data (direction, obj) {
     makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas);
   }
 }
-function downBlueprint(e) {
-  let arry = roll_back_obj.art[roll_back_obj.art.length - 1 - roll_back_obj.c_art];
-  if (arry.length <= 0) {
-    return false;
-  }
-  const palette = return_arry_of_color_and_obj_src_alt (e);
-  let direction = '';
-  let obj = {};
-  if ($('#Blueprint_direction_horizon').prop('checked')) {
-    direction = 'horizon';
-    obj = return_obj_make_Blueprint_direction_horizon (arry, palette);
-  }
-  if ($('#Blueprint_direction_vertical').prop('checked')) {
-    direction = 'vertical';
-    obj = return_obj_make_Blueprint_direction_vertical (arry, palette);
-  }
-  if (obj.n.length <= 0) {
-    return false;
-  }
-  //add canvas
-  let rough_c_id = '#plan_to_download_Blueprint .fourth.plan .frame .canvas';
-  let rough_c_html = '<canvas data-id="dummy_before" width="400" height="400" class="before"></canvas>';
-  for (let i = 0; i < obj.r.length; i++) {
-    if (i == 0) {
-      rough_c_html += '<canvas id="rough_c_0" width="400" height="400" class="present"></canvas>';
-      continue;
-    }
-    if (i == 1) {
-      rough_c_html += '<canvas id="rough_c_1" width="400" height="400" class="after"></canvas>';
-      continue;
-    }
-    rough_c_html += '<canvas id="rough_c_' + i + '" width="400" height="400"></canvas>';
-  }
-  if (obj.r.length == 1) {
-    rough_c_html += '<canvas data-id="dummy_after" width="400" height="400" class="after"></canvas>';
-  }
-  else {
-    rough_c_html += '<canvas data-id="dummy_after" width="400" height="400"></canvas>';
-  }
-  $(rough_c_id).html(rough_c_html);
-  //input url data
-  setTimeout((e) =>{
-    for (let i = 0; i < obj.r.length; i++) {
-      let c = document.getElementById('rough_c_' + i);
-      let ctx = c.getContext('2d');
-      let put_img = new Image();
-      // WARNING: if can display img do -> crossorigin="anonymous
-      put_img.crossOrigin = "anonymous";
-      put_img.onload = function () {
-        ctx.drawImage(put_img, 0, 0, c.width, c.height);
-        if (i == obj.r.length - 1) {
-          $('#plan_to_download_Blueprint .fourth.plan').addClass('download');
-          $('#plan_menu_3').prop('checked', true);
-          $('#plan_to_download_Blueprint .plan_menu').scrollTop(0);
-          $('#download_datas_button').on('click', (e) => {
-            download_Blueprint_data (direction, obj);
-          });
-        }
-      };
-      put_img.src = obj.r[i];
-    }
-  }, 1)
-}
 $('#display_plan_of_Blueprint').click((e) => {
   $('#plan_menu_0').prop('checked', true);
   $('#plan_to_download_Blueprint').css('display', 'flex');
 });
 $('#check_datas_button').click((e) => {
-  $('#download_datas_button').off('click');
-  $('#plan_to_download_Blueprint .fourth.plan').removeClass('download');
   $('#wait').removeClass('hidden');
   downBlueprint(e);
   $('#wait').addClass('hidden');
@@ -1169,12 +939,7 @@ $('#plan_to_download_Blueprint .plan_menu .back_plan').click((e) => {
   now_id = now_id.replace('plan_menu_','');
   now_id = Number(now_id);
   if (now_id == 0) {
-    if ($('#plan_to_download_Blueprint .fourth.plan.download').length) {
-      now_id = plan_menu_length - 1;
-    }
-    if (!$('#plan_to_download_Blueprint .fourth.plan.download').length) {
-      now_id = plan_menu_length - 2;
-    }
+    now_id = plan_menu_length - 1;
   }
   else {
     now_id--;
@@ -1191,9 +956,6 @@ $('#plan_to_download_Blueprint .plan_menu .forward_plan').click((e) => {
   if (now_id == plan_menu_length - 1) {
     now_id = 0;
   }
-  else if (!$('#plan_to_download_Blueprint .fourth.plan.download').length && now_id == plan_menu_length - 2) {
-    now_id = 0;
-  }
   else {
     now_id++;
   }
@@ -1203,100 +965,56 @@ $('#plan_to_download_Blueprint .plan_menu .forward_plan').click((e) => {
 $('input[name="plan_menu"]').change((e) => {
   $('#plan_to_download_Blueprint .plan_menu').scrollTop(0);
 });
-$('#plan_to_download_Blueprint .plan_menu label.slideshow[data-id="last_plan"]').click((e) => {
-  if (!$('#plan_to_download_Blueprint .fourth.plan.download').length) {
-    return false;
-  }
-});
-$('#plan_to_download_Blueprint .fourth.plan i.fa-angles-right').click((e) => {
-  let c_l = $('#plan_to_download_Blueprint .fourth.plan .frame canvas').length;
-  let present_c_id = $('#plan_to_download_Blueprint .fourth.plan .frame canvas.present').attr('id');
-  if (present_c_id === undefined || present_c_id === '') {
-    return false;
-  }
-  present_c_id = present_c_id.toString();
-  present_c_id = present_c_id.replace('rough_c_','');
-  present_c_id = Number(present_c_id);
-  if (present_c_id == c_l - 3) {
-    return false;
-  }
-  $('#plan_to_download_Blueprint .fourth.plan .frame canvas').removeClass();
-  present_c_id++;
-  if (present_c_id == c_l - 3) {
-    $('#plan_to_download_Blueprint .fourth.plan .frame canvas[data-id="dummy_after"]').addClass('after');
-  }
-  let bef_c_id = present_c_id - 1;
-  let af_c_id = present_c_id + 1;
-  $('#rough_c_' + bef_c_id).addClass('before');
-  $('#rough_c_' + present_c_id).addClass('present');
-  $('#rough_c_' + af_c_id ).addClass('after');
-});
-$('#plan_to_download_Blueprint .fourth.plan i.fa-angles-left').click((e) => {
-  let present_c_id = $('#plan_to_download_Blueprint .fourth.plan .frame canvas.present').attr('id');
-  if (present_c_id === undefined || present_c_id === '') {
-    return false;
-  }
-  present_c_id = present_c_id.toString();
-  present_c_id = present_c_id.replace('rough_c_','');
-  present_c_id = Number(present_c_id);
-  if (present_c_id == 0) {
-    return false;
-  }
-  $('#plan_to_download_Blueprint .fourth.plan .frame canvas').removeClass();
-  present_c_id--;
-  if (present_c_id == 0) {
-    $('#plan_to_download_Blueprint .fourth.plan .frame canvas[data-id="dummy_before"]').addClass('before');
-  }
-  let bef_c_id = present_c_id - 1;
-  let af_c_id = present_c_id + 1;
-  $('#rough_c_' + bef_c_id).addClass('before');
-  $('#rough_c_' + present_c_id).addClass('present');
-  $('#rough_c_' + af_c_id ).addClass('after');
-});
-$('#plan_to_download_Blueprint .close_button').click((e) => {
-  $('#download_datas_button').off('click');
-  $('#plan_to_download_Blueprint .fourth.plan').removeClass('download');
-});
+/*++aside++*/
 //palette sound_blocks form download
 /*https://techacademy.jp/magazine/21725*/
 $(".input_forms .title .upside_menu .palette_download").click(function () {
-  let getStr = "";
+  let getStr = '';
   $('#CP .small_title:not(label[for="add_new_blocks"])').each(function(index){
-    getStr += "_split_";
+    getStr += '_split_';
     let title_for = $(this).attr('for');
     getStr += '_titleFor_' + title_for + '_titleFor_';
     let title_img_src = $(this).children('img').attr('src');
     getStr += '_titleSrc_' + title_img_src + '_titleSrc_';
     let title_img_alt = $(this).children('img').attr('alt');
     getStr += '_titleAlt_' + title_img_alt + '_titleAlt_';
+    let title_img_data = $(this).children('img').attr('data-parent');
+    getStr += '_titleData_' + title_img_data + '_titleData_';
     let title_span = $(this).children('span').text();
     getStr += '_titleSpan_' + title_span + '_titleSpan_';
   });
-  getStr += "_nextGroup_";
+  getStr += '_nextGroup_';
   $('#CP .CPimg').parent('label').each(function (index) {
-    getStr = getStr + "_split_";
+    getStr = getStr + '_split_';
     let sound_box_id = $(this).attr('id');
-    getStr = getStr + "_id_" + sound_box_id + "_id_";
+    getStr = getStr + '_id_' + sound_box_id + '_id_';
     let sound_box_class = $(this).attr('class');
-    getStr = getStr + "_idClass_" + sound_box_class + "_idClass_";
+    getStr = getStr + '_idClass_' + sound_box_class + '_idClass_';
     let parent_class = $(this).parent().attr('class');
-    getStr = getStr + "_intoClass_" + parent_class + "_intoClass_";
+    getStr = getStr + '_intoClass_' + parent_class + '_intoClass_';
     let children = $(this).children(".CPimg").children().clone(true);
     for (let j = 0; j < children.length; j++) {
       let alt = jQuery(children[j]).attr("alt");
       let src = jQuery(children[j]).attr("src");
       let tag = jQuery(children[j]).get(0).tagName;
       if (tag !== undefined) {
-        getStr = getStr + "_tagF_" + tag + "_tag_";
+        getStr = getStr + '_tagF_' + tag + '_tag_';
       }
       if (src !== undefined) {
-        getStr = getStr + "_src_" + src + "_src_";
+        getStr = getStr + '_src_' + src + '_src_';
       }
       if (alt !== undefined) {
-        getStr = getStr + "_alt_" + alt + "_alt_";
+        getStr = getStr + '_alt_' + alt + '_alt_';
       }
     }
   });
+  getStr += '_nextGroup_';
+  const keys = Object.keys(sound_obj);
+  for (let i = 0; i < keys.length; i++) {
+    getStr += '_split_';
+    getStr += '_key_' + keys[i] + '_key_';
+    getStr += '_value_' + sound_obj[keys[i]] + '_value_';
+  }
   let blob = new Blob([getStr], { type: "text/plain" });
   let link = document.createElement("a");
   link.href = window.URL.createObjectURL(blob);
@@ -1306,9 +1024,16 @@ $(".input_forms .title .upside_menu .palette_download").click(function () {
 });
 //palette sound_blocks form upload
 function make_CP_format(e) {
-  let format = '<p class="big_title">Instrument</p>';
+  let str = '';
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = ['楽器', '新ブロック'];
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = ['Instrument', 'Add new blocks'];
+  }
+  let format = '<p class="big_title">' + str[0] + '</p>';
   format += '<input id="add_new_blocks" type="checkbox" class="hidden">';
-  format += '<label for="add_new_blocks" class="small_title">新ブロック</label>';
+  format += '<label for="add_new_blocks" class="small_title">' + str[1] + '</label>';
   format += '<div class="add_new_blocks">';
   format += '<input id="new_block_img" type="file" accept="image/*" class="hidden" multiple>';
   format += '<button type="button"><i class="fa-solid fa-file-circle-plus"></i></button>';
@@ -1322,10 +1047,11 @@ function return_array_title_elements(str) {
     let title_for = str[i].split('_titleFor_').slice(1, 2);
     let title_img_src = str[i].split('_titleSrc_').slice(1, 2);
     let title_img_alt = str[i].split('_titleAlt_').slice(1, 2);
+    let title_img_data = str[i].split('_titleData_').slice(1, 2);
     let title_span = str[i].split('_titleSpan_').slice(1, 2);
     let html = '<input id="' + title_for + '" type="checkbox" class="hidden">';
     html += '<label for="' + title_for + '" class="small_title">';
-    html += '<img src="' + title_img_src + '" alt="' + title_img_alt + '">';
+    html += '<img src="' + title_img_src + '" alt="' + title_img_alt + '" data-parent="' + title_img_data + '">';
     html += '<span>' + title_span + '</span></label>';
     html += '<div class="' + title_for + '" data-id="instrument"></div>';
     array_html.push({title_for: title_for, html: html});
@@ -1334,10 +1060,10 @@ function return_array_title_elements(str) {
 }
 function return_array_doinput(alt_arr, src_arr, str) {
   let array_html = [];
-  str = str.split("_split_").slice(1);
+  str = str.split('_split_').slice(1);
   for (let i = 0; i < str.length; i++) {
-    let sound_box_id = str[i].split("_id_").slice(1, 2);
-    let sound_box_class = str[i].split("_idClass_").slice(1, 2);
+    let sound_box_id = str[i].split('_id_').slice(1, 2);
+    let sound_box_class = str[i].split('_idClass_').slice(1, 2);
     let html = '';
     if (sound_box_class === undefined || sound_box_class === '') {
       html = '<label id="' + sound_box_id + '">';
@@ -1346,10 +1072,10 @@ function return_array_doinput(alt_arr, src_arr, str) {
       html = '<label id="' + sound_box_id + '" class="' + sound_box_class + '">';
     }
     html += '<div class="CPimg">';
-    let img = str[i].split("_tagF_").slice(1);
+    let img = str[i].split('_tagF_').slice(1);
     for (let j = 0; j < img.length; j++) {
-      let src = img[j].split("_src_").slice(1, 2);
-      let alt = img[j].split("_alt_").slice(1, 2);
+      let src = img[j].split('_src_').slice(1, 2);
+      let alt = img[j].split('_alt_').slice(1, 2);
       let index = alt_arr.indexOf(alt[0]);
       if (index >= 0) {
         src = src_arr[index];
@@ -1359,10 +1085,20 @@ function return_array_doinput(alt_arr, src_arr, str) {
       //html += '<img src="' + src + '" alt="' + alt + '">';
     }
     html += "</div></label>";
-    let parent_class = str[i].split("_intoClass_").slice(1, 2);
+    let parent_class = str[i].split('_intoClass_').slice(1, 2);
     array_html.push({parent_class: parent_class, html: html});
   }
   return array_html;
+}
+function return_array_sound_url(str) {
+  let array_url = [];
+  str = str.split('_split_').slice(1);
+  for (let i = 0; i < str.length; i++) {
+    let key = str[i].split('_key_').slice(1, 2);
+    let url = str[i].split('_value_').slice(1, 2);
+    array_url.push({key: key, url: url});
+  }
+  return array_url;
 }
 $("#palette_upload").change(function (e) {
   e.preventDefault();
@@ -1387,12 +1123,21 @@ $("#palette_upload").change(function (e) {
   reader.onload = () => {
     let str = reader.result;
     str = return_str_escape_html(str);
-    str = str.split("_nextGroup_");
+    str = str.split('_nextGroup_');
     let array_title_ele = return_array_title_elements(str[0]);
     let array_html = return_array_doinput(alt_arr, src_arr, str[1]);
     let format = make_CP_format();
+    let array_sound = return_array_sound_url(str[2]);
+    $('body').append('<div id="palette_upload_once_memory" style="display:none;"></div>');
+    $('#palette_upload_once_memory').html($('#CP').html());
     $('#CP').html(format);
     for (let i = 0; i < array_title_ele.length; i++) {
+      let parent_class = array_title_ele[i].title_for;
+      if ($('#palette_upload_once_memory #' + parent_class).length) {
+        $('#palette_upload_once_memory #' + parent_class).remove();
+        $('#palette_upload_once_memory label[for="' + parent_class + '"]').remove();
+        $('#palette_upload_once_memory .' + parent_class).remove();
+      }
       $('#CP').append(array_title_ele[i].html);
     }
     for (let i = 0; i < array_html.length; i++) {
@@ -1404,6 +1149,18 @@ $("#palette_upload").change(function (e) {
         $('#CP .add_new_blocks').append(array_html[i].html);
       }
     }
+    if ($('#palette_upload_once_memory [data-id="instrument"]').length) {
+      $('#palette_upload_once_memory [data-id="instrument"]').each(function(index) {
+        let target_class = $(this).attr('class');
+        $('#CP').append($('#palette_upload_once_memory #' + target_class));
+        $('#CP').append($('#palette_upload_once_memory label[for="' + target_class + '"]'));
+        $('#CP').append($('#palette_upload_once_memory .' + target_class));
+      });
+    }
+    //upload sound_obj
+    for (let i = 0; i < array_sound.length; i++) {
+      sound_obj[array_sound[i].key] = array_sound[i].url;
+    }
     setTimeout((e) => {
       //pick color display
       let parent_class = $('#CP label.check.selected').parent().attr('class');
@@ -1413,6 +1170,7 @@ $("#palette_upload").change(function (e) {
       $("#palette_upload").val('');
       $('html').css('cursor', 'default');
     }, 1);
+    $('#palette_upload_once_memory').remove();
   };
   reader.readAsText(file);
 });
@@ -1471,17 +1229,17 @@ function previewAndInsert(files) {
         if (obj.use === 'add_CP_group') {
           img.alt = alt;
           img.setAttribute('data-parent', alt);
-          const dad = document.querySelector('#drag-and-drop-area .explain');
+          const dad = document.querySelector('#drag-and-drop-area');
           dad.innerHTML = '';
-          dad.append(img);
+          dad.append(img.cloneNode(true));
+          const res = document.querySelector('#for_add_new_group .plan_menu .plan.third .response.img');
+          res.innerHTML = '';
+          res.append(img.cloneNode(true));
           $('#for_add_new_group .plan_menu .plan.first .title_name input').val(title_name);
           obj.once_memory = {};
-          /*
-          html = '<input id="' + alt + '" type="checkbox" class="hidden">';
-          html += '<label for="' + alt + '" class="small_title"><span>' + title_name + '</span></label>';
-          html += '<div class="' + alt + '" data-id="instrument"></div>';
-          $('#CP').append(html);
-          obj.$target = alt;*/
+          for (let i = 0; i < 25; i++) {
+            $('#for_add_new_group .plan_menu .plan.second tbody tr.n' + i + ' td.file_name').text('----');
+          }
         }
         if (obj.use === 'change_instrument_icon') {
           img.alt = obj.$target;
@@ -1490,6 +1248,7 @@ function previewAndInsert(files) {
           const cp = document.querySelector('#CP label[for="' + obj.$target + '"]');
           cp.prepend(img);
         }
+        $('#wait').addClass('hidden');
       };
       img.src = canvas.toDataURL();
     };
@@ -1498,6 +1257,7 @@ function previewAndInsert(files) {
   reader.readAsDataURL(files[0]);
 }
 $('#add_CP_group').change((e) =>{
+  $('#wait').removeClass('hidden');
   let files = e.target.files;
   if (files === undefined) {
     $('#add_CP_group').val('');
@@ -1535,22 +1295,49 @@ dragAndDropArea.addEventListener('drop', (event) => {
   previewAndInsert(files);
 });
 $('#add_CP_group_button').click((e) =>{
+  let str = '';
+  if ($('header .header_form p.language').text() === 'Japanese') {
+    str = '画像1枚をドラッグかクリック';
+  }
+  if ($('header .header_form p.language').text() === '英語') {
+    str = 'Drag here one image or Click';
+  }
+  let html = '<div class="explain"><i class="fa-solid fa-image"></i><div class="text">' + str + '</div></div>';
+  html += '<canvas width="100" height="100"></canvas>';
+  $('#drag-and-drop-area').html(html);
+  for (let i = 0; i < 25; i++) {
+    $('#for_add_new_group .plan_menu .plan.second tbody tr.n' + i + ' td.file_name').text('----');
+  }
   $('#for_add_new_group').css('display', 'flex');
 });
 //input sounds
-function add_url_to_once_memory (newUrl) {
-  let name = $('#drag-and-drop-area .explain').children('img').attr('data-parent');
-  let key = name + '_' + obj.tr_y;
-  obj.once_memory[key] = newUrl;
-}
 function add_new_sounds (files) {
+  let name = $('#drag-and-drop-area').children('img').attr('data-parent');
   if (obj.use === 'add_sound_one_upload') {
     const fileURL = URL.createObjectURL(files[0]);
+    let key = name + '_' + obj.tr_y;
+    let end_sign = 'fin';
+    change_same_volume (fileURL, key, obj.once_memory, end_sign);
     $('#for_add_new_group .plan_menu .plan.second tbody tr.n' + obj.tr_y + ' td.file_name').text(files[0].name);
-    add_url_to_once_memory (fileURL);
+  }
+  if (obj.use === 'add_sound_all_upload') {
+    for (let i = 0; i < files.length; i++) {
+      if (i > 25) {
+        break;
+      }
+      let fileURL = URL.createObjectURL(files[i]);
+      let key = name + '_' + i;
+      let end_sign = '';
+      if (i >= files.length - 1 || i >= 25) {
+        end_sign = 'fin';
+      }
+      change_same_volume (fileURL, key, obj.once_memory, end_sign);
+      $('#for_add_new_group .plan_menu .plan.second tbody tr.n' + i + ' td.file_name').text(files[i].name);
+    }
   }
 }
 $('#add_new_sounds').change((e) => {
+  $('#wait').removeClass('hidden');
   let files = e.target.files;
   if (files === undefined) {
     $('#add_new_sounds').val('');
@@ -1559,8 +1346,15 @@ $('#add_new_sounds').change((e) => {
   add_new_sounds (files);
   $('#add_new_sounds').val('');
 });
+$('#for_add_new_group .plan_menu .plan.second thead th.all_upload').on('click', (e) => {
+  if ($('#drag-and-drop-area').children('img').attr('data-parent') === undefined) {
+    return false;
+  }
+  obj.use = 'add_sound_all_upload';
+  $('#add_new_sounds').click();
+});
 $('#for_add_new_group .plan_menu .plan.second tbody td.one_upload').on('click', (e) => {
-  if ($('#drag-and-drop-area .explain').children('img').attr('data-parent') === undefined) {
+  if ($('#drag-and-drop-area').children('img').attr('data-parent') === undefined) {
     return false;
   }
   obj.use = 'add_sound_one_upload';
@@ -1584,14 +1378,57 @@ $('#for_add_new_group .plan_menu .plan.second tbody tr th').click((e) => {
   let tr_n = $(event.target).parent().attr('class');
   tr_n = tr_n.substring(1);
   tr_n = Number(tr_n);
-  let name = $('#drag-and-drop-area .explain').children('img').attr('data-parent');
+  let name = $('#drag-and-drop-area').children('img').attr('data-parent');
   let key = name + '_' + tr_n;
   let audioUrl = obj.once_memory[key];
   if (audioUrl === undefined) {
     return false;
   }
-  let range_val = $('#volume_bar').val() / 50;
-  change_same_volume (audioUrl, range_val);
+  let music = new Audio(audioUrl);
+  let volume = $('#volume_bar').val() / 100;
+  music.volume = volume;
+  music.play();
+});
+//do create new group
+$('#add_new_group_button').click((e) => {
+  if ($('#drag-and-drop-area').children('img').attr('data-parent') === undefined) {
+    return false;
+  }
+  if ($('#for_add_new_group .plan_menu .plan.third .response .cannot.choose').length) {
+    return false;
+  }
+  //create new group wrap
+  let alt = $('#drag-and-drop-area').children('img').attr('data-parent');
+  let title_name = $('#for_add_new_group .plan_menu .plan.first .title_name input').val();
+  let img = jQuery('<div>').append($('#drag-and-drop-area').children('img').clone(true)).html();
+  let html = '<input id="' + alt + '" type="checkbox" class="hidden">';
+  html += '<label for="' + alt + '" class="small_title"><span>' + title_name + '</span></label>';
+  html += '<div class="' + alt + '" data-id="instrument"></div>';
+  $('#CP').append(html);
+  $('#CP label[for="' + alt + '"]').prepend(img);
+  //move url from once_memory to sound_obj
+  const keys = Object.keys(obj.once_memory);
+  for (let i = 0; i < keys.length; i++) {
+    sound_obj[keys[i]] = obj.once_memory[keys[i]];
+  }
+  //reset
+  obj.use = '';
+  obj.once_memory = '';
+  $('#for_add_new_group').css('display', 'none');
+});
+$('#for_add_new_group .plan_menu .slideshow_icon').click((e) => {
+  if ($('#drag-and-drop-area').children('img').attr('data-parent') === undefined) {
+    return true;
+  }
+  let score_num = Object.keys(obj.once_memory).length;
+  if (score_num < 25) {
+    $('#for_add_new_group .plan_menu .plan.third .response .can').removeClass('choose');
+    $('#for_add_new_group .plan_menu .plan.third .response .cannot').addClass('choose');
+  }
+  if (score_num == 25) {
+    $('#for_add_new_group .plan_menu .plan.third .response .can').addClass('choose');
+    $('#for_add_new_group .plan_menu .plan.third .response .cannot').removeClass('choose');
+  }
 });
 //slideshow action
 $('#for_add_new_group .plan_menu .slideshow_icon .back_plan').click((e) => {
@@ -1677,12 +1514,18 @@ function remove_CP_group(e) {
   if (target_for === undefined) {
     target_for = $(e.target).parent().attr('for');
   }
+  //remove html group
   $('#CP .' + target_for).children().each(function(index) {
     $('#CP .add_new_blocks').append($(this));
   });
   $('#CP #' + target_for).remove();
   $('#CP label[for="' + target_for + '"]').remove();
   $('#CP .' + target_for).remove();
+  //remove sound_obj
+  for (let i = 0; i < 25; i++) {
+    let key = target_for + '_' + i;
+    delete sound_obj[key];
+  }
 }
 $('#remove_CP_group').change((e) => {
   //reset another button
@@ -1787,7 +1630,6 @@ $('.input_forms .title .downside_menu button.remove_CP_box').click((e) => {
   if (!result) {
     return false;
   }
-  let target_class = $('#CP label.check').parent().attr('class');
   $('#CP label.check').remove();
   $("#CP .CPimg").parent().each(function (index) {
     let new_index = index + 1;
@@ -1797,7 +1639,7 @@ $('.input_forms .title .downside_menu button.remove_CP_box').click((e) => {
 //++observer included_instruments start++
 //change musical_score icons from included_instruments
 function change_score_icons_from_included_instruments(e) {
-  let html = jQuery("<div>").append($(this).clone(true)).html();
+  let html = jQuery('<div>').append($(this).clone(true)).html();
   //pick color display
   $('.aside_menu .selected_block_img').html(html);
   //change musical_score icons
@@ -2211,34 +2053,40 @@ function end_fun (e) {
 };
 function score_editing (e) {
   let $img = $('.aside_menu .selected_block_img img');
+  let parent_class = $img.attr('data-parent');
   if (!$img.length) {
     return false;
   }
   let $point = $('#musical_score tbody tr.y' + obj.tr_y + ' td.x' + obj.td_x);
   let $td_img = $point.find('img.mImg');
-  if (!$td_img.length || $img.attr('alt') !== $td_img.attr('alt')) {
-    let html = jQuery("<div>").append($img.clone(true).addClass('mImg')).html();
+  if (!$td_img.length || parent_class !== $td_img.attr('data-parent')) {
+    let html = jQuery('<div>').append($img.clone(true).addClass('mImg')).html();
     $point.append(html);
     $point.attr('data-class', 'selected');
-    let parent_class = $('#CP label.check').parent().attr('class');
     do_play_audio (parent_class, obj.tr_y);
-    if (!$('.hanb_icon_form .included_instruments img[alt="' + $img.attr('alt') + '"]').length) {
-      html = jQuery("<div>").append($img.clone(true)).html();
+    if (!$('.hanb_icon_form .included_instruments img[data-parent="' + parent_class + '"]').length) {
+      html = jQuery('<div>').append($img.clone(true)).html();
       $('.hanb_icon_form .included_instruments').append(html);
-      let target_for = $('#CP label img[alt="' + $img.attr('alt') + '"]').parent().attr('for');
-      $('#CP label[for="' + target_for + '"]').addClass('used');
+      $('#CP label[for="' + parent_class + '"]').addClass('used');
     }
   }
-  if ($img.attr('alt') === $td_img.attr('alt')) {
+  if (parent_class === $td_img.attr('data-parent')) {
     $td_img.remove();
     if (!$point.find('img').length) {
       $point.removeAttr('data-class');
     }
-    if (!$('#musical_score tbody td img[alt="' + $img.attr('alt') + '"]').length) {
-      $('.hanb_icon_form .included_instruments img[alt="' + $img.attr('alt') + '"]').remove();
-      let target_for = $('#CP label img[alt="' + $img.attr('alt') + '"]').parent().attr('for');
-      $('#CP label[for="' + target_for + '"]').removeClass('used');
+    if (!$('#musical_score tbody td img[data-parent="' + parent_class + '"]').length) {
+      $('.hanb_icon_form .included_instruments img[data-parent="' + parent_class + '"]').remove();
+      $('#CP label[for="' + parent_class + '"]').removeClass('used');
     }
+  }
+  if ($('#CP label.used').length != $('.hanb_icon_form .included_instruments img').length) {
+    $('.hanb_icon_form .included_instruments img').each(function(index, ele) {
+      let parent_class = $(ele).attr('data-parent');
+      if (!$('#CP label[for="' + parent_class + '"].used').length) {
+        $('#CP label[for="' + parent_class + '"]').addClass('used');
+      }
+    });
   }
   end_fun ();
 }
@@ -2247,7 +2095,6 @@ ac.onmousedown = function (e) {
   obj.start_x = e.clientX;
   obj.start_y = e.clientY;
   td_xy_in_obj (obj.start_x, obj.start_y);
-  ac.addEventListener('mousemove', all_removeEventListener);
   ac.addEventListener('click', score_editing);
 };
 ac.addEventListener("touchstart", function (e) {
@@ -2324,6 +2171,17 @@ $('#change_score_time').click((e) => {
   let point_sec = sec[0].split('.').slice(1);
   sec = sec[0].split('.').slice(0, 1);
   let time = (Number(min[0]) * 60 + Number(sec[0])) * 10 + Number(point_sec[0]);
+  if (time < 30) {
+    time = 30;
+    $('#score_time_input .menu .time-bar .minutes input[type="text"]').val('00');
+    $('#score_time_input .menu .time-bar .seconds input[type="text"]').val('03');
+    $('#score_time_input .menu .time-bar .point_seconds input[type="text"]').val('.0');
+    $('#score_time_input .menu .time-bar .minutes input[type="range"]').val(0);
+    $('#score_time_input .menu .time-bar .seconds input[type="range"]').val(3);
+    $('#score_time_input .menu .time-bar .point_seconds input[type="range"]').val(0);
+    $('#score_time_input .menu .time_display').text('00:03.0');
+    $('#score_time_input .menu .time-input input[type="text"]').val('00:03.0');
+  }
   let col_L = $('#musical_score tbody tr.y0 td').length;
   if (time >= col_L) {
     for (let i = col_L; i < time; i++) {
@@ -2344,6 +2202,12 @@ $('#change_score_time').click((e) => {
     let result = window.confirm(str);
     if (!result) {
       return false;
+    }
+    for (let i = col_L - 1; i > time - 1; i--) {
+      $('#musical_score thead tr th:last-child').remove();
+      $('#musical_score tbody tr').each(function(index) {
+        $(this).children('td.x' + i).remove();
+      });
     }
   }
   $('#score_time_input').css('display', 'none');
@@ -2389,7 +2253,7 @@ $('#control_panel .hanb_menu_form .hanb_menu .paste_score').click((e) => {
           return true;
         }
         let img = $('#CP .small_title img[data-parent="' + item + '"]');
-        img = jQuery("<div>").append(img.clone(true)).html();
+        img = jQuery('<div>').append(img.clone(true)).html();
         $('#musical_score tbody tr.y' + y + ' td.x' + x).append(img);
         if (!$('#musical_score tbody tr.y' + y + ' td.x' + x + '[data-class="selected"]').length) {
           $('#musical_score tbody tr.y' + y + ' td.x' + x).attr('data-class', 'selected');
@@ -2438,7 +2302,7 @@ function roll_back (e) {
     if (icons.indexOf(item) < 0) {
       $('#CP .small_title img[data-parent="' + item + '"]').parent().addClass('used');
       let img = $('#CP .small_title img[data-parent="' + item + '"]');
-      img = jQuery("<div>").append(img.clone(true)).html();
+      img = jQuery('<div>').append(img.clone(true)).html();
       $('.hanb_icon_form .included_instruments').append(img);
     }
   });
@@ -2490,7 +2354,7 @@ function roll_forward (e) {
     if (icons.indexOf(item) < 0) {
       $('#CP .small_title img[data-parent="' + item + '"]').parent().addClass('used');
       let img = $('#CP .small_title img[data-parent="' + item + '"]');
-      img = jQuery("<div>").append(img.clone(true)).html();
+      img = jQuery('<div>').append(img.clone(true)).html();
       $('.hanb_icon_form .included_instruments').append(img);
     }
   });
@@ -2510,10 +2374,130 @@ $('#control_panel .hanb_menu_form .hanb_menu .roll_forward').click((e) => {
   });
   roll_forward (e);
 });
+//backward-fast
+$('#control_panel .backward-fast').click((e) => {
+  $('#editing_areas .musical_score_form').scrollLeft(0);
+});
+//backward-step
+$('#control_panel .backward-step').click((e) => {
+  let left = $('#editing_areas .musical_score_form').scrollLeft();
+  left += -20;
+  $('#editing_areas .musical_score_form').scrollLeft(left);
+});
+//forward-step
+$('#control_panel .forward-step').click((e) => {
+  let left = $('#editing_areas .musical_score_form').scrollLeft();
+  left += 20;
+  $('#editing_areas .musical_score_form').scrollLeft(left);
+});
+//forward-fast
+/*https://qiita.com/ypyp/items/c4b76e85f32b1f0cd577*/
+$('#control_panel .forward-fast').click((e) => {
+  let element = document.querySelector('#editing_areas .musical_score_form');
+  let scrollWidth = element.scrollWidth;
+  let ele_w = element.offsetWidth;
+  let left = scrollWidth - ele_w;
+  $('#editing_areas .musical_score_form').scrollLeft(left);
+});
+//palyer
+function mixed_scores (arry) {
+  // AudioContextを作成する
+  let audioContext = new AudioContext();
+  arry.forEach((item, i) => {
+    let audioUrl = sound_obj[item];
+    // XMLHttpRequestを使用して音声データを取得する
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', audioUrl, true);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function() {
+      audioContext.decodeAudioData(xhr.response, function(buffer) {
+        let source = audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioContext.destination);
+        source.start();
+      });
+    };
+    xhr.send();
+  });
+}
+function track_scores (start_time, callback) {
+  let arry = [];
+  let main_score = $('.aside_menu .selected_block_img img').attr('data-parent');
+  $('#musical_score tbody td[data-track="selected"]').removeAttr('data-track');
+  $('#musical_score tbody td.x' + start_time).attr('data-track', 'selected');
+  $('#musical_score tbody td.x' + start_time).each(function(index, domEle) {
+    let $img = $(domEle).children('img');
+    if (!$img.length) {
+      return true;
+    }
+    $img.each(function(j, imgEle) {
+      let data_parent = $(imgEle).attr('data-parent');
+      if (!$('#play_mode').prop('checked') && data_parent !== main_score) {
+        return true;
+      }
+      let tr_y = $(imgEle).parent().parent().attr('class');
+      tr_y = tr_y.substring(1);
+      tr_y = Number(tr_y);
+      let key = data_parent + '_' + tr_y;
+      arry.push(key);
+      // WARNING: if can use file src music --> fun mixed_scores (arry)
+      //test
+      do_play_audio (data_parent, tr_y);
+    });
+  });
+  /*test
+  if (arry.length) {
+    mixed_scores (arry);
+  }*/
+  setTimeout((e) => {
+    start_time++;
+    if ($('#play_style').prop('checked') && start_time >= $('#musical_score tbody tr.y0 td').length) {
+      start_time = 0;
+    }
+    if (start_time >= $('#musical_score tbody tr.y0 td').length || obj.want_if === 'false') {
+      if (obj.want_if === 'true') {
+        $('#editing_areas .musical_score_form').scrollLeft(0);
+      }
+      $('#musical_score tbody td[data-track="selected"]').removeAttr('data-track');
+      $('.aside_menu .selected_block_img img, .hanb_icon_form .included_instruments img').removeAttr('data-light');
+      $('#start_to_player').prop('checked', false);
+      return false;
+    }
+    let left = start_time * 20;
+    $('#editing_areas .musical_score_form').scrollLeft(left);
+    callback (start_time, callback);
+  }, 100)
+}
+$('#start_to_player').change((e) => {
+  if ($('#start_to_player').prop('checked')) {
+    obj.want_if = 'true';
+    $('.aside_menu .selected_block_img img, .hanb_icon_form .included_instruments img').attr('data-light', 'light');
+    let left = $('#editing_areas .musical_score_form').scrollLeft();
+    let start_time = Math.round(left / 20);
+    track_scores (start_time, track_scores);
+  }
+  if (!$('#start_to_player').prop('checked')) {
+    obj.want_if = 'false';
+  }
+});
 //shortcuts
-document.addEventListener('keydown', ctrl_keydown_event, false);
-document.addEventListener('keydown', ctrl_shift_keydown_event, false);
-function ctrl_keydown_event(e){
+document.addEventListener('keydown', keydown_event, false);
+function keydown_event(e) {
+  //only key
+  if(!event.ctrlKey && !event.shiftKey && $('#editing_areas:hover').length && event.code === "Space") {
+    event.preventDefault();
+    $('#control_panel .player label[for="start_to_player"]').click();
+  }
+  //shift + key
+  if(!event.ctrlKey && event.shiftKey && event.code === "ArrowRight") {
+    event.preventDefault();
+    $('#control_panel .forward-step').click();
+  }
+  if(!event.ctrlKey && event.shiftKey && event.code === "ArrowLeft") {
+    event.preventDefault();
+    $('#control_panel .backward-step').click();
+  }
+  //ctrl + key
   if(event.ctrlKey && !event.shiftKey && event.code === "KeyH") {
     event.preventDefault();
     $('#control_panel .hanb_menu_form .hanb_menu .score_time').click();
@@ -2543,11 +2527,18 @@ function ctrl_keydown_event(e){
       }
     }
   }
-}
-function ctrl_shift_keydown_event(e){
+  //ctrl + shift + key
   if(event.ctrlKey && event.shiftKey && event.code === "KeyZ") {
     event.preventDefault();
     $('#control_panel .hanb_menu_form .hanb_menu .roll_forward').click();
+  }
+  if(event.ctrlKey && event.shiftKey && event.code === "ArrowRight") {
+    event.preventDefault();
+    $('#control_panel .forward-fast').click();
+  }
+  if(event.ctrlKey && event.shiftKey && event.code === "ArrowLeft") {
+    event.preventDefault();
+    $('#control_panel .backward-fast').click();
   }
 }
 //change volume icons
@@ -2564,6 +2555,78 @@ $('#volume_bar').change((e) => {
     $('#control_panel .volume_form label[for="volume_icons"] i').css('display', 'none');
     $('#control_panel .volume_form label[for="volume_icons"] .fa-volume-xmark').css('display', 'block');
   }
+});
+//for_palette_resize
+function resize_target (e) {
+  let x,y;
+  if (obj.use === 'mouse') {
+    x = e.clientX;
+    y = e.clientY;
+  }
+  if (obj.use === 'touch') {
+    x = e.touches[0].clientX;
+    y = e.touches[0].clientY;
+  }
+  let x_range = x - obj.start_x;
+  let y_range = y - obj.start_y;
+  obj.$target.css('width', obj.target_w + x_range + 'px');
+  obj.$target.children('.musical_score_form').css('width', obj.target_w + x_range + 'px');
+  //obj.$target.css('height', obj.target_h + y_range + 'px');
+}
+function move_icon (e) {
+  let x,y;
+  if (obj.use === 'mouse') {
+    x = e.clientX;
+    y = e.clientY;
+  }
+  if (obj.use === 'touch') {
+    x = e.touches[0].clientX;
+    y = e.touches[0].clientY;
+  }
+  let x_range = x - obj.start_x;
+  let y_range = y - obj.start_y;
+  //obj.$icon.css('top', obj.icon_top + y_range + 'px');
+  obj.$icon.css('left', obj.icon_left + x_range + 'px');
+}
+$("#control_panel .form_resize").mousedown(function (e) {
+  e.preventDefault();
+  obj.use = 'mouse';
+  obj.$target = $("#editing_areas");
+  obj.$icon = $("#control_panel .form_resize");
+  obj.start_x = e.clientX;
+  obj.start_y = e.clientY;
+  obj.target_w = obj.$target.width();
+  obj.target_h = obj.$target.height();
+  obj.icon_top = obj.$icon.offset().top - obj.$target.offset().top;
+  obj.icon_left = obj.$icon.offset().left - obj.$target.offset().left;
+  document.addEventListener('mousemove', handleTouchMove, { passive: false });
+  document.addEventListener('mousemove', resize_target);
+  document.addEventListener('mousemove', move_icon);
+});
+$(document).mouseup(function(e) {
+  document.removeEventListener('mousemove', handleTouchMove, { passive: false });
+  document.removeEventListener('mousemove', resize_target);
+  document.removeEventListener('mousemove', move_icon);
+});
+$("#control_panel .form_resize").on('touchstart', function(e) {
+  e.preventDefault();
+  obj.use = 'touch';
+  obj.$target = $("#editing_areas");
+  obj.$icon = $("#control_panel .form_resize");
+  obj.start_x = e.touches[0].clientX;
+  obj.start_y = e.touches[0].clientY;
+  obj.target_w = obj.$target.width();
+  obj.target_h = obj.$target.height();
+  obj.icon_top = obj.$icon.offset().top - obj.$target.offset().top;
+  obj.icon_left = obj.$icon.offset().left - obj.$target.offset().left;
+  document.addEventListener("touchmove", handleTouchMove, { passive: false });
+  document.addEventListener("touchmove", resize_target);
+  document.addEventListener("touchmove", move_icon);
+});
+$(document).on('touchend', function(e) {
+  document.removeEventListener("touchmove", handleTouchMove);
+  document.removeEventListener("touchmove", resize_target);
+  document.removeEventListener("touchmove", move_icon);
 });
 //pop up explain
 let pop_text_selecter = '#control_panel .player';
@@ -2895,7 +2958,7 @@ if (typeof sessionStorage === undefined) {
       //top menu memory
       let get_memorys_html = '';
       $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-        let html = jQuery("<div>").append($(this).clone(true)).html();
+        let html = jQuery('<div>').append($(this).clone(true)).html();
         get_memorys_html = get_memorys_html + html;
       });
       value_obj['top_menu'] = get_memorys_html;

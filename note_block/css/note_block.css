@@ -142,7 +142,7 @@ html {
   justify-content: center;
 }
 #plan_to_download_Blueprint .plan_menu .for_scroll {
-  display: none;
+  display: block;
   height: 70px;
 }
 #plan_to_download_Blueprint .plan_menu::-webkit-scrollbar {
@@ -209,8 +209,7 @@ html {
   opacity: 0;
   text-align: center;
 }
-#plan_to_download_Blueprint .plan_menu .first.plan label,
-#plan_to_download_Blueprint .plan_menu .second.plan label {
+#plan_to_download_Blueprint .plan_menu .first.plan label {
   display: flex;
   width: 40%;
   height: 85%;
@@ -218,187 +217,73 @@ html {
   align-items: center;
   justify-content: center;
 }
-#plan_to_download_Blueprint .first.plan label.left,
-#plan_to_download_Blueprint .second.plan label.left {
+#plan_to_download_Blueprint .first.plan label.left {
   float: left;
   margin-left: 40px;
 }
-#plan_to_download_Blueprint .first.plan label.right,
-#plan_to_download_Blueprint .second.plan label.right {
+#plan_to_download_Blueprint .first.plan label.right {
   float: right;
   margin-right: 40px;
 }
-#plan_to_download_Blueprint .first.plan .multi_layers {
-  display: flex;
-  width: 150px;
-  height: 150px;
-  margin-bottom: 20px;
-  align-items: center;
-  justify-content: center;
-}
-#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer {
+#plan_to_download_Blueprint .first.plan label.left .plan_img,
+#plan_to_download_Blueprint .first.plan label.right img {
   width: 120px;
   height: 120px;
-  background-color: royalblue;
-  position: absolute;
-  transform-origin: center center;
-  transform: rotateX(75deg) rotateZ(10deg) translateZ(50px);
-}
-#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.first {
-  transform: rotateX(75deg) rotateZ(10deg) translateZ(30px);
-  opacity: 0.9;
-}
-#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.second {
-  transform: rotateX(75deg) rotateZ(10deg) translateZ(10px);
-  opacity: 0.8;
-}
-#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.third {
-  transform: rotateX(75deg) rotateZ(10deg) translateZ(-10px);
-  opacity: 0.7;
-}
-#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.fourth {
-  transform: rotateX(75deg) rotateZ(10deg) translateZ(-30px);
-  opacity: 0.6;
-}
-#plan_to_download_Blueprint .first.plan label.left .multi_layers .layer.fifth {
-  transform: rotateX(75deg) rotateZ(10deg) translateZ(-50px);
-  opacity: 0.5;
-}
-#plan_to_download_Blueprint .first.plan label.right .multi_layers .layer {
-  width: 120px;
-  height: 120px;
-  background-color: royalblue;
-  position: absolute;
-  transform-origin: center center;
-  transform: rotateX(15deg) rotateY(15deg) translateZ(-80px);
-}
-#plan_to_download_Blueprint .first.plan label.right .multi_layers .layer.first {
-  transform: rotateX(15deg) rotateY(15deg) translateZ(-20px);
-  opacity: 0.8;
-}
-#plan_to_download_Blueprint .first.plan label.right .multi_layers .layer.second {
-  transform: rotateX(15deg) rotateY(15deg) translateZ(20px);
-  opacity: 0.6;
-}
-#plan_to_download_Blueprint .first.plan label.right .multi_layers .layer.third {
-  transform: rotateX(15deg) rotateY(15deg) translateZ(80px);
-  opacity: 0.4;
-}
-#plan_to_download_Blueprint .second.plan label.left .color_box_img,
-#plan_to_download_Blueprint .second.plan label.right img {
-  display: block;
-  width: 120px;
-  height: 120px;
-  background-color: rgb(130, 239, 234);
   border-radius: 5px;
   margin: 0 auto;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 100px;
+  color: rgb(33, 115, 70);
 }
-#plan_to_download_Blueprint .second.plan i {
+#plan_to_download_Blueprint .first.plan i.fa-shuttle-space {
   color: navy;
 }
-#plan_to_download_Blueprint .plan span {
+#plan_to_download_Blueprint .first.plan .selector {
   cursor: pointer;
 }
-#plan_to_download_Blueprint .second.plan span {
-  line-height: 20px;
+#plan_to_download_Blueprint .first.plan .selector .text_block {
+  text-align: center;
+  margin-bottom: 5px;
+  line-break: strict;
 }
-#plan_to_download_Blueprint .third.plan .frame {
+#plan_to_download_Blueprint .first.plan .selector .text_block span {
+  display: inline-block;
+}
+#plan_to_download_Blueprint .second.plan .frame {
   margin-top: 30px;
 }
-#plan_to_download_Blueprint .third.plan .title {
+#plan_to_download_Blueprint .second.plan .title {
   padding: 0.4em 0.5em;
   color: #494949;
   background: #f4f4f4;
   border-left: solid 5px #7db4e6;
   border-bottom: solid 3px #d7d7d7;
 }
-#plan_to_download_Blueprint .third.plan .response {
+#plan_to_download_Blueprint .second.plan .response {
   margin-top: 5px;
 }
-#plan_to_download_Blueprint .third.plan .response span {
+#plan_to_download_Blueprint .second.plan .response span {
   display: none;
 }
-#plan_to_download_Blueprint .third.plan button {
+#plan_to_download_Blueprint .second.plan button {
   margin-top: 30px;
 }
-#plan_to_download_Blueprint .fourth.plan .for_scroll {
-  display: block;
-}
-#plan_to_download_Blueprint .fourth.plan .frame {
-  position: relative;
-  margin-top: 30px;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-#plan_to_download_Blueprint .fourth.plan .frame .canvas {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  overflow: hidden;
-  width: 80%;
-}
-#plan_to_download_Blueprint .fourth.plan .frame canvas {
-  box-sizing: border-box;
-  width: 100%;
-  border: 1px solid darkgray;
-  transition: all 0.5s ease-in-out;
-  display: none;
-}
-#plan_to_download_Blueprint .fourth.plan .frame canvas.present {
-  display: block;
-}
-#plan_to_download_Blueprint .fourth.plan .frame canvas.before {
-  transform-origin: left bottom;
-  transform: rotateZ(-90deg);
-  display: block;
-}
-#plan_to_download_Blueprint .fourth.plan .frame canvas.after {
-  transform-origin: right bottom;
-  transform: rotateZ(90deg);
-  display: block;
-}
-#plan_to_download_Blueprint .fourth.plan .frame canvas[data-id="dummy_before"],
-#plan_to_download_Blueprint .fourth.plan .frame canvas[data-id="dummy_after"] {
-  border: none;
-}
-#plan_to_download_Blueprint .fourth.plan i {
-  position: absolute;
-  font-size: xx-large;
-  color: green;
-  opacity: 0.5;
-  font-weight: bold;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-#plan_to_download_Blueprint .fourth.plan i:hover {
-  opacity: 1;
-}
-#plan_to_download_Blueprint .fourth.plan i.fa-angles-left {
-  left: 0;
-}
-#plan_to_download_Blueprint .fourth.plan i.fa-angles-right {
-  right: 0;
-}
-#Blueprint_direction_horizon:checked ~ .plan_menu label[for="Blueprint_direction_horizon"] span,
-#Blueprint_direction_vertical:checked ~ .plan_menu label[for="Blueprint_direction_vertical"] span,
-#not_need_block_skins:checked ~ .plan_menu label[for="not_need_block_skins"] span,
-#need_block_skins:checked ~ .plan_menu label[for="need_block_skins"] span {
+#not_need_circuit:checked ~ .plan_menu label[for="not_need_circuit"] .selector,
+#need_circuit:checked ~ .plan_menu label[for="need_circuit"] .selector {
   display: block;
   border: 3px solid green;
   padding: 20px;
   border-radius: 8px;
   font-weight: bold;
 }
-#not_need_block_skins:checked ~ .plan_menu label[for="not_need_block_skins"] span i {
+#not_need_circuit:checked ~ .plan_menu label[for="not_need_circuit"] .selector i.fa-shuttle-space {
   animation: 1s ease-in-out 0s 10 normal none running fly;
   -webkit-animation: 1s ease-in-out 0s 10 normal none running fly;
 }
-#need_block_skins:checked ~ .plan_menu label[for="need_block_skins"] span i {
+#need_circuit:checked ~ .plan_menu label[for="need_circuit"] .selector i.fa-shuttle-space {
   animation: 5s ease-in-out 0s 3 normal none running fly;
   -webkit-animation: 5s ease-in-out 0s 3 normal none running fly;
 }
@@ -418,10 +303,8 @@ html {
     transform: translate(60px, 0);
   }
 }
-#Blueprint_direction_horizon:checked ~ .plan_menu .response span.Blueprint_direction_horizon,
-#Blueprint_direction_vertical:checked ~ .plan_menu .response span.Blueprint_direction_vertical,
-#not_need_block_skins:checked ~ .plan_menu .response span.not_need_block_skins,
-#need_block_skins:checked ~ .plan_menu .response span.need_block_skins {
+#not_need_circuit:checked ~ .plan_menu .response span.not_need_circuit,
+#need_circuit:checked ~ .plan_menu .response span.need_circuit {
   display: inline;
 }
 /*slideshow*/
@@ -441,22 +324,22 @@ html {
 }
 #plan_to_download_Blueprint .plan_menu label.slideshow {
   display: block;
-  width: 15px;
-  height: 15px;
   border-radius: 50%;
   background: royalblue;
   opacity: 0.3;
-  margin: 0 15px;
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease-in-out;
+  width: 10px;
+  height: 10px;
+  margin: 0 10px;
 }
 #plan_to_download_Blueprint .plan_menu label.slideshow::before {
   content: '';
   position: absolute;
   display: block;
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
   top: 50%;
   left: 50%;
   opacity: 0.3;
@@ -466,45 +349,23 @@ html {
   transition: all 0.3s ease-in-out;
 }
 #plan_menu_0:checked ~ .plan_menu label[for="plan_menu_0"],
-#plan_menu_1:checked ~ .plan_menu label[for="plan_menu_1"],
-#plan_menu_2:checked ~ .plan_menu label[for="plan_menu_2"],
-#plan_menu_3:checked ~ .plan_menu label[for="plan_menu_3"] {
+#plan_menu_1:checked ~ .plan_menu label[for="plan_menu_1"] {
   opacity: 1;
 }
 #plan_menu_0:checked ~ .plan_menu label[for="plan_menu_0"]::before,
-#plan_menu_1:checked ~ .plan_menu label[for="plan_menu_1"]::before,
-#plan_menu_2:checked ~ .plan_menu label[for="plan_menu_2"]::before,
-#plan_menu_3:checked ~ .plan_menu label[for="plan_menu_3"]::before {
+#plan_menu_1:checked ~ .plan_menu label[for="plan_menu_1"]::before {
   transform: translate(-50%, -50%) scale(1);
 }
 #plan_menu_0:checked ~ .plan_menu .first.plan,
-#plan_menu_0:checked ~ .plan_menu .second.plan,
-#plan_menu_0:checked ~ .plan_menu .third.plan,
-#plan_menu_0:checked ~ .plan_menu .fourth.plan {
-  transform: translate(150%, 0);
-}
-#plan_menu_1:checked ~ .plan_menu .first.plan,
-#plan_menu_1:checked ~ .plan_menu .second.plan,
-#plan_menu_1:checked ~ .plan_menu .third.plan,
-#plan_menu_1:checked ~ .plan_menu .fourth.plan {
+#plan_menu_0:checked ~ .plan_menu .second.plan {
   transform: translate(50%, 0);
 }
-#plan_menu_2:checked ~ .plan_menu .first.plan,
-#plan_menu_2:checked ~ .plan_menu .second.plan,
-#plan_menu_2:checked ~ .plan_menu .third.plan,
-#plan_menu_2:checked ~ .plan_menu .fourth.plan {
+#plan_menu_1:checked ~ .plan_menu .first.plan,
+#plan_menu_1:checked ~ .plan_menu .second.plan {
   transform: translate(-50%, 0);
 }
-#plan_menu_3:checked ~ .plan_menu .first.plan,
-#plan_menu_3:checked ~ .plan_menu .second.plan,
-#plan_menu_3:checked ~ .plan_menu .third.plan,
-#plan_menu_3:checked ~ .plan_menu .fourth.plan {
-  transform: translate(-150%, 0);
-}
 #plan_menu_0:checked ~ .plan_menu .first.plan,
-#plan_menu_1:checked ~ .plan_menu .second.plan,
-#plan_menu_2:checked ~ .plan_menu .third.plan,
-#plan_menu_3:checked ~ .plan_menu .fourth.plan {
+#plan_menu_1:checked ~ .plan_menu .second.plan {
   opacity: 1;
 }
 #plan_to_download_Blueprint .plan_menu .slideshow_icon .back_plan,
@@ -789,7 +650,7 @@ html {
   border-radius: 50%;
   background: white;
   opacity: 0.3;
-  margin: 0 15px;
+  margin: 0 10px;
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease-in-out;
@@ -1148,7 +1009,6 @@ html {
   align-items: center;
   justify-content: center;
   display: none;
-  display: flex;
 }
 #for_add_new_group .for_add_new_group_form {
   width: 600px;
@@ -1292,7 +1152,7 @@ html {
   height: 100%;
   object-fit: contain;
   border: 1px solid black;
-  background: lightgray;
+  background: gainsboro;
 }
 #drag-and-drop-area.active img,
 #drag-and-drop-area.active canvas {
@@ -1317,6 +1177,7 @@ html {
   position: sticky;
   top: 0;
   padding: 0 5px;
+  z-index: 5;
 }
 #for_add_new_group .plan_menu .plan.second thead th.keyboard {
   width: 60px;
@@ -1338,7 +1199,7 @@ html {
   padding-left: 5px;
   box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.2), inset 1px 1px 1px rgba(255, 255, 255, 0.5);
   white-space: nowrap;
-  z-index: 5;
+  z-index: 2;
   background-color: white;
   line-height: 20px;
   position: relative;
@@ -1512,6 +1373,41 @@ html {
   background-color: green;
   color: white;
 }
+#for_add_new_group .plan_menu .plan.third .frame {
+  margin-top: 30px;
+}
+#for_add_new_group .plan_menu .plan.third .title {
+  padding: 0.4em 0.5em;
+  color: #494949;
+  background: #f4f4f4;
+  border-left: solid 5px #7db4e6;
+  border-bottom: solid 3px #d7d7d7;
+}
+#for_add_new_group .plan_menu .plan.third .response {
+  margin-top: 5px;
+}
+#for_add_new_group .plan_menu .plan.third .response span {
+  display: none;
+}
+#for_add_new_group .plan_menu .plan.third .response span.choose {
+  display: block;
+}
+#for_add_new_group .plan_menu .plan.third button {
+  margin-top: 30px;
+}
+#for_add_new_group .plan_menu .plan.third .response.img img {
+  width: 100px;
+  height: 100%;
+  object-fit: contain;
+  border: 1px solid black;
+  background: gainsboro;
+}
+#for_add_new_group .plan_menu .plan.third .response .can {
+  color: blue;
+}
+#for_add_new_group .plan_menu .plan.third .response .cannot {
+  color: red;
+}
 /*slideshow*/
 /*https://photopizza.design/slideshow/*/
 #for_add_new_group .plan_menu .slideshow_icon {
@@ -1566,22 +1462,17 @@ html {
 #add_new_group_0:checked ~ .plan_menu .first.plan,
 #add_new_group_0:checked ~ .plan_menu .second.plan,
 #add_new_group_0:checked ~ .plan_menu .third.plan {
-  transform: translate(150%, 0);
+  transform: translate(100%, 0);
 }
 #add_new_group_1:checked ~ .plan_menu .first.plan,
 #add_new_group_1:checked ~ .plan_menu .second.plan,
 #add_new_group_1:checked ~ .plan_menu .third.plan {
-  transform: translate(50%, 0);
+  transform: translate(0%, 0);
 }
 #add_new_group_2:checked ~ .plan_menu .first.plan,
 #add_new_group_2:checked ~ .plan_menu .second.plan,
 #add_new_group_2:checked ~ .plan_menu .third.plan {
-  transform: translate(-50%, 0);
-}
-#add_new_group_3:checked ~ .plan_menu .first.plan,
-#add_new_group_3:checked ~ .plan_menu .second.plan,
-#add_new_group_3:checked ~ .plan_menu .third.plan {
-  transform: translate(-150%, 0);
+  transform: translate(-100%, 0);
 }
 #add_new_group_0:checked ~ .plan_menu .first.plan,
 #add_new_group_1:checked ~ .plan_menu .second.plan,
@@ -2177,6 +2068,15 @@ aside {
   display: block;
   object-fit: fill;
 }
+.aside_menu .selected_block_img img[data-light="light"],
+.hanb_icon_form .included_instruments img[data-light="light"] {
+  animation: 5s linear 0s infinite running color_loop;
+}
+@keyframes color_loop {
+  0% { filter: hue-rotate(0deg) invert(0) contrast(200%);}
+  50% { filter: hue-rotate(180deg) invert(1) contrast(200%); }
+  100% { filter: hue-rotate(360deg) invert(0) contrast(200%); }
+}
 /*aside menu*/
 .aside_menu .input_forms {
   overflow-y: scroll;
@@ -2504,7 +2404,7 @@ main {
   top: 0;
   left: 0;
   width: 650px;
-  height: 570px;
+  height: 555px;
   background: black;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   overflow-x: hidden;
@@ -2527,7 +2427,6 @@ main {
   left: 0;
   z-index: 5;
   background-color: white;
-  border: 1px solid #f5f5f5;
 }
 #musical_score tbody th.n0,
 #musical_score tbody th.n1,
@@ -2634,8 +2533,9 @@ main {
   position: relative;
   top: 0;
   left: 0;
+  height: 505px;
   width: 650px;
-  overflow-x: scroll;
+  overflow: scroll;
 }
 /*scrollbar_byCodepenFromPin*/
 #editing_areas .musical_score_form::-webkit-scrollbar-track {
@@ -2667,7 +2567,7 @@ main {
   background: #000;
   border: 0;
 }
-#musical_score td {
+#musical_score tbody td {
   border: 1px solid #f5f5f5;
   position: relative;
   text-align: center;
@@ -2675,24 +2575,27 @@ main {
   box-sizing: border-box;
   background: rgb(255, 255, 255);
 }
-#musical_score tbody tr.y0 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y2 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y4 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y7 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y9 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y12 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y14 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y16 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y19 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y21 td:not(td[data-class="selected"]),
-#musical_score tbody tr.y24 td:not(td[data-class="selected"]) {
+#musical_score tbody tr.y0 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y2 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y4 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y7 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y9 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y12 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y14 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y16 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y19 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y21 td:not(td[data-class="selected"], td[data-track="selected"]),
+#musical_score tbody tr.y24 td:not(td[data-class="selected"], td[data-track="selected"]) {
   background-color: lightgray;
 }
-#musical_score td[data-class="selected"] {
+#musical_score tbody td[data-class="selected"] {
   border: 1px solid black;
   background: lightcyan;
 }
-#musical_score td img {
+#musical_score tbody td[data-track="selected"] {
+  background: lime;
+}
+#musical_score tbody td img {
   filter: saturate(0) opacity(1);
   display: none;
   height: 18px;
@@ -2700,7 +2603,7 @@ main {
   object-fit: fill;
   background-color: white;
 }
-#musical_score td img.mImg {
+#musical_score tbody td img.mImg {
   display: block;
 }
 /*control_panel*/
@@ -2716,12 +2619,44 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 45px;
+  height: 50px;
   width: 100%;
 }
 #control_panel span.shortcut {
   display: none;
 }
+/*score resize*/
+#control_panel .form_resize {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ew-resize;
+}
+#control_panel .form_resize::before,
+#control_panel .form_resize::after {
+  content: '';
+  display: block;
+  position: absolute;
+  background: #fff;
+  border-radius: 3px;
+  width: 22px;
+  height: 3px;
+  box-shadow: inset 0.5px 0.5px 1px rgba(0, 0, 0, 0.4), inset -0.5px -0.5px 0.5px rgba(255, 255, 255, 0.2);
+}
+#control_panel .form_resize::before {
+  transform: rotateZ(-45deg) translate(0, 4px);
+}
+#control_panel .form_resize::after {
+  width: 14px;
+  transform: rotateZ(-45deg) translate(0, 10px);
+}
+/*each style*/
 #control_panel i:hover,
 #control_panel i:active {
   color: lightskyblue;
@@ -2740,13 +2675,15 @@ main {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  display: flex;
+}
+#start_to_player ~ label[for="start_to_player"] .fa-play,
+#start_to_player:checked ~ label[for="start_to_player"] .fa-pause {
+  display: block;
+}
+#start_to_player:checked ~ label[for="start_to_player"] .fa-play,
+#start_to_player ~ label[for="start_to_player"] .fa-pause {
   display: none;
-}
-#start_to_player:checked ~ label[for="pause_to_player"] {
-  display: flex;
-}
-#pause_to_player:checked ~ label[for="start_to_player"] {
-  display: flex;
 }
 #control_panel .backward-fast,
 #control_panel .backward-step,
@@ -3169,21 +3106,6 @@ footer i.fa-circle-question:hover {
     margin: 10px auto;
     height: 250px;
   }
-  #plan_to_download_Blueprint .plan_menu .for_scroll {
-    display: block;
-  }
-  #plan_to_download_Blueprint .plan_menu label.slideshow {
-    width: 10px;
-    height: 10px;
-    margin: 0 10px;
-  }
-  #for_sample_view .make_menu label.slideshow {
-    margin: 0 10px;
-  }
-  #plan_to_download_Blueprint .plan_menu label.slideshow::before {
-    width: 25px;
-    height: 25px;
-  }
   /*++for_sample_view++*/
   #for_sample_view .make_menu,
   #score_time_input .menu {
@@ -3197,9 +3119,13 @@ footer i.fa-circle-question:hover {
   #for_sample_view .third.plan canvas {
     width: 100%;
   }
+  #drag-and-drop-area img,
   #drag-and-drop-area canvas,
   #for_add_new_group .plan_menu .plan.first .title_name {
     width: 90%;
+  }
+  #for_add_new_group .plan_menu .plan.third .response.img img {
+    width: 70%;
   }
   /*share_buttons*/
   #share_buttons .share_buttons_form {
@@ -3417,4 +3343,7 @@ footer i.fa-circle-question:hover {
     display: none;
   }
   /*++main++*/
+  #control_panel .form_resize {
+    display: none;
+  }
 }
