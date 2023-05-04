@@ -763,7 +763,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
     let max = 0;
     for (let y = 0; y < arry.length; y++) {
       if (arry[y][x] !== 'none') {
-        max++
+        max += arry[y][x].length;
       }
     }
     max_count.push(max);
@@ -876,6 +876,7 @@ function downBlueprint(e) {
   let zip = new JSZip();
   zip.file('items_needed.xlsx', export_xlsx(obj.n));
   zip.file('music_sheet.xlsx', export_xlsx(obj.p));
+  $('#plan_to_download_Blueprint').css('display', 'none');
   if ($('#not_need_circuit').prop('checked')) {
     //zipDownload
     zip.generateAsync({ type: "blob" }).then(function (content) {
