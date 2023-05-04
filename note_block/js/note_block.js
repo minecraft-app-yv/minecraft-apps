@@ -803,7 +803,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
               p++;
               if (i == src_arry.length - 1) {
                 border_arry.push(y);
-                if (border_arry.length == (arry[0].length * max_count)) {
+                if (border_arry.length == (arry[0].length * arry.length)) {
                   let type = "image/png";
                   let dataurl = c.toDataURL(type);
                   folder_into_skin_canvas(zip, dataurl);
@@ -820,7 +820,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
       for (let i = 0; i < max_count; i++) {
         ctx.strokeRect((2 * x + 1) * 20, i * 20, 20, 20);
       }
-      if (border_arry.length == (arry[0].length * max_count)) {
+      if (border_arry.length == (arry[0].length * arry.length)) {
         let type = "image/png";
         let dataurl = c.toDataURL(type);
         folder_into_skin_canvas(zip, dataurl);
