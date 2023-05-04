@@ -762,7 +762,9 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
   for (let x = 0; x < arry[0].length; x++) {
     let max = 0;
     for (let y = 0; y < arry.length; y++) {
-      max += arry[y][x].length;
+      if (arry[y][x] !== 'none') {
+        max++
+      }
     }
     max_count.push(max);
   }
@@ -772,6 +774,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
   c.width = arry[0].length * 20 * 2;
   c.height = max_count * 20;
   ctx.strokeStyle = 'lightgray';
+  ctx.fillStyle = 'whitesmoke';
   ctx.lineWidth = 0.1;
   let circuit_img = new Image();
   circuit_img.crossOrigin = "anonymous";
@@ -779,10 +782,14 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
     for (let x = 0; x < arry[0].length; x++) {
       let p = 0;
       for (let i = 0; i < max_count; i++) {
+        if (i == max_count - 1 && i % 3 == 0) {
+          ctx.drawImage(circuit_img, (2 * x) * 20, i * 20, 20, 20);
+        }
         if (i % 3 == 1) {
           ctx.drawImage(circuit_img, (2 * x) * 20, i * 20, 20, 20);
         }
         ctx.strokeRect((2 * x) * 20, i * 20, 20, 20);
+        ctx.fillRect((2 * x + 1) * 20, i * 20, 20, 20);
       }
       for (let y = 0; y < arry.length; y++) {
         let src_arry = arry[y][x];
@@ -821,6 +828,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
     }
   };
   circuit_img.src = '../note_block/img/repeater_above.jpg';
+  //document.body.appendChild(c);
 }
 //excel
 /*https://docs.sheetjs.com/docs/api/utilities/*/
