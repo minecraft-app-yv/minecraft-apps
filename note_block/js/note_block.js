@@ -780,7 +780,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
       let p = 0;
       for (let i = 0; i < max_count; i++) {
         if (i % 3 == 1) {
-          ctx.drawImage(img, (2 * x) * 20, i * 20, 20, 20);
+          ctx.drawImage(circuit_img, (2 * x) * 20, i * 20, 20, 20);
         }
         ctx.strokeRect((2 * x) * 20, i * 20, 20, 20);
       }
