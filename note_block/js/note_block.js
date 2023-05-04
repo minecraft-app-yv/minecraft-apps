@@ -273,6 +273,9 @@ $(document).ready(function () {
       }
       let key = name[i] + '_' + j;
       let end_sign = '';
+      if (i == name.length - 1 && j == 24) {
+        end_sign = 'fin';
+      }
       // WARNING: if can use url do -> fun change_same_volume
       change_same_volume (url, key, sound_obj, end_sign);
       //sound_obj[key] = url;
@@ -673,6 +676,13 @@ function return_arry_count_block_needed(arry_block_needed) {
   arry_block_needed.push(keyArray);
   arry_block_needed.push(valArray);
   arry_block_needed.shift();
+  //note_block needed number
+  let note_block_c = 0;
+  arry_block_needed[1].forEach((item, i) => {
+    note_block_c += item;
+  });
+  arry_block_needed[0].push('Note_Block');
+  arry_block_needed[1].push(note_block_c);
   return arry_block_needed;
 }
 /*https://teratail.com/questions/315143*/
@@ -774,7 +784,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
   c.width = arry[0].length * 20 * 2;
   c.height = max_count * 20;
   ctx.strokeStyle = 'lightgray';
-  ctx.fillStyle = 'whitesmoke';
+  ctx.fillStyle = 'lightgreen';
   ctx.lineWidth = 0.1;
   let circuit_img = new Image();
   circuit_img.crossOrigin = "anonymous";
