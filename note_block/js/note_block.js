@@ -784,7 +784,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
   c.width = arry[0].length * 20 * 2;
   c.height = max_count * 20;
   ctx.strokeStyle = 'lightgray';
-  ctx.fillStyle = 'lightgreen';
+  ctx.fillStyle = 'white';
   ctx.lineWidth = 0.1;
   let circuit_img = new Image();
   circuit_img.crossOrigin = "anonymous";
@@ -808,8 +808,10 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
             let img = new Image();
             img.crossOrigin = "anonymous";
             img.onload = function () {
+              ctx.strokeStyle = 'black';
               ctx.drawImage(img, (2 * x + 1) * 20, p * 20, 20, 20);
               ctx.strokeRect((2 * x + 1) * 20, p * 20, 20, 20);
+              ctx.strokeStyle = 'lightgray';
               p++;
               if (i == src_arry.length - 1) {
                 border_arry.push(y);
