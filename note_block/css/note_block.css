@@ -238,6 +238,9 @@ html {
   font-size: 100px;
   color: rgb(33, 115, 70);
 }
+#plan_to_download_Blueprint .first.plan label.right img {
+  transform: rotate(-90deg);
+}
 #plan_to_download_Blueprint .first.plan i.fa-shuttle-space {
   color: navy;
 }
@@ -2265,7 +2268,7 @@ aside {
   display: none;
 }
 #CP [data-id="instrument"].active,
-#CP .small_title.active:not(label[for="color_named_blocks"], label[for="add_new_blocks"]) {
+#CP .small_title.active:not(label[for="add_new_blocks"]) {
   background-color: lightyellow;
 }
 #CP .small_title.used {

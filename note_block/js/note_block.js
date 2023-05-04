@@ -202,6 +202,9 @@ function change_same_volume (audioUrl, key, save_obj, end_sign) {
   };
   xhr.send();
 }
+/*https://qiita.com/ndj/items/82e9c5a4518fe16e539f*/
+const aryMax = function (a, b) {return Math.max(a, b);}
+const aryMin = function (a, b) {return Math.min(a, b);}
 //accordion
 //https://syncer.jp/accordion-content
 $(".syncer-acdn").click(function () {
@@ -236,7 +239,7 @@ $(document).ready(function () {
   }
   //palette color img add crossorigin
   // WARNING: if can display img do -> crossorigin="anonymous
-  //$('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
+  $('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
   //make pixel table
   let col = "";
   let colHead = '<tr><th class="FirstBlank"></th>';
@@ -271,8 +274,8 @@ $(document).ready(function () {
       let key = name[i] + '_' + j;
       let end_sign = '';
       // WARNING: if can use url do -> fun change_same_volume
-      //change_same_volume (url, key, sound_obj, end_sign);
-      sound_obj[key] = url;
+      change_same_volume (url, key, sound_obj, end_sign);
+      //sound_obj[key] = url;
     }
   }
 });
@@ -711,7 +714,7 @@ function return_obj_make_Blueprint (e) {
   if (!arry_block_needed.length) {
     return false;
   }
-  let key_text = ['[click] [repeater delay]'];
+  let key_text = ['[click]↓ [repeater delay]→'];
   for (let i = 0; i < arry_block_score[0].length; i++) {
     key_text.push(i);
   }
@@ -729,20 +732,12 @@ function return_obj_make_Blueprint (e) {
     table: table_url_for_circuit
   };
 }
-// WARNING: check crossorigin="anonymous" is active
-function folder_into_skin_canvas (zip, direction, arry) {
+function folder_into_skin_canvas (zip, dataurl) {
   //new folder
-  let folderName = 'block_layer_images';
+  let folderName = 'sample_circuits';
   let skin_folder = zip.folder(folderName);
-  arry.forEach((url, i) => {
-    let c_Blob = imgblob(url);
-    if (direction === 'horizon') {
-      skin_folder.file('horizon_top_' + i, c_Blob);
-    }
-    if (direction === 'vertical') {
-      skin_folder.file('vertical_front_' + i, c_Blob);
-    }
-  });
+  let c_Blob = imgblob(dataurl);
+  skin_folder.file('sample_circuits_image', c_Blob);
   //zipDownload
   zip.generateAsync({ type: "blob" }).then(function (content) {
     if (window.navigator.msSaveBlob) {
@@ -757,121 +752,82 @@ function folder_into_skin_canvas (zip, direction, arry) {
     }
   });
 }
-function makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas) {
+function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
   let arry = obj.table;
   if (obj.table === '' || obj.table === undefined) {
     return false;
   }
-  let arry_url_for_skins = [];
   let border_arry = [];
-  if (direction === 'horizon') {
-    for (let l_y = 0; l_y < arry.length; l_y++) {
-      if (!border_arry[l_y]) {
-        border_arry[l_y] = [];
+  let max_count = [];
+  for (let x = 0; x < arry[0].length; x++) {
+    let max = 0;
+    for (let y = 0; y < arry.length; y++) {
+      max += arry[y][x].length;
+    }
+    max_count.push(max);
+  }
+  max_count = max_count.reduce(aryMax);
+  let c = document.createElement("canvas");
+  let ctx = c.getContext("2d");
+  c.width = arry[0].length * 20 * 2;
+  c.height = max_count * 20;
+  ctx.strokeStyle = 'lightgray';
+  ctx.lineWidth = 0.1;
+  let circuit_img = new Image();
+  circuit_img.crossOrigin = "anonymous";
+  circuit_img.onload = function () {
+    for (let x = 0; x < arry[0].length; x++) {
+      let p = 0;
+      for (let i = 0; i < max_count; i++) {
+        if (i % 3 == 1) {
+          ctx.drawImage(img, (2 * x) * 20, i * 20, 20, 20);
+        }
+        ctx.strokeRect((2 * x) * 20, i * 20, 20, 20);
       }
-      let c = document.createElement("canvas");
-      let ctx = c.getContext("2d");
-      c.width = arry[0].length * 20;
-      c.height = arry[0].length * 20;
-      ctx.strokeStyle = 'black';
-      ctx.lineWidth = 0.1;
-      for (let z = 0; z < arry[l_y].length; z++) {
-        for (let x = 0; x < arry[l_y][z].length; x++) {
-          let src = arry[l_y][z][x];
-          if (src === 'none') {
-            ctx.strokeRect(x * 20, z * 20, 20, 20);
-            border_arry[l_y].push(x);
-            if (border_arry[l_y].length == Math.pow(arry[0].length, 2)) {
-              if (l_z == arry.length - 1) {
-                folder_into_skin_canvas(zip, direction, arry_url_for_skins);
-                break;
+      for (let y = 0; y < arry.length; y++) {
+        let src_arry = arry[y][x];
+        if (src_arry !== 'none') {
+          src_arry.forEach((item, i) => {
+            let img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function () {
+              ctx.drawImage(img, (2 * x + 1) * 20, p * 20, 20, 20);
+              ctx.strokeRect((2 * x + 1) * 20, p * 20, 20, 20);
+              p++;
+              if (i == src_arry.length - 1) {
+                border_arry.push(y);
+                if (border_arry.length == (arry[0].length * max_count)) {
+                  let type = "image/png";
+                  let dataurl = c.toDataURL(type);
+                  folder_into_skin_canvas(zip, dataurl);
+                }
               }
-              continue;
-            }
-            continue;
-          }
-          let img = new Image();
-          // WARNING: if can display img do -> crossorigin="anonymous ->html #Blueprint_with_skins_button toggle hidden
-          img.crossOrigin = "anonymous";
-          img.onload = function () {
-            ctx.drawImage(img, x * 20, z * 20, 20, 20);
-            ctx.strokeRect(x * 20, z * 20, 20, 20);
-            border_arry[l_y].push(x);
-            if (border_arry[l_y].length == Math.pow(arry[0].length, 2)) {
-              //rough_Blueprint URL
-              let type = "image/png";
-              let dataurl = c.toDataURL(type);
-              arry_url_for_skins.push(dataurl);
-              if (l_y == arry.length - 1) {
-                folder_into_skin_canvas(zip, direction, arry_url_for_skins);
-                return false;
-              }
-            }
-            return true;
-          };
-          img.src = src;
-          continue;
+            };
+            img.src = item;
+          });
+        }
+        if (src_arry === 'none') {
+          border_arry.push(y);
         }
       }
-    }
-  }
-  if (direction === 'vertical') {
-    for (let l_z = 0; l_z < arry.length; l_z++) {
-      if (!border_arry[l_z]) {
-        border_arry[l_z] = [];
+      for (let i = 0; i < max_count; i++) {
+        ctx.strokeRect((2 * x + 1) * 20, i * 20, 20, 20);
       }
-      let c = document.createElement("canvas");
-      let ctx = c.getContext("2d");
-      c.width = arry[0].length * 20;
-      c.height = arry[0].length * 20;
-      ctx.strokeStyle = 'black';
-      ctx.lineWidth = 0.1;
-      for (let y = 0; y < arry[l_z].length; y++) {
-        for (let x = 0; x < arry[l_z][y].length; x++) {
-          let src = arry[l_z][y][x];
-          if (src === 'none') {
-            ctx.strokeRect(x * 20, y * 20, 20, 20);
-            border_arry[l_z].push(x);
-            if (border_arry[l_z].length == Math.pow(arry[0].length, 2)) {
-              if (l_z == arry.length - 1) {
-                folder_into_skin_canvas(zip, direction, arry_url_for_skins);
-                break;
-              }
-              continue;
-            }
-            continue;
-          }
-          let img = new Image();
-          // WARNING: if can display img do -> crossorigin="anonymous ->html #Blueprint_with_skins_button toggle hidden
-          img.crossOrigin = "anonymous";
-          img.onload = function () {
-            ctx.drawImage(img, x * 20, y * 20, 20, 20);
-            ctx.strokeRect(x * 20, y * 20, 20, 20);
-            border_arry[l_z].push(x);
-            if (border_arry[l_z].length == Math.pow(arry[0].length, 2)) {
-              //rough_Blueprint URL
-              let type = "image/png";
-              let dataurl = c.toDataURL(type);
-              arry_url_for_skins.push(dataurl);
-              if (l_z == arry.length - 1) {
-                folder_into_skin_canvas(zip, direction, arry_url_for_skins);
-                return false;
-              }
-            }
-            return true;
-          };
-          img.src = src;
-          continue;
-        }
+      if (border_arry.length == (arry[0].length * max_count)) {
+        let type = "image/png";
+        let dataurl = c.toDataURL(type);
+        folder_into_skin_canvas(zip, dataurl);
       }
     }
-  }
+  };
+  circuit_img.src = '../note_block/img/repeater_above.jpg';
 }
 //excel
 /*https://docs.sheetjs.com/docs/api/utilities/*/
 /*https://magazine.techacademy.jp/magazine/21073*/
 /*https://learn.microsoft.com/ja-jp/office/dev/add-ins/excel/excel-add-ins-worksheets*/
 /*https://yizm.work/editable-table/xlsx_download_try/*/
+//here i cannot instorl my xlsx file
 function s2ab(s) {
   let buf = new ArrayBuffer(s.length);
   let view = new Uint8Array(buf);
@@ -879,9 +835,6 @@ function s2ab(s) {
     view[i] = s.charCodeAt(i) & 0xFF;
   }
   return buf;
-}
-function export_xlsx_from_files (obj) {
-  XLSX.readFile('../files/music_sheet.xlsx', { bookType: 'xlsx', bookSST: false, type: 'binary'});
 }
 function export_xlsx(obj) {
   let wopts = { bookType: 'xlsx', bookSST: false, type: 'binary'};
@@ -913,9 +866,8 @@ function downBlueprint(e) {
   }
   //download data
   let zip = new JSZip();
-  zip.file('items_needed.xlsx', export_xlsx_from_files(obj));
-  //zip.file('items_needed.xlsx', export_xlsx(obj.n));
-  //zip.file('music_sheet.xlsx', export_xlsx(obj.p));
+  zip.file('items_needed.xlsx', export_xlsx(obj.n));
+  zip.file('music_sheet.xlsx', export_xlsx(obj.p));
   if ($('#not_need_circuit').prop('checked')) {
     //zipDownload
     zip.generateAsync({ type: "blob" }).then(function (content) {
@@ -931,8 +883,8 @@ function downBlueprint(e) {
       }
     });
   }
-  if ($('#need_block_skins').prop('checked')) {
-    makeCanvas_url_arry (zip, direction, obj, folder_into_skin_canvas);
+  if ($('#need_circuit').prop('checked')) {
+    makeCanvas_url_arry (zip, obj, folder_into_skin_canvas);
   }
 }
 $('#display_plan_of_Blueprint').click((e) => {
@@ -2454,13 +2406,13 @@ function track_scores (start_time, callback) {
       arry.push(key);
       // WARNING: if can use file src music --> fun mixed_scores (arry)
       //test
-      do_play_audio (data_parent, tr_y);
+      //do_play_audio (data_parent, tr_y);
     });
   });
-  /*test
+  /*test*/
   if (arry.length) {
     mixed_scores (arry);
-  }*/
+  }
   setTimeout((e) => {
     start_time++;
     if ($('#play_style').prop('checked') && start_time >= $('#musical_score tbody tr.y0 td').length) {
