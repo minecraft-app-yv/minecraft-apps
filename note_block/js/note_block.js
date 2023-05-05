@@ -153,54 +153,84 @@ function writeString(dataView, offset, string) {
     dataView.setUint8(offset + i, string.charCodeAt(i));
   }
 }
-function change_same_volume (audioUrl, key, save_obj, end_sign) {
-  // AudioContextを作成する
-  let audioContext = new AudioContext();
-  // XMLHttpRequestを使用して音声データを取得する
-  let xhr = new XMLHttpRequest();
-  xhr.open('GET', audioUrl, true);
-  xhr.responseType = 'arraybuffer';
-  xhr.onload = function() {
-    // 取得した音声データをデコードする
-    audioContext.decodeAudioData(xhr.response, function(buffer) {
-      // 各音声データの音量を取得する
-      let channels = buffer.numberOfChannels;
-      channels = 1;
-      let volumes = [];
-      for (let c = 0; c < channels; c++) {
-        let data = buffer.getChannelData(c);
-        let sum = data.reduce(function(acc, val) {
-          return acc + Math.abs(val);
-        }, 0);
-        let volume = sum / data.length;
-        volumes.push(volume);
-      }
-      // 音量を統一した音声データを生成する
-      let maxVolume = Math.max(...volumes);
-      let targetVolume = 0.1;
-      let volumeRatio = targetVolume / maxVolume;
-      let newBuffer = audioContext.createBuffer(channels, buffer.length, buffer.sampleRate);
-      for (let c = 0; c < channels; c++) {
-        let data = buffer.getChannelData(c);
-        let newData = newBuffer.getChannelData(c);
-        for (let i = 0; i < data.length; i++) {
-          newData[i] = data[i] * volumeRatio;
-        }
-      }
-      //chagen to WAV style
-      let blob = exportWAV(newBuffer);
-      //save save_obj at using key to url
-      let reader = new FileReader();
-      reader.onload = function (evt) {
-        save_obj[key] = evt.target.result;
-        if (end_sign === 'fin') {
-          $('#wait').addClass('hidden');
-        }
+function add_url_in_sound_obj (url_arry, key_arry) {
+  url_arry.forEach((url, num) => {
+    sound_obj[key_arry[num]] = url;
+    let step = 360 / url_arry.length;
+    let bar = step * num;
+    let transparent = 360 - bar;
+    let style = bar + ' ' + transparent;
+    $('#progress-circle').attr('stroke-dasharray', style);
+  });
+  $('#wait').addClass('hidden');
+  $('#progress-circle').attr('stroke-dasharray', '0 360');
+}
+/*https://r17n.page/2020/01/12/js-download-zipped-images-to-local/*/
+async function async_change_same_volume (url_arry, key_arry, save_obj) {
+  $('#wait').removeClass('hidden');
+  const promises = url_arry.map(
+    (src, num) => new Promise((resolve, reject) => {
+      // AudioContextを作成する
+      let audioContext = new AudioContext();
+      // XMLHttpRequestを使用して音声データを取得する
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', src, true);
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function() {
+        // 取得した音声データをデコードする
+        audioContext.decodeAudioData(xhr.response, function(buffer) {
+          // 各音声データの音量を取得する
+          let channels = buffer.numberOfChannels;
+          channels = 1;
+          let volumes = [];
+          for (let c = 0; c < channels; c++) {
+            let data = buffer.getChannelData(c);
+            let sum = data.reduce(function(acc, val) {
+              return acc + Math.abs(val);
+            }, 0);
+            let volume = sum / data.length;
+            volumes.push(volume);
+          }
+          // 音量を統一した音声データを生成する
+          let maxVolume = Math.max(...volumes);
+          let targetVolume = 0.1;
+          let volumeRatio = targetVolume / maxVolume;
+          let newBuffer = audioContext.createBuffer(channels, buffer.length, buffer.sampleRate);
+          for (let c = 0; c < channels; c++) {
+            let data = buffer.getChannelData(c);
+            let newData = newBuffer.getChannelData(c);
+            for (let i = 0; i < data.length; i++) {
+              newData[i] = data[i] * volumeRatio;
+            }
+          }
+          //chagen to WAV style
+          let blob = exportWAV(newBuffer);
+          //save save_obj at using key to url
+          let reader = new FileReader();
+          reader.onload = function (evt) {
+            resolve(evt.target.result);
+            let step = 360 / url_arry.length;
+            let bar = step * num;
+            let transparent = 360 - bar;
+            let style = bar + ' ' + transparent;
+            $('#progress-circle').attr('stroke-dasharray', style);
+          };
+          reader.readAsDataURL(blob);
+        });
       };
-      reader.readAsDataURL(blob);
-    });
-  };
-  xhr.send();
+      // => resolve でデータ無し
+      xhr.onerror = () => resolve(null);
+      xhr.onabort = () => resolve(null);
+      xhr.ontimeout = () => resolve(null);
+      xhr.send();
+    })
+  );
+  const sound_url = await Promise.all(promises);
+  sound_url.forEach((url, i) => {
+    save_obj[key_arry[i]] = url;
+  });
+  $('#wait').addClass('hidden');
+  $('#progress-circle').attr('stroke-dasharray', '0 360');
 }
 /*https://qiita.com/ndj/items/82e9c5a4518fe16e539f*/
 const aryMax = function (a, b) {return Math.max(a, b);}
@@ -262,6 +292,8 @@ $(document).ready(function () {
   'string_bass', 'guitar', 'banjo', 'flute', 'didgeridoo',
   'xylophone', 'vibraphone', 'bells', 'cow_bell', 'chimes',
   'bit', 'pling', 'harp'];
+  let url_arry = [];
+  let key_arry = [];
   for (let i = 0; i < name.length; i++) {
     for (let j = 0; j < 25; j++) {
       let url = './audio/' + name[i] + '/';
@@ -272,15 +304,13 @@ $(document).ready(function () {
         url += name[i] + '_' + j + '.mp3'
       }
       let key = name[i] + '_' + j;
-      let end_sign = '';
-      if (i == name.length - 1 && j == 24) {
-        end_sign = 'fin';
-      }
-      // WARNING: if can use url do -> fun change_same_volume
-      change_same_volume (url, key, sound_obj, end_sign);
-      //sound_obj[key] = url;
+      url_arry.push(url);
+      key_arry.push(key);
     }
   }
+  // WARNING: if can use url do -> fun change_same_volume
+  async_change_same_volume (url_arry, key_arry, sound_obj);
+  //add_url_in_sound_obj (url_arry, key_arry);
 });
 /*++window resize++*/
 $(window).resize(function() {
@@ -655,11 +685,10 @@ $('#clear_score').click((e) => {
   $('#CP .used').removeClass('used');
   add_score_to_roll_back_obj($('#musical_score').html());
 });
-//file download
+/*file download Blueprint*/
 /*https://blog.agektmr.com/2013/09/canvas-png-blob.html*/
 /*https://symfoware.blog.fc2.com/blog-entry-2578.html*/
 /*https://qiita.com/saka212/items/408bb17dddefc09004c8*/
-/*https://r17n.page/2020/01/12/js-download-zipped-images-to-local/#jszip-%E3%82%92-CDN-%E3%81%8B%E3%82%89%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF-loadJSZipFromCDN*/
 /*https://webfrontend.ninja/js-find/#:~:text=%E3%80%90JavaScript%E3%80%91%E9%85%8D%E5%88%97%E3%81%8B%E3%82%89%E8%A6%81%E7%B4%A0%E3%82%92%E6%A4%9C%E7%B4%A2%E3%81%99%E3%82%8B%206%20%E3%81%A4%E3%81%AE%E6%96%B9%E6%B3%95%201%20%E9%85%8D%E5%88%97%E3%81%8B%E3%82%89%E8%A6%81%E7%B4%A0%E3%82%92%E7%99%BA%E8%A6%8B%E3%81%99%E3%82%8B%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%202%20indexOf%20%28%29,findIndex%20%28%29%207%20filter%20%28%29%208%20%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AE%E9%85%8D%E5%88%97%E3%81%8B%E3%82%89%E6%A4%9C%E7%B4%A2%E3%81%99%E3%82%8B%20%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%82%A2%E3%82%A4%E3%83%86%E3%83%A0*/
 function return_arry_count_block_needed(arry_block_needed) {
   let count = {};
@@ -763,76 +792,102 @@ function folder_into_skin_canvas (zip, dataurl) {
   });
 }
 function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
-  let arry = obj.table;
-  if (obj.table === '' || obj.table === undefined) {
+  if (obj.table === [] || obj.table === undefined) {
     return false;
   }
-  let border_arry = [];
-  let max_count = [];
-  for (let x = 0; x < arry[0].length; x++) {
-    let max = 0;
-    for (let y = 0; y < arry.length; y++) {
-      if (arry[y][x] !== 'none') {
-        max += arry[y][x].length;
+  //change arry
+  let arry = [];
+  for (let x = 0; x < obj.table[0].length; x++) {
+    if (!arry[x]) {
+      arry[x] = [];
+    }
+    for (let y = 0; y < obj.table.length; y++) {
+      if (obj.table[y][x] !== 'none') {
+        obj.table[y][x].forEach((src, i) => {
+          arry[x].push(src);
+        });
       }
     }
+  }
+  //make circuit canvas
+  let border_arry = [];
+  let max_count = [];
+  for (let x = 0; x < arry.length; x++) {
+    let max = 0;
+    max += arry[x].length;
     max_count.push(max);
   }
   max_count = max_count.reduce(aryMax);
+  if (max_count == 1) {
+    max_count = 2;
+  }
   let c = document.createElement("canvas");
   let ctx = c.getContext("2d");
-  c.width = arry[0].length * 20 * 2;
+  c.width = arry.length * 20 * 2;
   c.height = max_count * 20;
-  ctx.strokeStyle = 'lightgray';
-  ctx.fillStyle = 'white';
   ctx.lineWidth = 0.1;
   let circuit_img = new Image();
   circuit_img.crossOrigin = "anonymous";
   circuit_img.onload = function () {
-    for (let x = 0; x < arry[0].length; x++) {
-      let p = 0;
-      for (let i = 0; i < max_count; i++) {
-        if (i == max_count - 1 && i % 3 == 0) {
-          ctx.drawImage(circuit_img, (2 * x) * 20, i * 20, 20, 20);
+    for (let x = 0; x < arry.length; x++) {
+      //add repeater
+      if (arry[x].length == 0) {
+        ctx.strokeStyle = 'black';
+        ctx.drawImage(circuit_img, (2 * x) * 20, 20, 20, 20);
+        ctx.fillStyle = 'white';
+        ctx.fillRect((2 * x + 1) * 20, 20, 20, 20);
+        ctx.strokeRect((2 * x + 1) * 20 + 2, 22, 16, 16);
+        ctx.fillStyle = 'black';
+        ctx.font = '10px serif';
+        ctx.fillText('B', (2 * x + 1) * 20 + 7, 34);
+        border_arry.push(x);
+      }
+      for (let i = 0; i < arry[x].length; i++) {
+        if (i == arry[x].length - 1 && i % 3 == 0) {
+          if (arry[x].length == 1) {
+            ctx.strokeStyle = 'black';
+            ctx.drawImage(circuit_img, (2 * x) * 20, 20, 20, 20);
+            ctx.fillStyle = 'white';
+            ctx.fillRect((2 * x + 1) * 20, 20, 20, 20);
+            ctx.strokeRect((2 * x + 1) * 20 + 2, 22, 16, 16);
+            ctx.fillStyle = 'black';
+            ctx.font = '10px serif';
+            ctx.fillText('B', (2 * x + 1) * 20 + 7, 34);
+          }
+          else {
+            ctx.drawImage(circuit_img, (2 * x) * 20, i * 20, 20, 20);
+          }
         }
         if (i % 3 == 1) {
           ctx.drawImage(circuit_img, (2 * x) * 20, i * 20, 20, 20);
         }
-        ctx.strokeRect((2 * x) * 20, i * 20, 20, 20);
-        ctx.fillRect((2 * x + 1) * 20, i * 20, 20, 20);
       }
-      for (let y = 0; y < arry.length; y++) {
-        let src_arry = arry[y][x];
-        if (src_arry !== 'none') {
-          src_arry.forEach((item, i) => {
-            let img = new Image();
-            img.crossOrigin = "anonymous";
-            img.onload = function () {
-              ctx.strokeStyle = 'black';
-              ctx.drawImage(img, (2 * x + 1) * 20, p * 20, 20, 20);
-              ctx.strokeRect((2 * x + 1) * 20, p * 20, 20, 20);
-              ctx.strokeStyle = 'lightgray';
-              p++;
-              if (i == src_arry.length - 1) {
-                border_arry.push(y);
-                if (border_arry.length == (arry[0].length * arry.length)) {
-                  let type = "image/png";
-                  let dataurl = c.toDataURL(type);
-                  folder_into_skin_canvas(zip, dataurl);
-                }
-              }
-            };
-            img.src = item;
-          });
-        }
-        if (src_arry === 'none') {
-          border_arry.push(y);
-        }
-      }
+      //add border
       for (let i = 0; i < max_count; i++) {
+        ctx.strokeStyle = 'lightgray';
+        ctx.strokeRect((2 * x) * 20, i * 20, 20, 20);
         ctx.strokeRect((2 * x + 1) * 20, i * 20, 20, 20);
       }
-      if (border_arry.length == (arry[0].length * arry.length)) {
+      //add blocks
+      for (let i = 0; i < arry[x].length; i++) {
+        let img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = function () {
+          ctx.strokeStyle = 'black';
+          ctx.drawImage(img, (2 * x + 1) * 20, i * 20, 20, 20);
+          ctx.strokeRect((2 * x + 1) * 20, i * 20, 20, 20);
+          if (i == arry[x].length - 1) {
+            border_arry.push(x);
+            if (border_arry.length == arry.length) {
+              let type = "image/png";
+              let dataurl = c.toDataURL(type);
+              folder_into_skin_canvas(zip, dataurl);
+            }
+          }
+        };
+        img.src = arry[x][i];
+      }
+      if (border_arry.length == arry.length) {
         let type = "image/png";
         let dataurl = c.toDataURL(type);
         folder_into_skin_canvas(zip, dataurl);
@@ -847,7 +902,7 @@ function makeCanvas_url_arry (zip, obj, folder_into_skin_canvas) {
 /*https://magazine.techacademy.jp/magazine/21073*/
 /*https://learn.microsoft.com/ja-jp/office/dev/add-ins/excel/excel-add-ins-worksheets*/
 /*https://yizm.work/editable-table/xlsx_download_try/*/
-//here i cannot instorl my xlsx file
+//here i cannot instorl my xlsx file -> change styles
 function s2ab(s) {
   let buf = new ArrayBuffer(s.length);
   let view = new Uint8Array(buf);
@@ -881,7 +936,15 @@ function imgblob(url) {
 //download actions
 function downBlueprint(e) {
   let obj = return_obj_make_Blueprint ();
-  if (obj.n.sheet.length <= 0) {
+  if (obj.n === undefined) {
+    let str = '';
+    if ($('header .header_form p.language').text() === 'Japanese') {
+      str = '楽譜なしです。';
+    }
+    if ($('header .header_form p.language').text() === '英語') {
+      str = 'There is no music sheet.';
+    }
+    alert(str);
     return false;
   }
   //download data
@@ -949,6 +1012,26 @@ $('#plan_to_download_Blueprint .plan_menu .forward_plan').click((e) => {
 });
 $('input[name="plan_menu"]').change((e) => {
   $('#plan_to_download_Blueprint .plan_menu').scrollTop(0);
+});
+/*music file analysis to score*/
+function analysis_to_score (e) {
+  const file = event.target.files[0];
+  $(event.target).remove();
+  if (file === undefined) {
+    return false;
+  }
+  $('#wait').removeClass('hidden');
+  //here await change to onload
+  const fileURL = URL.createObjectURL(file);
+  const audioFile = new Audio(fileURL);
+  $('#analysis_music_score').css('display', 'flex');
+}
+$('#upload_audio_file').click((e) => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'audio/*';
+  input.addEventListener('change', analysis_to_score);
+  input.click();
 });
 /*++aside++*/
 //palette sound_blocks form download
@@ -1301,33 +1384,36 @@ function add_new_sounds (files) {
   if (obj.use === 'add_sound_one_upload') {
     const fileURL = URL.createObjectURL(files[0]);
     let key = name + '_' + obj.tr_y;
-    let end_sign = 'fin';
-    change_same_volume (fileURL, key, obj.once_memory, end_sign);
+    let key_arry = [];
+    let url_arry = [];
+    key_arry.push(key);
+    url_arry.push(fileURL);
+    async_change_same_volume (url_arry, key_arry, obj.once_memory);
     $('#for_add_new_group .plan_menu .plan.second tbody tr.n' + obj.tr_y + ' td.file_name').text(files[0].name);
   }
   if (obj.use === 'add_sound_all_upload') {
+    let key_arry = [];
+    let url_arry = [];
     for (let i = 0; i < files.length; i++) {
       if (i > 25) {
         break;
       }
       let fileURL = URL.createObjectURL(files[i]);
       let key = name + '_' + i;
-      let end_sign = '';
-      if (i >= files.length - 1 || i >= 25) {
-        end_sign = 'fin';
-      }
-      change_same_volume (fileURL, key, obj.once_memory, end_sign);
+      key_arry.push(key);
+      url_arry.push(fileURL);
       $('#for_add_new_group .plan_menu .plan.second tbody tr.n' + i + ' td.file_name').text(files[i].name);
     }
+    async_change_same_volume (url_arry, key_arry, obj.once_memory);
   }
 }
 $('#add_new_sounds').change((e) => {
-  $('#wait').removeClass('hidden');
   let files = e.target.files;
   if (files === undefined) {
     $('#add_new_sounds').val('');
     return false;
   }
+  $('#wait').removeClass('hidden');
   add_new_sounds (files);
   $('#add_new_sounds').val('');
 });
