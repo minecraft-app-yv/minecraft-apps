@@ -1,5 +1,7 @@
 /*reserve css*/
-
+i {
+  user-select: none;
+}
 /*reset*/
 a {
   text-decoration: none;
@@ -92,7 +94,7 @@ html {
   background: #3b5998;
 }
 #share_buttons .share_buttons_form > a.twitter {
-  background: #55acee;
+  background: #000000;
 }
 #share_buttons .share_buttons_form > a.hatena {
   background: #008fde;
@@ -115,6 +117,7 @@ header {
   top: 0;
   height: 80px;
   background: #404040;
+  user-select: none;
 }
 #header_hanb, .header_hanb_icon {
   display: none;

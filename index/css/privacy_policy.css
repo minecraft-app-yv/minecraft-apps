@@ -2,6 +2,9 @@
 .hidden, .hide {
   display: none;
 }
+i {
+  user-select: none;
+}
 /*reset*/
 a {
   text-decoration: none;
@@ -41,6 +44,7 @@ header {
   top: 0;
   height: 80px;
   background: #404040;
+  user-select: none;
 }
 #header_hanb, .header_hanb_icon {
   display: none;
