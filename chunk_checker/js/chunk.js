@@ -190,7 +190,9 @@ function map_calcu () {
   /*https://developer.mozilla.org/ja/docs/Web/API/Element/scrollIntoView*/
   let target = document.getElementById("here");
   target.scrollIntoView({ block: "center", inline: "center" });
-  change_command ();
+  if (!$('#command_block').prop('checked')) {
+    change_command ();
+  }
 }
 $('.go_button').on("click", function (e) {
   if (!$('input[name="x"]').val()) {
@@ -289,6 +291,9 @@ function all_removeE () {
   document.querySelector('#answer tbody').removeEventListener('touchend', change_command);
 }
 function map_mousedown (e) {
+  if ($('#command_block').prop('checked')) {
+    return false;
+  }
   obj.start_x = e.clientX;
   obj.start_y = e.clientY;
   get_xz();
@@ -296,6 +301,9 @@ function map_mousedown (e) {
   document.querySelector('#answer tbody').addEventListener('mouseup', change_command);
 }
 function map_touchstart (e) {
+  if ($('#command_block').prop('checked')) {
+    return false;
+  }
   obj.start_x = e.touches[0].clientX;
   obj.start_y = e.touches[0].clientY;
   get_xz();
