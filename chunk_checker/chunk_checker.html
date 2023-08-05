@@ -9,15 +9,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="shortcut icon" href="../index/img/web_icon.png" type="image/png" sizes="16x16">
   <link rel="stylesheet" href="./css/chunk.css" media="screen">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap">
+  <link href="https://fonts.cdnfonts.com/css/thegoodmonolith" rel="stylesheet">
 </head>
 <body>
   <!--https://webdesign-trends.net/entry/3632-->
   <div id="share_buttons">
     <div class="share_buttons_form">
       <a class="facebook" href="#" rel="nofollow noopener" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-      <a class="twitter" href="#" rel="nofollow" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+      <a class="twitter" href="#" rel="nofollow" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
       <a class="hatena" href="#" rel="nofollow noopener" target="_blank">B!</a>
       <a class="line" href="#" target="_blank" rel="nofollow noopener"><i class="fa-brands fa-line"></i></a>
       <a class="getpocket" href="#" rel="nofollow" rel="nofollow" target="_blank"><i class="fa-brands fa-get-pocket"></i></a>
@@ -25,6 +25,7 @@
     </div>
   </div>
   <input id="all_close_icons" type="checkbox" class="hidden">
+  <input id="command_block" type="checkbox" class="hidden">
   <header>
     <div class="header_2windows">
       <a href="../index/index.html"><img src="../index/img/AppMinecraft_logo.png" alt="Useful app for Minecraft"></a>
@@ -57,7 +58,7 @@
               <li><a href="../3d_art/3d_art.html"><i class="fa-solid fa-cube"></i> 建築・3Dピクセルアート用シミュレーター</a></li>
             </ul>
           </li>
-          <li><a href="https://github.com/minecraft-app-yv/minecraft-apps"><i class="fa-brands fa-github"></i></a></li>
+          <li><a href="https://github.com/minecraft-app-yv/minecraft-apps" target="_blank"><i class="fa-brands fa-github"></i></a></li>
           <li class="share_buttons"><i class="fa-solid fa-share"></i></li>
         </ul>
       </nav>
@@ -89,9 +90,12 @@
       <!--hanburgerButton-->
       <div class="coordinates_input">
         <div class="title">入力欄 Input</div>
+        <label for="command_block">
+          <img src="../chunk_checker/img/command_block.jpg" alt="Impulse Command Block">
+        </label>
         <p class="small_title">座標を入力</p>
-        <p>x:<input type="text" name="x" placeholder="123 ※半角数字"></p>
-        <p>z:<input type="text" name="z" placeholder="123 ※半角数字"></p>
+        <p>x:<input type="text" name="x" placeholder="123 ※半角数字" pattern="-?[0-9]+"></p>
+        <p>z:<input type="text" name="z" placeholder="123 ※半角数字" pattern="-?[0-9]+"></p>
         <p class="small_title">表示チャンク数</p>
         <select name="count">
           <option value="1" selected>1</option>
@@ -122,10 +126,15 @@
     </table>
     <!--Respons-->
   </main>
+  <div class="command_text">
+    <div id="codeToCopy">/tp @p ~ ~ ~</div>
+    <div id="copyButton"><i class="fa-solid fa-copy"></i></div>
+  </div>
   <footer>
-    <p><a href="https://github.com/minecraft-app-yv/minecraft-apps"><small><i class="fa-brands fa-github"></i> GitHub</small></a></p>
-    <p><small>Written by <a href="https://twitter.com/yusuke5028198">@Yusuke M</a></small></p>
+    <p><a href="https://github.com/minecraft-app-yv/minecraft-apps" target="_blank"><small><i class="fa-brands fa-github"></i> GitHub</small></a></p>
+    <p><small>Written by <a href="https://twitter.com/yusuke5028198" target="_blank">@Yusuke M</a></small></p>
   </footer>
+  <script src="https://kit.fontawesome.com/03c18ec937.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" charset="utf-8"></script>
   <script src="./js/chunk.js" charset="utf-8"></script>
 </body>
