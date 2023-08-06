@@ -347,6 +347,31 @@ main section .text_box h2 span,
 main section .text_box p span {
   display: inline-block;
 }
+#sudoku {
+  margin-top: 10px;
+}
+#sudoku button {
+  background-color: white;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px outset dimgray;
+  cursor: pointer;
+  font-weight: bold;
+}
+#sudoku button.select {
+  border: 2px inset dimgray;
+  box-shadow: inset 30px 30px 0 rgba(0, 0, 0, 0.5);
+}
+#pop_text {
+  padding: 5px 15px;
+  background: black;
+  color: white;
+  font-weight: bold;
+  font-size: x-small;
+  z-index: 100;
+  position: fixed
+}
 /*footer*/
 footer {
   position: relative;
