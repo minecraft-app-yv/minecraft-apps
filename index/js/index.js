@@ -99,7 +99,7 @@ function setup() {
   let canvas = createCanvas(canvas_size, canvas_size);
   canvas.parent('sudoku_canvas');
   cellSize = width / 9;
-  initializeGrid(30); // Initialize grid, gridAns, and gridHole
+  initializeGrid(40); // Initialize grid, gridAns, and gridHole
   createNumberButtons();
   createEraseButton();
   createRestartButton();
@@ -247,7 +247,7 @@ function createDifficultySlider() {
   sliderContainer.parent('sudoku_control');
 
   // スライダーを作成
-  difficultySlider = createSlider(5, 81, 30);
+  difficultySlider = createSlider(5, 81, 40);
   difficultySlider.parent(sliderContainer); // スライダーをコンテナ要素に追加
 
   // コンテナ要素を回転するためのCSSスタイルを適用
