@@ -180,7 +180,7 @@ function drawGrid(targetGrid, yOffset) {
 function createNumberButtons() {
   for (let i = 1; i <= 9; i++) {
     let button = createButton(String(i));
-    button.style('background-image', 'url("../../art/img/blocks/' + img_name[i - 1] + '.jpg")');
+    button.style('background-image', 'url(../../art/img/blocks/' + img_name[i - 1] + '.jpg)');
     button.attribute('data-name', String(i));
     button.parent('sudoku_button');
     button.position(0, cellSize * (i - 1));
