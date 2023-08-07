@@ -4,19 +4,19 @@ obj = {flag: 0, flag_l1: 0, flag_l2: 0, failed: false};
 $(document).scroll(function () {
   let h = $(this).scrollTop();
   if (h < 400) {
-    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(./img/BG.jpg)');
+    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url("./img/BG.jpg")');
   }
   if (h >= 400) {
-    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(../chunk_checker/img/codePen_Minecraft_1.jpg)');
+    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url("../chunk_checker/img/codePen_Minecraft_1.jpg")');
   }
   if (h >= 1000) {
-    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(../art/img/codePen_MineBK31.jpg)');
+    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url("../art/img/codePen_MineBK31.jpg")');
   }
   if (h >= 1600) {
-    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(../3d_art/img/codePen_MineBK4.jpg)');
+    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url("../3d_art/img/codePen_MineBK4.jpg")');
   }
   if (h >= 2200) {
-    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(./img/BG.jpg)');
+    $('body').css('background-image', 'radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url("./img/BG.jpg")');
   }
 });
 //close_button
@@ -184,7 +184,7 @@ function drawGrid(targetGrid, yOffset) {
 function createNumberButtons() {
   for (let i = 1; i <= 9; i++) {
     let button = createButton(String(i));
-    button.style('background-image', 'url(../../art/img/blocks/' + img_name[i - 1] + '.jpg)');
+    button.style('background-image', 'url("../../art/img/blocks/' + img_name[i - 1] + '.jpg")');
     button.attribute('data-name', String(i));
     button.parent('sudoku_button');
     button.position(0, cellSize * (i - 1));
