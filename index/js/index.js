@@ -1,4 +1,5 @@
 /*++reserve functions++*/
+obj = {flag: 0, flag_l1: 0, flag_l2: 0, failed: false};
 //BG_change_fun
 $(document).scroll(function () {
   let h = $(this).scrollTop();
@@ -113,6 +114,9 @@ function setup() {
 
 function draw() {
   background(255);
+  if (obj.failed) {
+    return false;
+  }
   drawGrid(grid, 0); // Draw the user grid on the top
 }
 function drawGrid(targetGrid, yOffset) {
@@ -247,7 +251,7 @@ function createDifficultySlider() {
   sliderContainer.parent('sudoku_control');
 
   // スライダーを作成
-  difficultySlider = createSlider(5, 81, 40);
+  difficultySlider = createSlider(5, 75, 40);
   difficultySlider.parent(sliderContainer); // スライダーをコンテナ要素に追加
 
   // コンテナ要素を回転するためのCSSスタイルを適用
@@ -269,6 +273,9 @@ function createDifficultySlider() {
 
 let selectedCell = null;
 function clickAction () {
+  if (!selectedCell) {
+    return false;
+  }
   let num = $('#sudoku button.select').attr('data-name');
   if (num === 'erase') {
     if (selectedCell && grid[selectedCell.i][selectedCell.j] > 9) {
@@ -300,6 +307,7 @@ function shuffleArray(array) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
 }
 function copyMatrix(base) {
   const result = [];
@@ -308,136 +316,152 @@ function copyMatrix(base) {
   });
   return result;
 }
-function arry_adj(layer_bef, layer_after, grid, d) {
-  shuffleArray(layer_bef);
-  shuffleArray(layer_after);
-  if (d === "horizontal") {
-    let i = 0;
-    while (i < 3) {
-      let num = [];
-      for (let j = 0; j < 9; j++) {
-        num.push(grid[j][i]);
-      }
-      let index = num.indexOf(layer_bef[i]);
-      if (index < 0) {
-        i++;
-      } else {
-        let temp = layer_bef.splice(i, 1);
-        layer_bef.push(temp);
-      }
-    }
-    i = 6;
-    while (i < 9) {
-      let num = [];
-      for (let j = 0; j < 9; j++) {
-        num.push(grid[j][i]);
-      }
-      let index = num.indexOf(layer_after[i]);
-      if (index < 0) {
-        i++;
-      } else {
-        let temp = layer_after.splice(i, 1);
-        layer_after.push(temp);
-      }
-    }
+function setCellCrear (x, y, grid) {
+  for (let k = 0; k < 9; k++) {
+    grid[y + Math.floor(k / 3)][x + k % 3] = 0;
   }
-  if (d === "vertical") {
-    let i = 0;
-    while (i < 3) {
-      let num = [];
-      for (let j = 0; j < 9; j++) {
-        num.push(grid[i][j]);
-      }
-      let index = num.indexOf(layer_bef[i]);
-      if (index < 0) {
-        i++;
-      } else {
-        let temp = layer_bef.splice(i, 1);
-        layer_bef.push(temp);
-      }
-    }
-    i = 6;
-    while (i < 9) {
-      let num = [];
-      for (let j = 0; j < 9; j++) {
-        num.push(grid[i][j]);
-      }
-      let index = num.indexOf(layer_after[i]);
-      if (index < 0) {
-        i++;
-      } else {
-        let temp = layer_after.splice(i, 1);
-        layer_after.push(temp);
-      }
-    }
-  }
-  return [layer_bef, layer_after];
 }
 function verticalOp(x, y, grid) {
-  let lB_1 = [grid[y][x + 1], grid[y + 1][x + 1], grid[y + 2][x + 1]];
-  let lB_2 = [grid[y][x + 2], grid[y + 1][x + 2], grid[y + 2][x + 2]];
-  let lB_3 = [grid[y][x], grid[y + 1][x], grid[y + 2][x]];
-  let lA_1 = copyMatrix(lB_2);
-  let lA_2 = copyMatrix(lB_3);
-  let lA_3 = copyMatrix(lB_1);
+  let lB_1 = [grid[y][x], grid[y + 1][x], grid[y + 2][x]];
+  let lB_2 = [grid[y][x + 1], grid[y + 1][x + 1], grid[y + 2][x + 1]];
+  let lB_3 = [grid[y][x + 2], grid[y + 1][x + 2], grid[y + 2][x + 2]];
+  let table = [[lB_2, lB_3], [lB_3, lB_1], [lB_1, lB_2]];
   if (Math.random() < 0.5) {
-    let temp = copyMatrix(lB_1);
-    lB_1 = copyMatrix(lB_2);
-    lB_2 = copyMatrix(lB_3);
-    lB_3 = temp;
-    lA_1 = copyMatrix(lB_3);
-    lA_2 = copyMatrix(lB_1);
-    lA_3 = copyMatrix(lB_2);
+    table = [[lB_3, lB_2], [lB_1, lB_3], [lB_2, lB_1]];
   }
   let arry;
-  arry = arry_adj(lB_1, lA_1, grid, "vertical");
+  arry = [shuffleArray(table[0][0]), shuffleArray(table[0][1])];
   for (let i = 0; i < 3; i++) {
     grid[i][x] = arry[0][i];
     grid[i + 6][x] = arry[1][i];
   }
-  arry = arry_adj(lB_2, lA_2, grid, "vertical");
+  arry = [shuffleArray(table[1][0]), shuffleArray(table[1][1])];
   for (let i = 0; i < 3; i++) {
     grid[i][x + 1] = arry[0][i];
     grid[i + 6][x + 1] = arry[1][i];
   }
-  arry = arry_adj(lB_3, lA_3, grid, "vertical");
+  arry = [shuffleArray(table[2][0]), shuffleArray(table[2][1])];
   for (let i = 0; i < 3; i++) {
     grid[i][x + 2] = arry[0][i];
     grid[i + 6][x + 2] = arry[1][i];
   }
 }
 function horizontalOp(x, y, grid) {
-  let lB_1 = [grid[y + 1][x], grid[y + 1][x + 1], grid[y + 1][x + 2]];
-  let lB_2 = [grid[y + 2][x], grid[y + 2][x + 1], grid[y + 2][x + 2]];
-  let lB_3 = [grid[y][x], grid[y][x + 1], grid[y][x + 2]];
-  let lA_1 = copyMatrix(lB_2);
-  let lA_2 = copyMatrix(lB_3);
-  let lA_3 = copyMatrix(lB_1);
+  let lB_1 = [grid[y][x], grid[y][x + 1], grid[y][x + 2]];
+  let lB_2 = [grid[y + 1][x], grid[y + 1][x + 1], grid[y + 1][x + 2]];
+  let lB_3 = [grid[y + 2][x], grid[y + 2][x + 1], grid[y + 2][x + 2]];
+  let table = [[lB_2, lB_3], [lB_3, lB_1], [lB_1, lB_2]];
   if (Math.random() < 0.5) {
-    let temp = copyMatrix(lB_1);
-    lB_1 = copyMatrix(lB_2);
-    lB_2 = copyMatrix(lB_3);
-    lB_3 = temp;
-    lA_1 = copyMatrix(lB_3);
-    lA_2 = copyMatrix(lB_1);
-    lA_3 = copyMatrix(lB_2);
+    table = [[lB_3, lB_2], [lB_1, lB_3], [lB_2, lB_1]];
   }
-  let arry;
-  arry = arry_adj(lB_1, lA_1, grid, "horizontal");
+  let arry = [];
+  arry = [shuffleArray(table[0][0]), shuffleArray(table[0][1])];
   for (let i = 0; i < 3; i++) {
     grid[y][i] = arry[0][i];
     grid[y][i + 6] = arry[1][i];
   }
-  arry = arry_adj(lB_2, lA_2, grid, "horizontal");
+  arry = [shuffleArray(table[1][0]), shuffleArray(table[1][1])];
   for (let i = 0; i < 3; i++) {
     grid[y + 1][i] = arry[0][i];
     grid[y + 1][i + 6] = arry[1][i];
   }
-  arry = arry_adj(lB_3, lA_3, grid, "horizontal");
+  arry = [shuffleArray(table[2][0]), shuffleArray(table[2][1])];
   for (let i = 0; i < 3; i++) {
     grid[y + 2][i] = arry[0][i];
     grid[y + 2][i + 6] = arry[1][i];
   }
+}
+function boxOp (x, y, grid) {
+  let randArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  shuffleArray(randArray);
+  let n = 0;
+  let dammy_arry = [];
+  while (n < 9) {
+    if (obj.flag > 10) {
+      obj.failed = true;
+      break;
+    }
+    let num = [];
+    for (let k = 0; k < 9; k++) {
+      num.push(grid[k][x + n % 3]);
+      num.push(grid[y + Math.floor(n / 3)][k]);
+    }
+    let index = num.indexOf(randArray[n]);
+    if (index < 0) {
+      randArray = randArray.concat(dammy_arry);
+      dammy_arry = [];
+      n++;
+    } else if (randArray.length > n + 1) {
+      let temp = randArray.splice(n, 1);
+      dammy_arry.push(temp[0]);
+    } else {
+      randArray = randArray.concat(dammy_arry);
+      randArray = [...randArray].reverse();
+      dammy_arry = [];
+      n = 0;
+      obj.flag++;
+    }
+  }
+  randArray.forEach((number, i) => {
+    grid[y + Math.floor(i / 3)][x + i % 3] = number;
+  });
+}
+function lastBoxOp (x, y, grid, cell) {
+  let randArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  let candidate = [];
+  for (let n = 0; n < 9; n++) {
+    let num = [];
+    for (let k = 0; k < 9; k++) {
+      num.push(grid[k][x + n % 3]);
+      num.push(grid[y + Math.floor(n / 3)][k]);
+    }
+    if (!candidate[n]) {
+      candidate[n] = [];
+    }
+    randArray.forEach((number, i) => {
+      if (num.indexOf(number) < 0) {
+        candidate[n].push(number);
+      }
+    });
+  }
+  let roopOut = false;
+  let i = 0;
+  while (i < candidate.length) {
+    if (candidate[i].length <= 0) {
+      roopOut = true;
+      break;
+    }
+    else if (candidate[i].length == 1) {
+      let confirm_num = candidate[i];
+      candidate.forEach((layer, y) => {
+        if (y == i) {
+          return true;
+        }
+        let index = layer.indexOf(confirm_num);
+        if (index >= 0) {
+          layer.splice(index, 1);
+          if (y < i) {
+            i = 0;
+            return false;
+          }
+        }
+      });
+      i++;
+    }
+    else {
+      i++;
+    }
+  }
+  if (!roopOut) {
+    if (cell == 1) {
+      obj.flag_l1 = 10;
+    }
+    if (cell == 2) {
+      obj.flag_l2 = 10;
+    }
+    obj.failed = false;
+  }
+  return candidate;
 }
 function generateGrid() {
   let grid = [];
@@ -463,8 +487,43 @@ function generateGrid() {
   });
   horizontalOp(3, 3, grid);
   verticalOp(3, 3, grid);
-  horizontalOp(3, 0, grid);
-  horizontalOp(3, 6, grid);
+  obj.flag = 0;
+  boxOp (0, 0, grid);
+  obj.flag = 0;
+  boxOp (6, 6, grid);
+  let candidate_1, candidate_2;
+  obj.flag_l1 = 0;
+  obj.flag_l2 = 0;
+  do {
+    obj.failed = true;
+    candidate_1 = lastBoxOp (6, 0, grid, 1);
+    candidate_2 = lastBoxOp (0, 6, grid, 2);
+    obj.flag_l1++;
+    obj.flag_l2++;
+    if (obj.flag_l1 < 10 || obj.flag_l2 < 10) {
+      if (obj.flag_l1 < 10) {
+        obj.flag_l2 = 0;
+      }
+      if (obj.flag_l2 < 10) {
+        obj.flag_l1 = 0;
+      }
+      setCellCrear (0, 0, grid);
+      obj.flag = 0;
+      boxOp (0, 0, grid);
+      setCellCrear (6, 6, grid);
+      obj.flag = 0;
+      boxOp (6, 6, grid);
+    }
+  } while (obj.flag_l1 < 10 || obj.flag_l2 < 10);
+  if (obj.failed) {
+    return false;
+  }
+  candidate_1.forEach((number, i) => {
+    grid[0 + Math.floor(i / 3)][6 + i % 3] = number;
+  });
+  candidate_2.forEach((number, i) => {
+    grid[6 + Math.floor(i / 3)][0 + i % 3] = number;
+  });
   return grid;
 }
 function randHole(grid, diff) {
@@ -490,6 +549,9 @@ function randHole(grid, diff) {
 
 function initializeGrid(diff) {
   gridAns = generateGrid();
+  if (obj.failed) {
+    return false;
+  }
   gridHole = randHole(gridAns, diff);
   grid = JSON.parse(JSON.stringify(gridHole)); // Copy gridHole to grid
   gridAns = JSON.parse(JSON.stringify(gridAns)); // Copy gridHole to gridAns
