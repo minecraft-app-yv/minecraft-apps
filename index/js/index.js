@@ -103,9 +103,9 @@ function setup() {
   initializeGrid(40); // Initialize grid, gridAns, and gridHole
   createNumberButtons();
   createEraseButton();
-  createRestartButton();
-  createShowAnswerButton();
   createShowTextButton();
+  createShowAnswerButton();
+  createRestartButton();
   createDifficultySlider();
   let buttonFirst = select('#sudoku_button button:first-child');
   buttonFirst.addClass('select');
@@ -209,13 +209,14 @@ function createEraseButton() {
     eraseButton.addClass('select');
   });
 }
-function createRestartButton() {
-  restartButton = createButton('<i class="fa-solid fa-arrow-rotate-right"></i>');
-  restartButton.position(-cellSize, cellSize + 5);
-  restartButton.size(cellSize, cellSize);
-  restartButton.parent('sudoku_control');
-  restartButton.mousePressed(() => {
-    initializeGrid(difficultySlider.value());
+function createShowTextButton() {
+  showAnswerText = createButton('T');
+  showAnswerText.position(-cellSize, 1 * (cellSize + 5));
+  showAnswerText.size(cellSize, cellSize);
+  showAnswerText.parent('sudoku_control');
+  showAnswerText.mousePressed(() => {
+    showingText = !showingText; // Toggle the flag
+    background(255);
     drawGrid(grid, 0);
   });
 }
@@ -234,14 +235,17 @@ function createShowAnswerButton() {
     }
   });
 }
-function createShowTextButton() {
-  showAnswerText = createButton('T');
-  showAnswerText.position(-cellSize, 3 * (cellSize + 5));
-  showAnswerText.size(cellSize, cellSize);
-  showAnswerText.parent('sudoku_control');
-  showAnswerText.mousePressed(() => {
-    showingText = !showingText; // Toggle the flag
+function createRestartButton() {
+  restartButton = createButton('<i class="fa-solid fa-arrow-rotate-right"></i>');
+  restartButton.position(-cellSize, 3 * (cellSize + 5));
+  restartButton.size(cellSize, cellSize);
+  restartButton.parent('sudoku_control');
+  restartButton.mousePressed(() => {
+    initializeGrid(difficultySlider.value());
     background(255);
+    if (obj.failed) {
+      return false;
+    }
     drawGrid(grid, 0);
   });
 }
@@ -487,10 +491,14 @@ function generateGrid() {
   });
   horizontalOp(3, 3, grid);
   verticalOp(3, 3, grid);
+  obj.failed = false;
   obj.flag = 0;
   boxOp (0, 0, grid);
   obj.flag = 0;
   boxOp (6, 6, grid);
+  if (obj.failed) {
+    return false;
+  }
   let candidate_1, candidate_2;
   obj.flag_l1 = 0;
   obj.flag_l2 = 0;
@@ -519,29 +527,46 @@ function generateGrid() {
     return false;
   }
   candidate_1.forEach((number, i) => {
+    if (isNaN(number)) {
+      obj.failed = true;
+    }
     grid[0 + Math.floor(i / 3)][6 + i % 3] = number;
   });
   candidate_2.forEach((number, i) => {
+    if (isNaN(number)) {
+      obj.failed = true;
+    }
     grid[6 + Math.floor(i / 3)][0 + i % 3] = number;
   });
   return grid;
 }
 function randHole(grid, diff) {
-  let exit = 0;
   let gridHole = [];
   for (let j = 0; j < 9; j++) {
     if (!gridHole[j]) {
       gridHole[j] = [];
     }
     for (let i = 0; i < 9; i++) {
-      if (exit >= diff) {
-        gridHole[j][i] = 0;
-      } else if (Math.random() < diff / 81) {
-        gridHole[j][i] = grid[j][i];
-        exit++;
-      } else {
-        gridHole[j][i] = 0;
+      gridHole[j][i] = 0
+    }
+  }
+  let exit = 0;
+  let y = 0;
+  while (exit < diff) {
+    let arry_x = [];
+    gridHole[y].forEach((number, index) => {
+      if (number == 0) {
+        arry_x.push(index);
       }
+    });
+    shuffleArray(arry_x);
+    if (arry_x.length) {
+      gridHole[y][arry_x[0]] = grid[y][arry_x[0]];
+      exit++;
+    }
+    y++;
+    if (y >= 9) {
+      y = 0;
     }
   }
   return gridHole;
