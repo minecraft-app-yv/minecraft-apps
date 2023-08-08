@@ -1,0 +1,66 @@
+/*reserve css*/
+i {
+  user-select: none;
+}
+/*reset*/
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+li {
+  list-style: none;
+}
+* {
+  margin:0;
+  padding: 0;
+  font-weight: normal;
+  font-size: medium;
+  line-height: normal;
+}
+/*style*/
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif, "Font Awesome 5 Free";
+  background-image: radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(../img/BG.jpg);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+/*https://web.havincoffee.com/design/2020/09/2009281.html*/
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+/*main*/
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#sudoku {
+  margin: 10px auto;
+}
+#sudoku button {
+  background-color: white;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px outset dimgray;
+  cursor: pointer;
+  font-weight: bold;
+}
+#sudoku button.select {
+  border: 2px inset dimgray;
+  box-shadow: inset 30px 30px 0 rgba(0, 0, 0, 0.5);
+}
+#pop_text {
+  padding: 5px 15px;
+  background: black;
+  color: white;
+  font-weight: bold;
+  font-size: x-small;
+  z-index: 100;
+  position: fixed
+}

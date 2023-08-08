@@ -1,0 +1,82 @@
+/*reserve css*/
+i {
+  user-select: none;
+}
+/*reset*/
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+li {
+  list-style: none;
+}
+* {
+  margin:0;
+  padding: 0;
+  font-weight: normal;
+  font-size: medium;
+  line-height: normal;
+}
+/*style*/
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif, "Font Awesome 5 Free";
+  background-image: radial-gradient(ellipse at center, rgba(10,5,0,0.8) 40%,rgba(0,0,0,0.9) 60%,rgba(0,0,0,1) 100%) , url(../img/BG.jpg);
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+/*https://web.havincoffee.com/design/2020/09/2009281.html*/
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+/*main*/
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#gomoku {
+  margin: 10px auto;
+}
+#gomoku_button {
+  margin: 10px auto;
+  text-align: center;
+}
+#gomoku_button button {
+  background-color: white;
+  border: 2px solid black;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  margin: 0 5px;
+}
+#gomoku_button button#gomoku_cpu {
+  background-color: rgb(0, 150, 0);
+  color: white;
+  border: 2px solid rgb(0, 150, 0);
+}
+#gomoku_button button#gomoku_cpu.white {
+  background-color: white;
+  border: 2px solid black;
+  color: black;
+}
+#gomoku_button input {
+  margin: 0 5px;
+}
+#pop_text {
+  padding: 5px 15px;
+  background: black;
+  color: white;
+  font-weight: bold;
+  font-size: x-small;
+  z-index: 100;
+  position: fixed
+}
