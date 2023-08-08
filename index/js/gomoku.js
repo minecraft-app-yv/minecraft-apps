@@ -493,6 +493,9 @@ function rightAction() {
   }
 }
 async function checkedAction() {
+  if (!flag) {
+    return false;
+  }
   let i = selectedCell.i;
   let j = selectedCell.j;
   if (i >= 0 && i < boardSize && j >= 0 && j < boardSize && board[j][i] === 0) {
