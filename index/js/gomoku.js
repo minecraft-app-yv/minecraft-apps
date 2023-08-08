@@ -145,105 +145,114 @@ function highlightHover() {
     triangle((i + 0.8) * gridSize,(j + 0.8) * gridSize,(i + 0.6) * gridSize,(j + 0.8) * gridSize,(i + 0.8) * gridSize,(j + 0.6) * gridSize);
   }
 }
-function judgmentVictory(x, y) {
+async function judgmentVictory(x, y) {
   let arry_x = [];
   let arry_y = [];
   let arry_xy = [];
   let arry_xyNega = [];
-  for (let n = -4; n <= 4; n++) {
-    if (x + n >= 0 && x + n < boardSize) {
-      if (board[y][x + n] == 1) {
-        if (arry_x[0] == -1) {
+  let answer = true;
+  const somePromise = new Promise((resolve, reject) => {
+    for (let n = -4; n <= 4; n++) {
+      if (x + n >= 0 && x + n < boardSize) {
+        if (board[y][x + n] == 1) {
+          if (arry_x[0] == -1) {
+            arry_x = [];
+          }
+          arry_x.push(1);
+        }
+        if (board[y][x + n] == -1) {
+          if (arry_x[0] == 1) {
+            arry_x = [];
+          }
+          arry_x.push(-1);
+        }
+        if (board[y][x + n] == 0) {
           arry_x = [];
         }
-        arry_x.push(1);
       }
-      if (board[y][x + n] == -1) {
-        if (arry_x[0] == 1) {
-          arry_x = [];
+      if (y + n >= 0 && y + n < boardSize) {
+        if (board[y + n][x] == 1) {
+          if (arry_y[0] == -1) {
+            arry_y = [];
+          }
+          arry_y.push(1);
         }
-        arry_x.push(-1);
-      }
-      if (board[y][x + n] == 0) {
-        arry_x = [];
-      }
-    }
-    if (y + n >= 0 && y + n < boardSize) {
-      if (board[y + n][x] == 1) {
-        if (arry_y[0] == -1) {
+        if (board[y + n][x] == -1) {
+          if (arry_y[0] == 1) {
+            arry_y = [];
+          }
+          arry_y.push(-1);
+        }
+        if (board[y + n][x] == 0) {
           arry_y = [];
         }
-        arry_y.push(1);
       }
-      if (board[y + n][x] == -1) {
-        if (arry_y[0] == 1) {
-          arry_y = [];
+      if (x + n >= 0 && x + n < boardSize && y + n >= 0 && y + n < boardSize) {
+        if (board[y + n][x + n] == 1) {
+          if (arry_xy[0] == -1) {
+            arry_xy = [];
+          }
+          arry_xy.push(1);
         }
-        arry_y.push(-1);
-      }
-      if (board[y + n][x] == 0) {
-        arry_y = [];
-      }
-    }
-    if (x + n >= 0 && x + n < boardSize && y + n >= 0 && y + n < boardSize) {
-      if (board[y + n][x + n] == 1) {
-        if (arry_xy[0] == -1) {
+        if (board[y + n][x + n] == -1) {
+          if (arry_xy[0] == 1) {
+            arry_xy = [];
+          }
+          arry_xy.push(-1);
+        }
+        if (board[y + n][x + n] == 0) {
           arry_xy = [];
         }
-        arry_xy.push(1);
       }
-      if (board[y + n][x + n] == -1) {
-        if (arry_xy[0] == 1) {
-          arry_xy = [];
+      if (x + n >= 0 && x + n < boardSize && y - n >= 0 && y - n < boardSize) {
+        if (board[y - n][x + n] == 1) {
+          if (arry_xyNega[0] == -1) {
+            arry_xyNega = [];
+          }
+          arry_xyNega.push(1);
         }
-        arry_xy.push(-1);
-      }
-      if (board[y + n][x + n] == 0) {
-        arry_xy = [];
-      }
-    }
-    if (x + n >= 0 && x + n < boardSize && y - n >= 0 && y - n < boardSize) {
-      if (board[y - n][x + n] == 1) {
-        if (arry_xyNega[0] == -1) {
+        if (board[y - n][x + n] == -1) {
+          if (arry_xyNega[0] == 1) {
+            arry_xyNega = [];
+          }
+          arry_xyNega.push(-1);
+        }
+        if (board[y - n][x + n] == 0) {
           arry_xyNega = [];
         }
-        arry_xyNega.push(1);
       }
-      if (board[y - n][x + n] == -1) {
-        if (arry_xyNega[0] == 1) {
-          arry_xyNega = [];
+      if (arry_x.length >= 5) {
+        for (let i = 0; i < 5; i++) {
+          board[y][x + n - i] *= 11;
         }
-        arry_xyNega.push(-1);
+        answer = false;
+        break;
       }
-      if (board[y - n][x + n] == 0) {
-        arry_xyNega = [];
+      if (arry_y.length >= 5) {
+        for (let i = 0; i < 5; i++) {
+          board[y + n - i][x] *= 11;
+        }
+        answer = false;
+        break;
+      }
+      if (arry_xy.length >= 5) {
+        for (let i = 0; i < 5; i++) {
+          board[y + n - i][x + n - i] *= 11;
+        }
+        answer = false;
+        break;
+      }
+      if (arry_xyNega.length >= 5) {
+        for (let i = 0; i < 5; i++) {
+          board[y - n + i][x + n - i] *= 11;
+        }
+        answer = false;
+        break;
       }
     }
-    if (arry_x.length >= 5) {
-      for (let i = 0; i < 5; i++) {
-        board[y][x + n - i] *= 11;
-      }
-      break;
-    }
-    if (arry_y.length >= 5) {
-      for (let i = 0; i < 5; i++) {
-        board[y + n - i][x] *= 11;
-      }
-      break;
-    }
-    if (arry_xy.length >= 5) {
-      for (let i = 0; i < 5; i++) {
-        board[y + n - i][x + n - i] *= 11;
-      }
-      break;
-    }
-    if (arry_xyNega.length >= 5) {
-      for (let i = 0; i < 5; i++) {
-        board[y - n + i][x + n - i] *= 11;
-      }
-      break;
-    }
-  }
+    resolve(answer);
+  });
+  return somePromise;
 }
 function getMapData(x, y, pos) {
   let c = 0;
@@ -363,7 +372,7 @@ function cpuMovement() {
   currentPlayer *= -1;
   $('#gomoku_cpu').toggleClass('white');
 }
-function mousePressed() {
+async function mousePressed() {
   if (!flag) {
     return false;
   }
@@ -372,11 +381,15 @@ function mousePressed() {
 
   if (i >= 0 && i < boardSize && j >= 0 && j < boardSize && board[j][i] === 0) {
     board[j][i] = currentPlayer;
-    judgmentVictory(i, j);
-    currentPlayer *= -1; // プレイヤーを切り替える
-    $('#gomoku_cpu').toggleClass('white');
-    if (cpuFlag) {
-      cpuMovement();
+    try {
+      const result = await judgmentVictory(i, j);
+      if (cpuFlag && result) {
+        currentPlayer *= -1; // プレイヤーを切り替える
+        $('#gomoku_cpu').toggleClass('white');
+        cpuMovement();
+      }
+    } catch (error) {
+      board[j][i] = 0;
     }
   }
 }
