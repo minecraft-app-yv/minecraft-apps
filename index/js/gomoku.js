@@ -351,7 +351,7 @@ function cpuMovement() {
   const userMax = Math.max(...userMap);
   const userMaxIndex = userMap.indexOf(userMax);
   let x, y;
-  if (userMax >= cpuMax) {
+  if (userMax > cpuMax) {
     y = floor(userMaxIndex / 19);
     x = userMaxIndex % 19;
   } else {
