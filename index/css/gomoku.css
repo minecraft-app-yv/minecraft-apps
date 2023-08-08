@@ -42,11 +42,13 @@ main {
 #gomoku {
   margin: 10px auto;
 }
-#gomoku_button {
+#gomoku_button,
+#gomoku_control {
   margin: 10px auto;
   text-align: center;
 }
-#gomoku_button button {
+#gomoku_button button,
+#gomoku_control button {
   background-color: white;
   border: 2px solid black;
   color: black;
