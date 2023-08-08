@@ -283,6 +283,13 @@ async function judgmentVictory(x, y) {
   });
   return somePromise;
 }
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 function getMapData(x, y, pos) {
   let c = 0;
   let obj = {};
@@ -385,16 +392,28 @@ function cpuMovement() {
     }
   }
   const cpuMax = Math.max(...cpuMap);
-  const cpuMaxIndex = cpuMap.indexOf(cpuMax);
   const userMax = Math.max(...userMap);
-  const userMaxIndex = userMap.indexOf(userMax);
+  let cpuMaxIndex = [];
+  let userMaxIndex = [];
+  cpuMap.forEach((item, i) => {
+    if (item == cpuMax) {
+      cpuMaxIndex.push(i);
+    }
+  });
+  userMap.forEach((item, i) => {
+    if (item == userMax) {
+      userMaxIndex.push(i);
+    }
+  });
+  shuffleArray(cpuMaxIndex);
+  shuffleArray(userMaxIndex);
   let x, y;
   if (userMax > cpuMax) {
-    y = floor(userMaxIndex / 19);
-    x = userMaxIndex % 19;
+    y = floor(userMaxIndex[0] / 19);
+    x = userMaxIndex[0] % 19;
   } else {
-    y = floor(cpuMaxIndex / 19);
-    x = cpuMaxIndex % 19;
+    y = floor(cpuMaxIndex[0] / 19);
+    x = cpuMaxIndex[0] % 19;
   }
   board[y][x] = currentPlayer;
   judgmentVictory(x, y);
