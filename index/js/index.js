@@ -14,7 +14,7 @@ $(document).ready(function() {
   if (judge <= canvas_size) {
     canvas_size = judge;
   }
-  $('main section iframe.gomoku').css('height', canvas_size + 80);
+  $('main section iframe.gomoku').css('height', canvas_size + 110);
 });
 $(document).scroll(function () {
   let h = $(this).scrollTop();

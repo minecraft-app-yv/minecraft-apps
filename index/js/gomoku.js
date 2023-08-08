@@ -10,6 +10,7 @@ let cpuFlag = false;
 let stoneFlag = false;
 let images = {};
 let isTouched = false;
+let selectedCell = { i: 0, j: 0 };
 
 function tintGrayToRed(amount, img) {
   img.loadPixels();
@@ -50,6 +51,10 @@ function setup() {
   gomokuDivB.id('gomoku_button');
   gomokuDivB.style('width', canvas_size + 'px');
   gomokuDivB.parent('gomoku');
+  let gomokuDivC = createDiv();
+  gomokuDivC.id('gomoku_control');
+  gomokuDivC.style('width', canvas_size + 'px');
+  gomokuDivC.parent('gomoku');
   let canvas = createCanvas(canvas_size, canvas_size);
   canvas.parent('gomoku_canvas');
   gridSize = width / boardSize;
@@ -79,6 +84,23 @@ function setup() {
   difficultySlider.style('display', 'inline-block');
   difficultySlider.parent('gomoku_button');
   difficultySlider.input(changeDifficulty);
+
+  let leftButton = createButton('<i class="fa-solid fa-left-long"></i>');
+  leftButton.parent('gomoku_control');
+  leftButton.mousePressed(leftAction);
+  let upButton = createButton('<i class="fa-solid fa-up-long"></i>');
+  upButton.parent('gomoku_control');
+  upButton.mousePressed(upAction);
+  let downButton = createButton('<i class="fa-solid fa-down-long"></i>');
+  downButton.parent('gomoku_control');
+  downButton.mousePressed(downAction);
+  let rightButton = createButton('<i class="fa-solid fa-right-long"></i>');
+  rightButton.parent('gomoku_control');
+  rightButton.mousePressed(rightAction);
+  let checkedButton = createButton('<i class="fa-solid fa-circle-check"></i>');
+  checkedButton.style('margin-left', '15px');
+  checkedButton.parent('gomoku_control');
+  checkedButton.mousePressed(checkedAction);
 }
 
 function draw() {
@@ -87,6 +109,7 @@ function draw() {
   drawBoard();
   drawStones();
   highlightHover();
+  drawTarget();
 }
 function drawBoard() {
   stroke(0);
@@ -126,6 +149,19 @@ function drawStones() {
   }
 }
 
+function drawTarget() {
+  let i = selectedCell.i;
+  let j = selectedCell.j;
+  noStroke();
+  fill(0, 150, 0);
+  if (currentPlayer == -1) {
+    fill(255, 0, 0);
+  }
+  triangle((i + 0.2) * gridSize,(j + 0.2) * gridSize,(i + 0.4) * gridSize,(j + 0.2) * gridSize,(i + 0.2) * gridSize,(j + 0.4) * gridSize);
+  triangle((i + 0.8) * gridSize,(j + 0.2) * gridSize,(i + 0.8) * gridSize,(j + 0.4) * gridSize,(i + 0.6) * gridSize,(j + 0.2) * gridSize);
+  triangle((i + 0.2) * gridSize,(j + 0.8) * gridSize,(i + 0.4) * gridSize,(j + 0.8) * gridSize,(i + 0.2) * gridSize,(j + 0.6) * gridSize);
+  triangle((i + 0.8) * gridSize,(j + 0.8) * gridSize,(i + 0.6) * gridSize,(j + 0.8) * gridSize,(i + 0.8) * gridSize,(j + 0.6) * gridSize);
+}
 function highlightHover() {
   if (!flag || isTouched) {
     return false;
@@ -134,15 +170,8 @@ function highlightHover() {
   let j = Math.round((mouseY - (gridSize * 1) / 2) / gridSize);
 
   if (i >= 0 && i < boardSize && j >= 0 && j < boardSize) {
-    noStroke();
-    fill(0, 150, 0);
-    if (currentPlayer == -1) {
-      fill(255, 0, 0);
-    }
-    triangle((i + 0.2) * gridSize,(j + 0.2) * gridSize,(i + 0.4) * gridSize,(j + 0.2) * gridSize,(i + 0.2) * gridSize,(j + 0.4) * gridSize);
-    triangle((i + 0.8) * gridSize,(j + 0.2) * gridSize,(i + 0.8) * gridSize,(j + 0.4) * gridSize,(i + 0.6) * gridSize,(j + 0.2) * gridSize);
-    triangle((i + 0.2) * gridSize,(j + 0.8) * gridSize,(i + 0.4) * gridSize,(j + 0.8) * gridSize,(i + 0.2) * gridSize,(j + 0.6) * gridSize);
-    triangle((i + 0.8) * gridSize,(j + 0.8) * gridSize,(i + 0.6) * gridSize,(j + 0.8) * gridSize,(i + 0.8) * gridSize,(j + 0.6) * gridSize);
+    selectedCell = { i, j };
+    drawTarget();
   }
 }
 async function judgmentVictory(x, y) {
@@ -383,10 +412,12 @@ async function mousePressed() {
     board[j][i] = currentPlayer;
     try {
       const result = await judgmentVictory(i, j);
-      if (cpuFlag && result) {
+      if (result) {
         currentPlayer *= -1; // プレイヤーを切り替える
         $('#gomoku_cpu').toggleClass('white');
-        cpuMovement();
+        if (cpuFlag && result) {
+          cpuMovement();
+        }
       }
     } catch (error) {
       board[j][i] = 0;
@@ -436,4 +467,47 @@ function changeDifficulty() {
   setTimeout(() => {
     diff_text.elt.remove();
   }, 1000)
+}
+function leftAction() {
+  if (selectedCell.i >= 1 && selectedCell.i < boardSize && selectedCell.j >= 0 && selectedCell.j < boardSize) {
+    selectedCell.i--;
+    drawTarget();
+  }
+}
+function upAction() {
+  if (selectedCell.i >= 0 && selectedCell.i < boardSize && selectedCell.j >= 1 && selectedCell.j < boardSize) {
+    selectedCell.j--;
+    drawTarget();
+  }
+}
+function downAction() {
+  if (selectedCell.i >= 0 && selectedCell.i < boardSize && selectedCell.j >= 0 && selectedCell.j < boardSize - 1) {
+    selectedCell.j++;
+    drawTarget();
+  }
+}
+function rightAction() {
+  if (selectedCell.i >= 0 && selectedCell.i < boardSize - 1 && selectedCell.j >= 0 && selectedCell.j < boardSize) {
+    selectedCell.i++;
+    drawTarget();
+  }
+}
+async function checkedAction() {
+  let i = selectedCell.i;
+  let j = selectedCell.j;
+  if (i >= 0 && i < boardSize && j >= 0 && j < boardSize && board[j][i] === 0) {
+    board[j][i] = currentPlayer;
+    try {
+      const result = await judgmentVictory(i, j);
+      if (result) {
+        currentPlayer *= -1; // プレイヤーを切り替える
+        $('#gomoku_cpu').toggleClass('white');
+        if (cpuFlag && result) {
+          cpuMovement();
+        }
+      }
+    } catch (error) {
+      board[j][i] = 0;
+    }
+  }
 }
