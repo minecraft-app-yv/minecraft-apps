@@ -98,7 +98,7 @@ function setup() {
   rightButton.parent('gomoku_control');
   rightButton.mousePressed(rightAction);
   let checkedButton = createButton('<i class="fa-solid fa-circle-check"></i>');
-  checkedButton.style('margin-left', '15px');
+  checkedButton.style('margin-left', '25px');
   checkedButton.parent('gomoku_control');
   checkedButton.mousePressed(checkedAction);
 }
