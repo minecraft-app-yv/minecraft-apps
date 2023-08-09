@@ -153,7 +153,7 @@ function drawTarget() {
   let i = selectedCell.i;
   let j = selectedCell.j;
   noStroke();
-  fill(0, 150, 0);
+  fill(0, 255, 255);
   if (currentPlayer == -1) {
     fill(255, 0, 0);
   }
