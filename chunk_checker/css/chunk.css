@@ -51,16 +51,27 @@ html {
 /*close_button form*/
 .close_button {
   background: #fff;
+  background-size: 0px 0px;
+  background-image: radial-gradient(dimgray 0%, dimgray 50%, transparent 50%);
+  background-position: center;
+  background-repeat: no-repeat;
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 40px;
+  border: 1px solid dimgray;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-  font-size: x-large;
+  font-size: large;
   font-weight: bold;
   cursor: pointer;
+  transition: all 0.5s ease-out;
+}
+.close_button:hover {
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  color: white;
+  background-size: 40px 40px;
 }
 /*share_buttons*/
 #share_buttons {
@@ -1002,6 +1013,11 @@ footer img {
 }
 /*for smartphone*/
 @media screen and (max-width: 640px) {
+  .close_button {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    color: white;
+    background-size: 40px 40px;
+  }
   main, aside {
     width: 100%;
   }
