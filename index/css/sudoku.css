@@ -40,9 +40,12 @@ main {
   align-items: center;
 }
 #sudoku {
+  position: relative;
   margin: 10px auto;
 }
 #sudoku button {
+  width: 35px;
+  height: 35px;
   background-color: white;
   background-size: cover;
   background-repeat: no-repeat;
@@ -51,9 +54,12 @@ main {
   cursor: pointer;
   font-weight: bold;
 }
+#sudoku_control button {
+  margin: 0 5px;
+}
 #sudoku button.select {
   border: 2px inset dimgray;
-  box-shadow: inset 30px 30px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: inset 40px 40px 0 rgba(0, 0, 0, 0.5);
 }
 #pop_text {
   padding: 5px 15px;

@@ -44,7 +44,7 @@ main {
 }
 #gomoku_button,
 #gomoku_control {
-  margin: 10px auto;
+  margin: 15px auto 0 auto;
   text-align: center;
 }
 #gomoku_button button,
@@ -54,8 +54,8 @@ main {
   color: black;
   cursor: pointer;
   font-weight: bold;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   text-align: center;
   line-height: 30px;
   margin: 0 5px;

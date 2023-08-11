@@ -4,17 +4,17 @@ $(document).ready(function() {
   let windowWidth = window.innerWidth;
   windowWidth *= 0.85;
   let canvas_size = 300;
-  let judge = windowWidth - (300 / 9 + 10) * 2;
+  let judge = windowWidth - 10 * 2;
   if (judge <= canvas_size) {
     canvas_size = judge;
   }
-  $('main section iframe.sudoku').css('height', canvas_size + 40);
+  $('main section iframe.sudoku').css('height', canvas_size + 135);
   canvas_size = 400;
   judge = windowWidth - 10 * 2;
   if (judge <= canvas_size) {
     canvas_size = judge;
   }
-  $('main section iframe.gomoku').css('height', canvas_size + 110);
+  $('main section iframe.gomoku').css('height', canvas_size + 120);
 });
 $(document).scroll(function () {
   let h = $(this).scrollTop();

@@ -26,32 +26,25 @@ function preload() {
 function setup() {
   let windowWidth = window.innerWidth;
   let canvas_size = 300;
-  windowWidth -= (300 / 9 + 10) * 2;
+  windowWidth -= 10 * 2;
   if (windowWidth <= canvas_size) {
     canvas_size = windowWidth;
   }
-  let sudokuDivC = createDiv();
-  sudokuDivC.id('sudoku_control');
-  sudokuDivC.style('width', 0);
-  sudokuDivC.style('top', '-' + canvas_size + 'px');
-  sudokuDivC.style('right', '10px');
-  sudokuDivC.style('display', 'inline-block');
-  sudokuDivC.style('position', 'relative');
-  sudokuDivC.parent('sudoku');
   let sudokuDiv = createDiv();
   sudokuDiv.id('sudoku_canvas');
   sudokuDiv.style('width', canvas_size + 'px');
   sudokuDiv.style('height', canvas_size + 'px');
-  sudokuDiv.style('display', 'inline-block');
+  sudokuDiv.style('margin', '0 auto 20px auto');
   sudokuDiv.parent('sudoku');
   let sudokuDivB = createDiv();
   sudokuDivB.id('sudoku_button');
-  sudokuDivB.style('width', 0);
-  sudokuDivB.style('top', '-' + canvas_size + 'px');
-  sudokuDivB.style('left', '10px');
-  sudokuDivB.style('display', 'inline-block');
-  sudokuDivB.style('position', 'relative');
+  sudokuDivB.style('margin', '0 auto 15px auto');
   sudokuDivB.parent('sudoku');
+  let sudokuDivC = createDiv();
+  sudokuDivC.id('sudoku_control');
+  sudokuDivC.style('margin', '0 auto');
+  sudokuDivC.style('text-align', 'center');
+  sudokuDivC.parent('sudoku');
   let canvas = createCanvas(canvas_size, canvas_size);
   canvas.parent('sudoku_canvas');
   cellSize = width / 9;
@@ -139,10 +132,9 @@ function createNumberButtons() {
   for (let i = 1; i <= 9; i++) {
     let button = createButton(String(i));
     button.style('background-image', 'url("../art/img/blocks/' + img_name[i - 1] + '.jpg")');
+    button.style('display', 'inline-block');
     button.attribute('data-name', String(i));
     button.parent('sudoku_button');
-    button.position(0, cellSize * (i - 1));
-    button.size(cellSize, cellSize);
     button.mousePressed(() => {
       let buttonSelect = select('#sudoku button.select');
       buttonSelect.removeClass('select');
@@ -153,8 +145,6 @@ function createNumberButtons() {
 }
 function createEraseButton() {
   eraseButton = createButton('<i class="fa-solid fa-eraser"></i>');
-  eraseButton.position(-cellSize, 0);
-  eraseButton.size(cellSize, cellSize);
   eraseButton.attribute('data-name', 'erase');
   eraseButton.parent('sudoku_control');
   eraseButton.mousePressed(() => {
@@ -165,8 +155,6 @@ function createEraseButton() {
 }
 function createShowTextButton() {
   showAnswerText = createButton('T');
-  showAnswerText.position(-cellSize, 1 * (cellSize + 5));
-  showAnswerText.size(cellSize, cellSize);
   showAnswerText.parent('sudoku_control');
   showAnswerText.mousePressed(() => {
     showingText = !showingText; // Toggle the flag
@@ -176,8 +164,6 @@ function createShowTextButton() {
 }
 function createShowAnswerButton() {
   showAnswerButton = createButton('<i class="fa-solid fa-circle-check"></i>');
-  showAnswerButton.position(-cellSize, 2 * (cellSize + 5));
-  showAnswerButton.size(cellSize, cellSize);
   showAnswerButton.parent('sudoku_control');
   showAnswerButton.mousePressed(() => {
     showingAnswer = !showingAnswer; // Toggle the flag
@@ -191,8 +177,6 @@ function createShowAnswerButton() {
 }
 function createRestartButton() {
   restartButton = createButton('<i class="fa-solid fa-arrow-rotate-right"></i>');
-  restartButton.position(-cellSize, 3 * (cellSize + 5));
-  restartButton.size(cellSize, cellSize);
   restartButton.parent('sudoku_control');
   restartButton.mousePressed(() => {
     initializeGrid(difficultySlider.value());
@@ -204,25 +188,16 @@ function createRestartButton() {
   });
 }
 function createDifficultySlider() {
-  let sliderContainer = createDiv();
-  sliderContainer.position(-cellSize / 2, 4 * (cellSize + 5));
-  sliderContainer.parent('sudoku_control');
-
-  // スライダーを作成
   difficultySlider = createSlider(5, 75, 40);
-  difficultySlider.parent(sliderContainer); // スライダーをコンテナ要素に追加
-
-  // コンテナ要素を回転するためのCSSスタイルを適用
-  sliderContainer.style('transform', 'rotate(90deg) translate(0, -50%');
-  sliderContainer.style('transform-origin', '0 0');
+  difficultySlider.parent('sudoku_control');
   difficultySlider.input((e) => {
     let value = difficultySlider.value();
     let diff_text = createDiv(value);
     diff_text.id('pop_text');
-    let p = sliderContainer.elt.getBoundingClientRect();
+    let p = difficultySlider.elt.getBoundingClientRect();
     let d = diff_text.elt.getBoundingClientRect();
     let scrollTop = window.scrollY;
-    diff_text.position(p.left - (d.width - p.width) / 2 , p.top + scrollTop + p.height);
+    diff_text.position(p.left - (d.width - p.width) / 2 , p.top + scrollTop + p.height + 5);
     setTimeout(() => {
       diff_text.elt.remove();
     }, 1000)

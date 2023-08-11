@@ -482,7 +482,7 @@ function changeDifficulty() {
   let p = difficultySlider.elt.getBoundingClientRect();
   let d = diff_text.elt.getBoundingClientRect();
   let scrollTop = window.scrollY;
-  diff_text.position(p.left - (d.width - p.width) / 2 , p.top + scrollTop + p.height + 10);
+  diff_text.position(p.left + p.width + 10, p.top + scrollTop - (d.height - p.height) / 2);
   setTimeout(() => {
     diff_text.elt.remove();
   }, 1000)
