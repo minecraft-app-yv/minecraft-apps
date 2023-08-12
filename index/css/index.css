@@ -37,7 +37,7 @@ html {
 .close_button {
   background: #fff;
   background-size: 0px 0px;
-  background-image: radial-gradient(dimgray 0%, dimgray 50%, transparent 50%);
+  background-image: radial-gradient(dimgray 0%, dimgray 50%, transparent 55%);
   background-position: center;
   background-repeat: no-repeat;
   width: 40px;
@@ -51,7 +51,7 @@ html {
   font-size: large;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.5s ease-out;
+  transition: all 0.3s ease-out;
 }
 .close_button:hover {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
