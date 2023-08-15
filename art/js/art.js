@@ -364,7 +364,6 @@ $(document).ready(function () {
     $('#hanb').prop('checked', true);
   }
   //palette color img add crossorigin
-  // WARNING: if can display img do -> crossorigin="anonymous
   $('#CP .CPimg').find('img').attr('crossorigin', 'anonymous');
   //drawSelf canvas background
   document.getElementById("draw_art_canvas").getContext("2d").fillStyle = "white";
