@@ -471,8 +471,17 @@ html {
 #plan_to_download_Blueprint .third.plan .coordinate input:invalid {
   color: red;
 }
-#plan_to_download_Blueprint .third.plan .coordinate input:hover {
+#plan_to_download_Blueprint .third.plan .coordinate input:hover,
+#plan_to_download_Blueprint .third.plan .coordinate #make_art_direction:hover {
   background-image: linear-gradient(0deg, green 10%, transparent 15%);
+}
+#plan_to_download_Blueprint .third.plan .coordinate #make_art_direction {
+  border-bottom: 1px solid #5d627b;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  padding: 5px 0;
 }
 #plan_menu_1:checked ~ .plan_menu a.to_top {
   display: flex;

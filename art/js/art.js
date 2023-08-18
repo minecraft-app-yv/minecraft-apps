@@ -518,53 +518,53 @@ $(document).ready(async function () {
   let load_flag = false;
   let key = 'art_ver_two';
   let getData = return_obj_from_localStorage (storage,key);
-  if (getData === '' || getData === null) {
-    return false;
-  }
-  value_obj = getData;
-  //storage button on or off
-  if (getData['storage'] === 'off') {
-    $('#auto_download_storage').prop('checked', false);
-  }
-  if (getData['storage'] === 'on') {
-    remove_localStorage (storage,key);
-    //top menu memory
-    $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-      $(this).remove();
-    });
-    $('#syncer-acdn-03').append(getData['top_menu']);
-    //memory_obj in js
-    let get_obj = getData['top_menu_data'];
-    memory_obj = {};
-    let i = 0;
-    $.each(get_obj, function(index, obj) {
-      let key = get_obj['memoryObj_id' + i];
-      let canvas = get_obj['memoryObj_canvas' + i];
-      let data = get_obj['memoryObj_data' + i];
-      let value = {canvas: canvas, data: data};
-      memory_obj[key] = value;
-      i++;
-    })
-    //color boxes of palette board cp
-    let get_cp_obj = getData['cp_html'];
-    let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
-    for (let j = 0; j < arry_cp_class.length; j++) {
-      let html = get_cp_obj['cpObj_data' + j];
-      $('#CP .' + arry_cp_class[j]).html(html);
+  if (getData !== '' && getData !== null) {
+    value_obj = getData;
+    //storage button on or off
+    if (getData['storage'] === 'off') {
+      $('#auto_download_storage').prop('checked', false);
     }
-    //input sample_view rgb
-    $('#sample_ratio_r').val(getData['ratio_r'][0]);
-    $('#sample_ratio_g').val(getData['ratio_g'][0]);
-    $('#sample_ratio_b').val(getData['ratio_b'][0]);
-    $('#sample_ratio_r').attr('data-count', getData['ratio_r'][1]);
-    $('#sample_ratio_g').attr('data-count', getData['ratio_g'][1]);
-    $('#sample_ratio_b').attr('data-count', getData['ratio_b'][1]);
-    //read command id
-    if (getData['command_data'] !== undefined) {
-      command_obj = getData['command_data'];
-      load_flag = true;
+    if (getData['storage'] === 'on') {
+      remove_localStorage (storage,key);
+      //top menu memory
+      $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
+        $(this).remove();
+      });
+      $('#syncer-acdn-03').append(getData['top_menu']);
+      //memory_obj in js
+      let get_obj = getData['top_menu_data'];
+      memory_obj = {};
+      let i = 0;
+      $.each(get_obj, function(index, obj) {
+        let key = get_obj['memoryObj_id' + i];
+        let canvas = get_obj['memoryObj_canvas' + i];
+        let data = get_obj['memoryObj_data' + i];
+        let value = {canvas: canvas, data: data};
+        memory_obj[key] = value;
+        i++;
+      })
+      //color boxes of palette board cp
+      let get_cp_obj = getData['cp_html'];
+      let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
+      for (let j = 0; j < arry_cp_class.length; j++) {
+        let html = get_cp_obj['cpObj_data' + j];
+        $('#CP .' + arry_cp_class[j]).html(html);
+      }
+      //input sample_view rgb
+      $('#sample_ratio_r').val(getData['ratio_r'][0]);
+      $('#sample_ratio_g').val(getData['ratio_g'][0]);
+      $('#sample_ratio_b').val(getData['ratio_b'][0]);
+      $('#sample_ratio_r').attr('data-count', getData['ratio_r'][1]);
+      $('#sample_ratio_g').attr('data-count', getData['ratio_g'][1]);
+      $('#sample_ratio_b').attr('data-count', getData['ratio_b'][1]);
+      //read command id
+      if (getData['command_data'] !== undefined) {
+        command_obj = getData['command_data'];
+        load_flag = true;
+      }
     }
   }
+  //command_ids into obj
   if (!load_flag) {
     try {
       command_obj = await load_command_id_xlsx();
@@ -1510,6 +1510,11 @@ function make_pixel_art_fun(arry, type) {
       let x = coordinate[0] + i - (arry[0].length / 2);
       let y = coordinate[1] - j + arry.length;
       let z = coordinate[2];
+      if ($('#make_art_direction').val() === 'horizon') {
+        x = coordinate[0] + i - (arry[0].length / 2);
+        y = coordinate[1];
+        z = coordinate[2] + j - (arry.length / 2);
+      }
       let id = '';
       let alt = arry[j][i];
       if (type === 'be') {
@@ -1777,6 +1782,16 @@ $('#change_command').change((e) => {
     $('#change_command').css('backgroundColor', '#fff');
   }
   if (edition === 'bk_name' && text !== '') {
+    let result = Object.keys(command_obj).find(key => key === text);
+    if (result !== undefined) {
+      if ($('header .header_form p.language').text() === 'Japanese') {
+        alert('既に使われているBlock Nameです。');
+      }
+      if ($('header .header_form p.language').text() === '英語') {
+        alert('Block Name already in use.');
+      }
+      return false;
+    }
     $('#command_table input[name="command"]:checked ~ span').text(text);
     command_obj[text] = command_obj[alt];
     delete command_obj[alt];
@@ -1813,6 +1828,25 @@ $('#change_command').change((e) => {
 $('#display_plan_of_Blueprint').click((e) => {
   $('#plan_menu_0').prop('checked', true);
   $('#plan_to_download_Blueprint').css('display', 'flex');
+  $('#CP .CPimg').find('img').each(function(index, domEle) {
+    let alt = $(domEle).attr('alt');
+    let result = Object.keys(command_obj).find(key => key === alt);
+    if (result === undefined) {
+      command_obj[alt] = [null, null];
+    }
+  });
+  if ($('#pixel_art').prop('checked')) {
+    $('#plan_to_download_Blueprint .second.plan label.button').css('display', 'inline-block');
+    $('#make_art_direction').css('display', 'block');
+  }
+  if ($('#map_art').prop('checked')) {
+    $('#plan_to_download_Blueprint .second.plan label.button').css('display', 'inline-block');
+    $('#make_art_direction').css('display', 'none');
+  }
+  if ($('#draw_art').prop('checked')) {
+    $('#plan_to_download_Blueprint .second.plan label.button').css('display', 'none');
+    $('#make_art_direction').css('display', 'none');
+  }
   build_command_table ();
 });
 $('#download_datas_button').click((e) => {
@@ -2122,6 +2156,20 @@ $("#palette_upload").change(function (e) {
       let parent_class = array_html[i].parent_class;
       $('#CP .' + parent_class).append(array_html[i].html);
     }
+    cp_obj = {};
+    $('#CP .CPimg').find('img').each(function() {
+      let alt = $(this).attr('alt');
+      if (alt !== undefined) {
+        let src = $(this).attr('src');
+        let id = $('#CP .CPimg img[alt="' + alt + '"]').parent().parent().attr('id');
+        const image = new Image();
+        image.onload = () => {
+          cp_obj[alt] = {img: image, color: $('#' + id + ' .CPrgb').css('backgroundColor')}
+        };
+        image.crossOrigin = 'anonymous'; // クロスオリジン属性を設定
+        image.src = src;
+      }
+    });
     $("#palette_upload").val('');
     $('html').css('cursor', 'default');
   };
