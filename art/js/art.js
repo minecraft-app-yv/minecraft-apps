@@ -3106,17 +3106,17 @@ function for_sample_view_action(e) {
   let b_count = Number($('#sample_ratio_b').attr('data-count'));
   for (let k = 0; k < sample_array.length; k++) {
     if (k > 0) {
-      ratio_r += (Math.random() - 0.5) * 20 * Math.exp(-r_count / 100);
+      ratio_r = ratio_r + (Math.random() - 0.5) * 20 * Math.exp(-r_count / 10);
       r_count++;
       if (ratio_r < 0) {
         ratio_r = 30;
       }
-      ratio_g += (Math.random() - 0.5) * 20 * Math.exp(-g_count / 100);
+      ratio_g = ratio_g + (Math.random() - 0.5) * 20 * Math.exp(-g_count / 10);
       g_count++;
       if (ratio_g < 0) {
         ratio_g = 59;
       }
-      ratio_b += (Math.random() - 0.5) * 20 * Math.exp(-b_count / 100);
+      ratio_b = ratio_b + (Math.random() - 0.5) * 20 * Math.exp(-b_count / 10);
       b_count++;
       if (ratio_b < 0) {
         ratio_b = 11;
@@ -3146,6 +3146,9 @@ function for_sample_view_action(e) {
         sample_array[k].fillRect(j, i, 1, 1);
       }
     }
+    ratio_r *= 100;
+    ratio_g *= 100;
+    ratio_b *= 100;
   }
   $('#sample_ratio_r').attr('data-count', r_count);
   $('#sample_ratio_g').attr('data-count', g_count);
@@ -3300,9 +3303,6 @@ $('#for_sample_view input[name="sample_view"]').change((e) => {
   $('#sample_ratio_r').val(ratio_r);
   $('#sample_ratio_g').val(ratio_g);
   $('#sample_ratio_b').val(ratio_b);
-  $('#sample_ratio_r').attr('data-count', 1);
-  $('#sample_ratio_g').attr('data-count', 1);
-  $('#sample_ratio_b').attr('data-count', 1);
 });
 $('#sample_view_retry').click((e) => {
   $('#wait').removeClass('hidden');
