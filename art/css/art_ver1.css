@@ -15,9 +15,6 @@ i {
   font-weight: normal;
   z-index: 100;
 }
-input:invalid {
-  color: red;
-}
 /*reset*/
 a {
   text-decoration: none;
@@ -110,7 +107,7 @@ html {
   display: none;
 }
 /*download for skin*/
-#plan_to_download_Blueprint {
+#for_save_Blueprint_with_skins {
   position: fixed;
   top: 0;
   left: 0;
@@ -122,78 +119,15 @@ html {
   align-items: center;
   justify-content: center;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint {
-  width: 600px;
-  height: 600px;
-  border: 1px solid gainsboro;
-  border-radius: 3px;
-  background-color: gray;
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form {
   position: relative;
 }
-/*https://qiita.com/shizen-shin/items/2b7534caa17ab2dd02fb*/
-#plan_to_download_Blueprint .plan_menu {
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  background: black;
-}
-#plan_to_download_Blueprint .plan_menu .for_scroll {
-  display: none;
-  height: 70px;
-}
-#plan_to_download_Blueprint .plan_menu::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-#plan_to_download_Blueprint .plan_menu a.to_top {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 100%;
-  font-weight: bold;
-  font-size: large;
-  z-index: 4;
-  background: whitesmoke;
-  box-shadow: inset 2px 2px 2px rgba(255, 255, 255, 0.9), inset -2px -2px 2px rgba(0, 0, 0, 0.1), 1px 1px 5px rgba(0, 0, 0, 0.5);
-  background-size: 40px 40px;
-  background-image: radial-gradient(#444444 0%, #555555 50%, transparent 55%);
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
-  transition: all 0.3s ease-in-out;
-  text-decoration: none;
-}
-#plan_to_download_Blueprint .plan_menu a.to_top:before {
-  transition: all 0.3s ease-in-out;
-  content: '\f106';
-}
-#plan_to_download_Blueprint .plan_menu a.to_top:hover {
-  text-shadow: -0.5px -0.5px 0.5px rgba(0, 0, 0, 0.5), 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.5);
-  color: #27ae60;
-}
-#plan_to_download_Blueprint .plan_menu a.to_top:hover::before {
-  transform: rotateZ(360deg);
-}
-#plan_to_download_Blueprint .close_button {
+#for_save_Blueprint_with_skins .close_button {
   position: absolute;
   top: -20px;
   right: -20px;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint button,
-#plan_to_download_Blueprint .second.plan label.button {
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form button {
   display: block;
   margin: 10px auto 0 auto;
   box-sizing: border-box;
@@ -211,410 +145,42 @@ html {
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
   border: 2px solid rgba(0,0,0,0.2);
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title {
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form button.hidden {
+  display: none;
+}
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form p {
   display: block;
-  margin: 0 auto;
-  padding: 0 10px;
-  color: white;
-  font-weight: bold;
-  font-size: large;
+  margin: 10px auto 0 auto;
+  color: #fff;
   position: relative;
-  background: green;
-  white-space: nowrap;
-  height: 45px;
-  line-height: 45px;
+  background: rgba(255, 255, 255, 0.1);
+  width: 260px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title::after,
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title::before {
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form p.hidden {
+  display: none;
+}
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form p::after,
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form p::before {
   content:'';
-  width: 20px;
-  height: 40px;
+  width: 15px;
+  height: 20px;
   position: absolute;
   display: inline-block;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title::before {
-  border-left: solid 5px darkgreen;
-  border-top: solid 5px darkgreen;
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form p::before {
+  border-left: solid 2px #fff;
+  border-top: solid 2px #fff;
   top:0;
   left: 0;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title::after {
-  border-right: solid 5px darkgreen;
-  border-bottom: solid 5px darkgreen;
+#for_save_Blueprint_with_skins .Blueprint_with_skins_form p::after {
+  border-right: solid 2px #fff;
+  border-bottom: solid 2px #fff;
   bottom:0;
   right: 0;
-}
-#plan_to_download_Blueprint .plan {
-  transition: all 0.5s ease-in-out;
-  display: inline-block;
-  min-width: 90%;
-  height: 90%;
-  opacity: 0;
-  text-align: center;
-}
-#plan_to_download_Blueprint .plan_menu .first.plan label {
-  display: flex;
-  width: 40%;
-  height: 85%;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-}
-#plan_to_download_Blueprint .first.plan label.left {
-  float: left;
-  margin-left: 40px;
-}
-#plan_to_download_Blueprint .first.plan label.right {
-  float: right;
-  margin-right: 40px;
-}
-#plan_to_download_Blueprint .first.plan label.left .color_box_img,
-#plan_to_download_Blueprint .first.plan label.right img {
-  display: block;
-  width: 120px;
-  height: 120px;
-  background-color: rgb(130, 239, 234);
-  border-radius: 5px;
-  margin: 0 auto;
-  margin-bottom: 20px;
-}
-#plan_to_download_Blueprint .first.plan i {
-  color: navy;
-}
-#plan_to_download_Blueprint .first.plan span {
-  line-height: 20px;
-  display: block;
-  border: 3px solid white;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-#plan_to_download_Blueprint .second.plan {
-  scroll-behavior: smooth;
-}
-#plan_to_download_Blueprint .second.plan .user_input {
-  display: none;
-}
-#plan_to_download_Blueprint .second.plan label.button,
-#plan_to_download_Blueprint .second.plan section h2 span {
-  display: inline-block;
-}
-#plan_to_download_Blueprint .second.plan section,
-#plan_to_download_Blueprint .third.plan .coordinate {
-  padding: 0.5em 1em;
-  margin: 10px 0;
-  color: #5d627b;
-  background: white;
-  border-top: solid 5px #5d627b;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
-  position: relative;
-}
-#plan_to_download_Blueprint .third.plan .coordinate {
-  display: none;
-}
-#plan_to_download_Blueprint .second.plan section h2 {
-  font-size: x-large;
-  margin-bottom: 5px;
-}
-#plan_to_download_Blueprint .second.plan section p {
-  color: black;
-  text-align: left;
-  margin-bottom: 10px;
-}
-#plan_to_download_Blueprint .second.plan section a {
-  margin: 2px 5px;
-  text-decoration: underline;
-  color: #0000EE;
-  display: inline-block;
-}
-#plan_to_download_Blueprint .second.plan section h3 {
-  font-size: large;
-  margin: 15px auto 5px auto;
-}
-#plan_to_download_Blueprint .second.plan section .idList {
-  margin: 0 10px;
-  display: inline-block;
-  cursor: pointer;
-}
-#plan_to_download_Blueprint .second.plan #change_command {
-  padding: 5px;
-  cursor: pointer;
-  margin: 10px 0;
-  width: calc(100%);
-  display: block;
-  text-align: center;
-  font-size: large;
-  background: #fff;
-  border-radius: 3px;
-  border: 2px inset silver;
-  box-sizing: border-box;
-  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3);
-}
-#plan_to_download_Blueprint .second.plan .table_frame {
-  overflow: scroll;
-  width: 100%;
-  height: calc(600px * 0.9 - 60px);
-  margin-bottom: 10px;
-  scroll-behavior: smooth;
-}
-#plan_to_download_Blueprint .second.plan .table_frame::-webkit-scrollbar-track {
-  background-color: darkgreen;
-  border-radius: 1px;
-}
-#plan_to_download_Blueprint .second.plan .table_frame::-webkit-scrollbar {
-  width: 1px;
-  height: 1px;
-  background-color: darkgreen;
-}
-#plan_to_download_Blueprint .second.plan .table_frame::-webkit-scrollbar-thumb {
-  border-radius: 1px;
-  background-image: linear-gradient(180deg, green 0%, lime 100%);
-}
-#plan_to_download_Blueprint .second.plan #command_table {
-  table-layout: auto;
-  width: 100%;
-  border-collapse: collapse; /* セル間の境界を設定 */
-  border-spacing: 5px;
-  border: 1px solid #fff;
-  background-color: white;
-}
-#plan_to_download_Blueprint .second.plan #command_table input {
-  display: none;
-}
-#plan_to_download_Blueprint .second.plan #command_table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-#plan_to_download_Blueprint .second.plan #command_table thead th {
-  text-align: center;
-  background-color: #333;
-  color: white;
-  position: sticky;
-  top: 0;
-  border-left: 1px solid #fff;
-  padding: 5px;
-  cursor: pointer;
-}
-#plan_to_download_Blueprint .second.plan #command_table tbody td {
-  border-left: 1px solid #000;
-}
-#plan_to_download_Blueprint .second.plan #command_table tbody td[data-id="empty"] {
-  background: rgba(255, 0, 0, 0.5);
-}
-#plan_to_download_Blueprint .second.plan #command_table tbody td label,
-#plan_to_download_Blueprint .second.plan #command_table tbody th label {
-  padding: 0px; /* セル内の余白を設定 */
-  white-space: nowrap;
-  text-align: center;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#plan_to_download_Blueprint .second.plan #command_table tbody td label span,
-#plan_to_download_Blueprint .second.plan #command_table tbody th label span {
-  padding: 5px;
-  text-align: left;
-  white-space: nowrap;
-  width: 100%;
-}
-#plan_to_download_Blueprint .second.plan .user_input .attention {
-  text-decoration: underline;
-  color: red;
-  font-weight: bold;
-  position: relative;
-  cursor: pointer;
-}
-#plan_to_download_Blueprint .second.plan .for_scroll {
-  display: block;
-}
-#command_table input[name="command"]:checked ~ span {
-  background: rgba(0, 255, 0, 0.2);
-}
-#plan_to_download_Blueprint .third.plan .frame {
-  margin-top: 30px;
-}
-#plan_to_download_Blueprint .third.plan .title {
-  padding: 0.4em 0.5em;
-  color: #494949;
-  background: #f4f4f4;
-  border-left: solid 5px #7db4e6;
-  border-bottom: solid 3px #d7d7d7;
-}
-#plan_to_download_Blueprint .third.plan .response {
-  margin-top: 5px;
-}
-#plan_to_download_Blueprint .third.plan .response span {
-  color: white;
-  display: none;
-}
-#plan_to_download_Blueprint .third.plan button {
-  margin-top: 30px;
-}
-#plan_to_download_Blueprint .third.plan .coordinate > * {
-  margin-bottom: 10px;
-}
-#plan_to_download_Blueprint .third.plan .coordinate p span {
-  display: inline-block;
-}
-#plan_to_download_Blueprint .third.plan .coordinate > span {
-  display: block;
-}
-#plan_to_download_Blueprint .third.plan .coordinate input {
-  border-bottom: 1px solid #5d627b;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-}
-#plan_to_download_Blueprint .third.plan .coordinate input:invalid {
-  color: red;
-}
-#plan_to_download_Blueprint .third.plan .coordinate input:hover {
-  background-image: linear-gradient(0deg, green 10%, transparent 15%);
-}
-#plan_menu_1:checked ~ .plan_menu a.to_top {
-  display: flex;
-}
-#not_need_block_skins:checked ~ .plan_menu label[for="not_need_block_skins"] span,
-#need_block_skins:checked ~ .plan_menu label[for="need_block_skins"] span {
-  border: 3px solid lime;
-  font-weight: bold;
-}
-#not_need_block_skins:checked ~ .plan_menu label[for="not_need_block_skins"] span i {
-  animation: 1s ease-in-out 0s 10 normal none running fly;
-  -webkit-animation: 1s ease-in-out 0s 10 normal none running fly;
-}
-#need_block_skins:checked ~ .plan_menu label[for="need_block_skins"] span i {
-  animation: 5s ease-in-out 0s 3 normal none running fly;
-  -webkit-animation: 5s ease-in-out 0s 3 normal none running fly;
-}
-@keyframes fly {
-  0% {
-    transform: translate(-60px, 0);
-  }
-  100% {
-    transform: translate(60px, 0);
-  }
-}
-@-webkit-keyframes fly {
-  0% {
-    transform: translate(-60px, 0);
-  }
-  100% {
-    transform: translate(60px, 0);
-  }
-}
-#need_fun_for_be:checked ~ .plan_menu .second.plan .user_input,
-#need_fun_for_je:checked ~ .plan_menu .second.plan .user_input,
-#need_fun_for_be:checked ~ .plan_menu .third.plan .coordinate,
-#need_fun_for_je:checked ~ .plan_menu .third.plan .coordinate
- {
-  display: block;
-}
-#not_need_block_skins:checked ~ .plan_menu .response span.not_need_block_skins,
-#need_block_skins:checked ~ .plan_menu .response span.need_block_skins,
-#need_fun_for_be:checked ~ .plan_menu .response span.need_fun_for_be,
-#need_fun_for_je:checked ~ .plan_menu .response span.need_fun_for_je,
-#not_need_fun:checked ~ .plan_menu .response span.not_need_fun {
-  display: inline;
-}
-#need_fun_for_be:checked ~ .plan_menu .second.plan label[for="need_fun_for_be"],
-#need_fun_for_je:checked ~ .plan_menu .second.plan label[for="need_fun_for_je"],
-#not_need_fun:checked ~ .plan_menu .second.plan label[for="not_need_fun"] {
-  color: white;
-  text-shadow: none;
-  background: royalblue;
-  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.05), inset 0 -2px 0 rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(0,0,0,0.6);
-}
-/*slideshow*/
-/*https://photopizza.design/slideshow/*/
-#plan_to_download_Blueprint .plan_menu .slideshow_icon {
-  height: 60px;
-  width: 100%;
-  position: absolute;
-  z-index: 3;
-  bottom: 0;
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  background: black;
-  border-radius: 3px;
-}
-#plan_to_download_Blueprint .plan_menu label.slideshow {
-  display: block;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #66b2ff;
-  opacity: 0.3;
-  margin: 0 15px;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.3s ease-in-out;
-}
-#plan_to_download_Blueprint .plan_menu label.slideshow::before {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 35px;
-  height: 35px;
-  top: 50%;
-  left: 50%;
-  opacity: 0.3;
-  border: 2px solid #66b2ff;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: all 0.3s ease-in-out;
-}
-#plan_menu_0:checked ~ .plan_menu label[for="plan_menu_0"],
-#plan_menu_1:checked ~ .plan_menu label[for="plan_menu_1"],
-#plan_menu_2:checked ~ .plan_menu label[for="plan_menu_2"],
-#plan_menu_3:checked ~ .plan_menu label[for="plan_menu_3"] {
-  opacity: 1;
-}
-#plan_menu_0:checked ~ .plan_menu label[for="plan_menu_0"]::before,
-#plan_menu_1:checked ~ .plan_menu label[for="plan_menu_1"]::before,
-#plan_menu_2:checked ~ .plan_menu label[for="plan_menu_2"]::before,
-#plan_menu_3:checked ~ .plan_menu label[for="plan_menu_3"]::before {
-  transform: translate(-50%, -50%) scale(1);
-}
-#plan_menu_0:checked ~ .plan_menu .first.plan,
-#plan_menu_0:checked ~ .plan_menu .second.plan,
-#plan_menu_0:checked ~ .plan_menu .third.plan {
-  transform: translate(100%, 0);
-}
-#plan_menu_1:checked ~ .plan_menu .first.plan,
-#plan_menu_1:checked ~ .plan_menu .second.plan,
-#plan_menu_1:checked ~ .plan_menu .third.plan {
-  transform: translate(0%, 0);
-}
-#plan_menu_2:checked ~ .plan_menu .first.plan,
-#plan_menu_2:checked ~ .plan_menu .second.plan,
-#plan_menu_2:checked ~ .plan_menu .third.plan {
-  transform: translate(-100%, 0);
-}
-#plan_menu_0:checked ~ .plan_menu .first.plan,
-#plan_menu_1:checked ~ .plan_menu .second.plan,
-#plan_menu_2:checked ~ .plan_menu .third.plan {
-  opacity: 1;
-}
-#plan_to_download_Blueprint .plan_menu .slideshow_icon .back_plan,
-#plan_to_download_Blueprint .plan_menu .slideshow_icon .forward_plan {
-  display: block;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-  color: #66b2ff;
-  font-weight: bold;
-  font-size: x-large;
-  margin: 0 10px;
-  text-align: center;
-  line-height: 35px;
-  overflow: hidden;
 }
 /*for_sample_view*/
 #for_sample_view {
@@ -637,11 +203,9 @@ html {
 #for_sample_view .for_sample_view_form {
   text-align: center;
   position: relative;
-  width: 600px;
-  min-height: 600px;
-  margin: 70px 0;
-  padding: 10px;
-  background-color: black;
+  width: 450px;
+  margin: 120px 0;
+  padding: 0 10px;
 }
 #for_sample_view .for_sample_view_form > label{
   display: inline-block;
@@ -815,10 +379,6 @@ html {
 #share_buttons .share_buttons_form > a:hover,
 #share_buttons .share_buttons_form > a:active {
   transform: rotateY(360deg) scale(1.3);
-}
-/*custom dialog*/
-#dialog {
-  display: none;
 }
 /*++header++*/
 header {
@@ -1115,7 +675,6 @@ header img:hover {
   z-index: 30;
   background: #000;
   transition: top 0.5s ease-in-out;
-  user-select: none;
 }
 .top_menu input {
   display: none;
@@ -1598,9 +1157,6 @@ aside button span {
   border-color: #E6BE96;
   box-shadow: none;
 }
-#for_pixel_art_size:checked ~ .for_pixel_art_size *:invalid {
-  color: red;
-}
 #for_pixel_art_size:checked ~ .for_pixel_art_size i,
 #for_map_art_size:checked ~ .for_map_art_size i {
   color: green;
@@ -1639,6 +1195,111 @@ aside button span {
 #check_view_button.first_try span.pop_text {
   display: none;
 }
+/*change block skins want or none*/
+.input_forms .want_block_skins {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 90%;
+  height: 30px;
+  margin: 5px auto;
+  text-align: center;
+  line-height: 28px;
+  font-weight: bold;
+  font-size: small;
+  color: #a5a5a5;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+  background: lightgray;
+  border-radius: 4px;
+  box-shadow: inset -1px -1px 1px rgba(255, 255, 255, 0.2), inset 1px 1px 1px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(0,0,0,0);
+  cursor: pointer;
+}
+.input_forms .want_block_skins .img_form {
+  top: 3px;
+  left: 25px;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.input_forms .want_block_skins i.fast {
+  z-index: 5;
+  top: 7px;
+  right: 30px;
+  color: navy;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
+  transform: translate(0, 0);
+  position: absolute;
+}
+.input_forms .want_block_skins span.slash {
+  z-index: 3;
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  width: 148%;
+  height: 5px;
+  background: red;
+  transform: rotate(45deg);
+  transform-origin: top left;
+  opacity: 1;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+.input_forms .want_block_skins .img_form img {
+  z-index: 2;
+  background: gray;
+  opacity: 0.7;
+  width: 100%;
+  height: 100%;
+  transition: all 1s ease-in-out;
+}
+.input_forms .want_block_skins span.need_skins {
+  display: none;
+}
+.input_forms .want_block_skins span.no_need {
+  display: inline-block;
+}
+#want_block_skins:checked ~ .want_block_skins {
+  color: white;
+  text-shadow: none;
+  background: royalblue;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0,0,0,0.2);
+}
+#want_block_skins:checked ~ .want_block_skins span.need_skins {
+  display: inline-block;
+}
+#want_block_skins:checked ~ .want_block_skins span.no_need {
+  display: none;
+}
+#want_block_skins:checked ~ .want_block_skins span.slash {
+  opacity: 0;
+}
+#want_block_skins:checked ~ .want_block_skins img {
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+  opacity: 1;
+}
+#want_block_skins:checked ~ .want_block_skins i.fast {
+  color: white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+}
+.input_forms .want_block_skins:hover i.fast,
+.input_forms .want_block_skins:focus i.fast {
+  animation: fly 1s infinite ease-in-out;
+}
+#want_block_skins:checked ~ .want_block_skins:hover i.fast,
+#want_block_skins:checked ~ .want_block_skins:focus i.fast {
+  animation: fly 10s infinite ease-in-out;
+}
+@keyframes fly {
+  0% {
+    transform: translate(-160px, 0);
+  }
+  100% {
+    transform: translate(20px, 0);
+  }
+}
 .input_forms .for_scroll {
   display: block;
   width: 100%;
@@ -1663,35 +1324,30 @@ aside button span {
   position: absolute;
   z-index: 2;
   top: 0;
-  user-select: none;
 }
 .zoom_in_out_scope {
   position: absolute;
   top: 0px;
   left: 0;
   z-index: 6;
-  user-select: none;
 }
-.roll_back_and_forward {
+.normal_tool {
   position: absolute;
   top: 30px;
   left: 0;
   z-index: 5;
-  user-select: none;
 }
-.normal_tool {
+.roll_back_and_forward {
   position: absolute;
   top: 60px;
   left: 0;
   z-index: 4;
-  user-select: none;
 }
 .advanced_tool {
   position: absolute;
   top: 90px;
   left: 0;
   z-index: 3;
-  user-select: none;
 }
 .palette .palette_button,
 .palette .palette_download,
@@ -1749,6 +1405,9 @@ aside button span {
   border-radius: 4px 0 0 4px;
   cursor: default;
 }
+.advanced_tool .advanced_tool_button {
+  display: none;
+}
 .palette label[for="palette_button"],
 .zoom_in_out_scope label[for="zoom_scope_button"],
 .normal_tool label[for="normal_tool_button"],
@@ -1784,8 +1443,8 @@ aside button span {
 #normal_tool_button:checked ~ label[for="area_cut_tool_of_scissors"],
 #roll_both_button:checked ~ .roll_back,
 #roll_both_button:checked ~ .roll_forward,
-#normal_tool_button:checked ~ #line_bold_for_draw,
-#normal_tool_button:checked ~ label[for="line_bold_for_draw"],
+#advanced_tool_button:checked ~ #line_bold_for_draw,
+#advanced_tool_button:checked ~ label[for="line_bold_for_draw"],
 #advanced_tool_button:checked ~ label[for="stroke_path_with_line"],
 #advanced_tool_button:checked ~ label[for="fill_in_with_line"],
 #advanced_tool_button:checked ~ label[for="stroke_path_with_rect"],
@@ -2040,11 +1699,8 @@ aside button span {
   transform: rotateX(0deg);
   transition: all 0.5s ease-out;
 }
-#color_dropper_icon:checked ~ #colorBox {
-  border-color: red;
-}
 #map_canvas_open_icon:checked ~ label[for="map_canvas_open_icon"],
-#color_dropper_icon:checked ~ .CP_icons_form label[for="color_dropper_icon"],
+#color_dropper_icon:checked ~ label[for="color_dropper_icon"],
 #make_palette_board_compact:checked ~ label[for="make_palette_board_compact"],
 #CP_icons .CP_icons_form button.remove_CP_box:active,
 #CP_icons .CP_icons_form .change_art_board:active {
@@ -2170,7 +1826,8 @@ aside button span {
 /*palette_board_color_box*/
 #CP label:not(.small_title, .style_delete) {
   display: inline-block;
-  margin-left: 15px;
+  margin-left: 7.5px;
+  margin-right: 7.5px;
   margin-bottom: 15px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
@@ -2373,7 +2030,7 @@ input.appear:focus ~ label.appear {
 .advanced_tool .sub_advanced_tool {
   display: none;
   position: absolute;
-  top: 0;
+  top: 40px;
   left: 60px;
 }
 .advanced_tool label[for="for_cut_area"],
@@ -2382,15 +2039,13 @@ input.appear:focus ~ label.appear {
 .advanced_tool .to_open_path {
   position: relative;
   white-space: nowrap;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  line-height: 30px;
+  width: 100%;
+  padding: 0 5px;
 }
 #line_bold_for_draw,
-.normal_tool label[for="line_bold_for_draw"] {
+.advanced_tool label[for="line_bold_for_draw"] {
   display: none;
-  width: 80px;
+  width: 120px;
   position: absolute;
   top: 0px;
   left: 60px;
@@ -2406,7 +2061,7 @@ input.appear:focus ~ label.appear {
   box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.5), inset 1px 1px 1px rgba(0, 0, 255, 0.3);
   background-image: linear-gradient(0deg, #fff 0%, #ECFFFF 100%);
 }
-.normal_tool label[for="line_bold_for_draw"] {
+.advanced_tool label[for="line_bold_for_draw"] {
   background-image: linear-gradient(0deg, royalblue 0%, navy 100%);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.8);
   z-index: 3;
@@ -2550,7 +2205,7 @@ main {
   height: 600px;
   overflow: scroll;
   resize: both;
-  background: black;
+  background: whitesmoke;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 #map_art_canvas, #pixel_art_canvas, #draw_art_canvas_frame {
@@ -2899,24 +2554,15 @@ footer .app_ver {
 }
 @media screen and (max-width: 760px) {
   /*++download for skin++*/
-  #plan_to_download_Blueprint .plan_to_download_Blueprint,
-  #for_sample_view .for_sample_view_form {
+  #for_save_Blueprint_with_skins .Blueprint_with_skins_form {
     width: 80%;
   }
-  #plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title,
-  #for_sample_view .for_sample_view_form .title {
-    font-size: 2.5vw;
+  #for_save_Blueprint_with_skins .Blueprint_with_skins_form canvas {
+    width: 100%;
   }
-  #plan_to_download_Blueprint .fourth.plan i {
-    font-size: 4vw;
-  }
-  #plan_to_download_Blueprint .first.plan label.left,
-  #plan_to_download_Blueprint .second.plan label.left {
-    margin-left: 5%;
-  }
-  #plan_to_download_Blueprint .first.plan label.right,
-  #plan_to_download_Blueprint .second.plan label.right {
-    margin-right: 5%;
+  #for_save_Blueprint_with_skins .Blueprint_with_skins_form p {
+    width: 80%;
+    font-size: 3vw;
   }
   /*++main++*/
   #editing_areas, #color_pick_map {
@@ -2937,41 +2583,6 @@ footer .app_ver {
   }
   main, aside, .top_menu ul, .icon_button_fixed_frame .icon_button_form {
     width: 100%;
-  }
-  /*++download for skin++*/
-  #plan_to_download_Blueprint .plan_menu a.to_top {
-    text-shadow: -0.5px -0.5px 0.5px rgba(0, 0, 0, 0.5), 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.5);
-    color: #27ae60;
-  }
-  #plan_to_download_Blueprint .plan_to_download_Blueprint {
-    height: 80vh;
-  }
-  #plan_to_download_Blueprint .first.plan label.left,
-  #plan_to_download_Blueprint .second.plan label.left {
-    float: none;
-    margin: 10px auto;
-    height: 250px;
-  }
-  #plan_to_download_Blueprint .first.plan label.right,
-  #plan_to_download_Blueprint .second.plan label.right {
-    float: none;
-    margin: 10px auto;
-    height: 250px;
-  }
-  #plan_to_download_Blueprint .plan_menu .for_scroll {
-    display: block;
-  }
-  #plan_to_download_Blueprint .plan_menu label.slideshow {
-    width: 10px;
-    height: 10px;
-    margin: 0 10px;
-  }
-  #for_sample_view .make_menu label.slideshow {
-    margin: 0 10px;
-  }
-  #plan_to_download_Blueprint .plan_menu label.slideshow::before {
-    width: 25px;
-    height: 25px;
   }
   /*++for_sample_view++*/
   #for_sample_view .for_sample_view_form {
