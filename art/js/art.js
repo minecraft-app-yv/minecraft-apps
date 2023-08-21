@@ -305,7 +305,7 @@ function deepCopyArray(array) {
       copiedArray[i] = deepCopyArray(array[i]);
     } else {
       copiedArray[i] = return_str_escape_html(array[i]);
-      //copiedArray[i] = array[i];
+      console.log(copiedArray[i]);
     }
   }
   return copiedArray;
@@ -1457,6 +1457,21 @@ $("#resize_button").click(function () {
   make_canvas (new_arry);
 });
 //file download
+function return_str_unescape_html(string) {
+  if (typeof string !== "string") {
+    return string;
+  }
+  return string.replace(/(&amp;|&#x27;|&#x60;|&quot;|&lt;|&gt;)/g, function (match) {
+    return {
+      "&amp;": "&",
+      "&#x27;": "'",
+      "&#x60;": "`",
+      "&quot;": '"',
+      "&lt;": "<",
+      "&gt;": ">"
+    }[match];
+  });
+}
 function make_map_art_fun(arry, type) {
   let coordinate = [];
   coordinate[0] = $('#coordinate_x').val();
@@ -1479,11 +1494,17 @@ function make_map_art_fun(arry, type) {
       let z = coordinate[2] + j;
       let id = '';
       let alt = arry[j][i];
-      if (type === 'be' && alt != 0) {
-        id = command_obj[alt][0];
+      if (type === 'be') {
+        id = 'air';
+        if (alt != 0) {
+          id = return_str_unescape_html(command_obj[alt][0]);
+        }
       }
-      if (type === 'je' && alt != 0) {
-        id = command_obj[alt][1];
+      if (type === 'je') {
+        id = 'minecraft:air';
+        if (alt != 0) {
+          id = return_str_unescape_html(command_obj[alt][1]);
+        }
       }
       if (id === '') {
         continue;
@@ -1520,13 +1541,13 @@ function make_pixel_art_fun(arry, type) {
       if (type === 'be') {
         id = 'air';
         if (alt != 0) {
-          id = command_obj[alt][0];
+          id = return_str_unescape_html(command_obj[alt][0]);
         }
       }
       if (type === 'je') {
         id = 'minecraft:air';
         if (alt != 0) {
-          id = command_obj[alt][1];
+          id = return_str_unescape_html(command_obj[alt][1]);
         }
       }
       if (id === '') {
