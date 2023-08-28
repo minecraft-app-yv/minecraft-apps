@@ -305,7 +305,6 @@ function deepCopyArray(array) {
       copiedArray[i] = deepCopyArray(array[i]);
     } else {
       copiedArray[i] = return_str_escape_html(array[i]);
-      console.log(copiedArray[i]);
     }
   }
   return copiedArray;
@@ -1487,6 +1486,9 @@ function make_map_art_fun(arry, type) {
     }
   }
   let str = 'tp @p ' + coordinate[0] + ' ' + coordinate[1] + ' ' + coordinate[2] + '\n';
+  if (type === 'je') {
+    str = 'execute as @p at @s run teleport @s ' + coordinate[0] + ' ' + coordinate[1] + ' ' + coordinate[2] + '\n';
+  }
   for (let j = 0; j < arry.length; j++) {
     for (let i = 0; i < arry[0].length; i++) {
       let x = coordinate[0] + i;
@@ -1526,6 +1528,9 @@ function make_pixel_art_fun(arry, type) {
     coordinate[i] = Number(coordinate[i]);
   }
   let str = 'tp @p ' + coordinate[0] + ' ' + coordinate[1] + ' ' + coordinate[2] + '\n';
+  if (type === 'je') {
+    str = 'execute as @p at @s run teleport @s ' + coordinate[0] + ' ' + coordinate[1] + ' ' + coordinate[2] + '\n';
+  }
   for (let j = 0; j < arry.length; j++) {
     for (let i = 0; i < arry[0].length; i++) {
       let x = coordinate[0] + i - (arry[0].length / 2);
