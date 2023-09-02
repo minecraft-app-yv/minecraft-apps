@@ -338,6 +338,10 @@ html {
   display: inline-block;
   cursor: pointer;
 }
+#plan_to_download_Blueprint .second.plan section iframe {
+  display: block;
+  margin: 10px auto;
+}
 #plan_to_download_Blueprint .second.plan #change_command {
   padding: 5px;
   cursor: pointer;
@@ -2955,17 +2959,19 @@ footer .app_ver {
   #plan_to_download_Blueprint .plan_to_download_Blueprint {
     height: 80vh;
   }
-  #plan_to_download_Blueprint .first.plan label.left,
-  #plan_to_download_Blueprint .second.plan label.left {
+  #plan_to_download_Blueprint .first.plan label.left {
     float: none;
     margin: 10px auto;
     height: 250px;
   }
-  #plan_to_download_Blueprint .first.plan label.right,
-  #plan_to_download_Blueprint .second.plan label.right {
+  #plan_to_download_Blueprint .first.plan label.right {
     float: none;
     margin: 10px auto;
     height: 250px;
+  }
+  #plan_to_download_Blueprint .second.plan section iframe {
+    width: calc(60vw - 30px);
+    height: calc((60vw - 30px) * 16 / 9);
   }
   #plan_to_download_Blueprint .plan_menu .for_scroll {
     display: block;
