@@ -302,7 +302,6 @@ function removeEvent(e) {
   }
 }
 function moveFunc(event) {
-  event.preventDefault();
   // マウス座標を正規化
   mouse.x = ((obj.end_x + window.scrollX) / canvasWidth) * 2 - 1;
   mouse.y = -((obj.end_y +  window.scrollY) / canvasHeight) * 2 + 1;
