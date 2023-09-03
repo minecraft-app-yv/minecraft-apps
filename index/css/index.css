@@ -363,7 +363,8 @@ main section iframe.sudoku {
   width: 100%;
   min-height: 435px;
 }
-main section iframe.gomoku {
+main section iframe.gomoku,
+main section iframe.rubiks_cube {
   margin-top: 10px;
   width: 100%;
   min-height: 520px;

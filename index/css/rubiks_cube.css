@@ -2,6 +2,9 @@
 i {
   user-select: none;
 }
+.hidden {
+  display: none;
+}
 /*reset*/
 a {
   text-decoration: none;
@@ -37,25 +40,46 @@ html {
 #canvas-container {
   position: relative;
 }
-#up-button, #down-button {
+#shuffle-button, #image-button {
+  background: #eee;
+  border-radius: 3px;
+  color: #313131;
+  transition: 0.1s ease-in-out;
+  font-weight: 600;
+  box-shadow: 5px 5px 0 #6bb6ff;
   position: absolute;
   width: 50px;
   height: 50px;
-  background-color: #007bff;
-  color: white;
   text-align: center;
   line-height: 50px;
   cursor: pointer;
+  font-size: large;
 }
-#up-button {
+#shuffle-button:active, #image-button:active {
+  background-color: #b3d9ff;
+  box-shadow: 0 0 0;
+  transform: translate(5px, 5px);
+}
+#image-button {
   top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 10px;
 }
-#down-button {
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+#image-button i,
+#change_image:checked ~ #image-button .fa-droplet {
+  display: none;
+}
+#change_image:checked ~ #image-button .fa-image,
+#change_image ~ #image-button .fa-droplet {
+  display: inline;
+}
+#shuffle-button {
+  top: 10px;
+  left: 80px;
+}
+#shuffle-value {
+  position: absolute;
+  top: 80px;
+  left: 10px;
 }
 #pop_text {
   padding: 5px 15px;
@@ -64,5 +88,6 @@ html {
   font-weight: bold;
   font-size: x-small;
   z-index: 100;
-  position: fixed
+  position: fixed;
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5);
 }
