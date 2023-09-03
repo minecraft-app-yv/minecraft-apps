@@ -21,6 +21,7 @@ if (maxZ <= 1000) {
   maxZ = 1000;
 }
 camera.position.set(0, 0, maxZ);
+const cameraPosition = camera.position.clone();
 // ウィンドウのリサイズ時にキャンバスのサイズを調整する
 window.addEventListener("resize", () => {
   const newWidth = window.innerWidth;
@@ -83,7 +84,7 @@ let canvasHeight = canvasElement.clientHeight; // キャンバスの高さ
 // mousemove fun
 let obj = {
   start_x: '', start_y: '', end_x: '', end_y: '',
-  targetCube: '', moveCube: '', select_cube: '', cubes: '', changeKey: 'x'
+  targetCube: '', moveCube: '', select_cube: '', cubes: '', changeKey: 'x', vector: ''
 };
 // ボタン要素を取得
 const upButton = document.getElementById('up-button');
@@ -108,6 +109,11 @@ function calculateDistanceAndAngleChange(x1, y1, x2, y2) {
 }
 function highlightAxis(axis) {
   obj.changeKey = axis;
+  scene.traverse((object) => {
+    if (object.isLineSegments) {
+      object.material = lineMaterial;
+    }
+  });
   const targetAxis = obj.select_cube[axis];
   if (targetAxis) {
     targetAxis.forEach(function(cubeNext, index) {
@@ -122,37 +128,7 @@ function highlightAxis(axis) {
     });
   }
 }
-function keydown_event(event) {
-  scene.traverse((object) => {
-    if (object.isLineSegments) {
-      object.material = lineMaterial;
-    }
-  });
-  const keyMapping = {
-    'ArrowUp': { 'x': 'y', 'y': 'z', 'z': 'x' },
-    'ArrowDown': { 'x': 'z', 'y': 'x', 'z': 'y' }
-  };
-  if (keyMapping[event.code]) {
-    event.preventDefault();
-    const nextAxis = keyMapping[event.code][obj.changeKey];
-    highlightAxis(nextAxis);
-    return false;
-  }
-}
-// ボタンにクリックイベントリスナーを追加
-upButton.addEventListener('click', function() {
-  triggerKeyDownEvent('ArrowUp');
-});
-downButton.addEventListener('click', function() {
-  triggerKeyDownEvent('ArrowDown');
-});
-// キーダウンイベントをトリガーする関数
-function triggerKeyDownEvent(keyCode) {
-  const event = new KeyboardEvent('keydown', { 'code': keyCode });
-  keydown_event(event);
-}
 function removeEvent(e) {
-  window.removeEventListener('keydown', keydown_event, false);
   window.removeEventListener('mousemove', onMouseMove, false);
   window.removeEventListener('mouseup', removeEvent, false);
   window.removeEventListener('touchmove', onTouchMove, false);
@@ -302,6 +278,15 @@ function removeEvent(e) {
   }
 }
 function moveFunc(event) {
+  let xRang = Math.abs(obj.start_x - obj.end_x);
+  let yRang = Math.abs(obj.start_y - obj.end_y);
+  if (yRang >= Math.sqrt(3) * xRang) {
+    highlightAxis(obj.vector[0]);
+  } else if (xRang >= Math.sqrt(3) * yRang) {
+    highlightAxis(obj.vector[1]);
+  } else {
+    highlightAxis(obj.vector[2]);
+  }
   // マウス座標を正規化
   mouse.x = ((obj.end_x + window.scrollX) / canvasWidth) * 2 - 1;
   mouse.y = -((obj.end_y +  window.scrollY) / canvasHeight) * 2 + 1;
@@ -427,6 +412,23 @@ function onTouchMove(event) {
   moveFunc(event);
 }
 // マウスダウン時の処理
+function findMaxAbsValueKey(obj) {
+  let maxKey = null;
+  let maxValue = -Infinity;
+
+  for (const key in obj) {
+    if (key === 'isVector3') {
+      continue;
+    }
+    const absValue = Math.abs(obj[key]);
+    if (absValue > maxValue) {
+      maxKey = key;
+      maxValue = absValue;
+    }
+  }
+
+  return maxKey;
+}
 function startFunc(event) {
   // マウス座標を正規化
   mouse.x = ((obj.start_x + window.scrollX) / canvasWidth) * 2 - 1;
@@ -560,9 +562,23 @@ function startFunc(event) {
       }
     });
     obj.select_cube = {x: select_x_axis, y: select_y_axis, z: select_z_axis};
+    // カメラの現在の方向（クォータニオンからオイラー角に変換）
+    const cameraRotation = new THREE.Euler().setFromQuaternion(camera.quaternion);
+    // カメラのローカル座標系におけるXYZ軸
+    const cameraForward = new THREE.Vector3(0, 0, -1); // カメラの前方（奥行き方向）
+    const cameraUp = new THREE.Vector3(0, 1, 0); // カメラの上方（Y軸）
+    const cameraRight = new THREE.Vector3(1, 0, 0); // カメラの右方（X軸）
+    // カメラの方向に基づいて座標軸を回転
+    cameraForward.applyEuler(cameraRotation);
+    cameraUp.applyEuler(cameraRotation);
+    cameraRight.applyEuler(cameraRotation);
+    // 結果をログに出力
+    const cameraForwardKey = findMaxAbsValueKey(cameraForward);
+    const cameraUpKey = findMaxAbsValueKey(cameraUp);
+    const cameraRightKey = findMaxAbsValueKey(cameraRight);
+    obj.vector = [cameraRightKey, cameraUpKey, cameraForwardKey];
     // hilight & action
     obj.changeKey = 'y';
-    window.addEventListener('keydown', keydown_event, false);
     window.addEventListener('mousemove', onMouseMove, false);
     window.addEventListener('mouseup', removeEvent, false);
     window.addEventListener('touchmove', onTouchMove, false);
