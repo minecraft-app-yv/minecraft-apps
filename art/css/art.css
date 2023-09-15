@@ -1771,12 +1771,12 @@ aside button span {
   border-radius: 0 4px 4px 0;
   position: absolute;
   top: -0.5px;
-  left: 39px;
+  left: 34px;
   display: block;
   text-align: center;
   line-height: 40px;
   color: black;
-  width: 20px;
+  width: 25px;
   height: 40px;
   background: whitesmoke;
   box-sizing: border-box;
@@ -3226,6 +3226,9 @@ footer .app_ver {
   }
   .top_menu ul li {
     line-height: 30px;
+  }
+  .top_menu ul .syncer-acdn-child {
+    top: 30px;
   }
   /*aside hanburger style*/
   .hanb_icon_form .title {
