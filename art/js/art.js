@@ -26,6 +26,9 @@ function pop_text_at_hover (e) {
   $('#CP_img_explanation').css('left', left);
 }
 function toggle_radio_checked (id) {
+  if ($('#no_set_action').prop('checked')) {
+    return false;
+  }
   if ($('#draw_art').prop('checked') && roll_back_obj.one_time_img.length) {
     let value = roll_back_obj.draw[roll_back_obj.draw.length - roll_back_obj.c_draw - 1];
     if (value === null) {
@@ -2855,18 +2858,12 @@ $('.advanced_tool .sub_advanced_tool > label').click((e) => {
   toggle_radio_at_area (id);
 });
 //change to no_set_action
-$('.normal_tool .normal_tool_button i.fa-pen-ruler').click((e) => {
-  e.preventDefault();
-  let id = 'no_set_action';
-  toggle_radio_checked(id);
-});
-/*
 function no_set_action_ClickOrTouch(e) {
   e.preventDefault();
   let id = 'no_set_action';
   toggle_radio_checked(id);
 }
-$('.normal_tool .normal_tool_button i.fa-pen-ruler').on('click touchstart', no_set_action_ClickOrTouch);*/
+$('.normal_tool .normal_tool_button i.fa-pen-ruler').on('click touchstart', no_set_action_ClickOrTouch);
 //line bold collect number
 $('#line_bold_for_draw').change((e) => {
   if ($('#line_bold_for_draw').val() < 1) {
