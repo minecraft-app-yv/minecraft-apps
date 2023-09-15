@@ -46,13 +46,16 @@ function toggle_radio_checked (id) {
   array_match_cell = [];
   count = 0;
   //toggle_action
-  if ($('#' + id).prop('checked')) {
+  if (id === 'no_set_action') {
+    $('#no_set_action').prop('checked', true);
+  }
+  else if ($('#' + id).prop('checked')) {
     setTimeout(() => {
       $('#' + id).prop('checked', false);
       $('#no_set_action').prop('checked', true);
     }, "1")
   }
-  if (!$('#' + id).prop('checked')) {
+  else if (!$('#' + id).prop('checked')) {
     return true;
   }
 }
@@ -549,6 +552,19 @@ $(document).ready(async function () {
         let html = get_cp_obj['cpObj_data' + j];
         $('#CP .' + arry_cp_class[j]).html(html);
       }
+      //check box color to display
+      let id = $("#CP label.check").attr('id');
+      let select_rgb = $("#" + id + " .CPrgb").css("backgroundColor").toString();
+      let select_img = $("#" + id + " .CPimg img.mImg");
+      let img_html = return_img_html (id);
+      let array_rgb = rgb_to_return_array_rgb (select_rgb);
+      let text_hex = rgb_to_return_text_hex (array_rgb);
+      $('.palette .palette_button > i').css('color', select_rgb);
+      $("#colorBox").val(text_hex);
+      $('.palette .palette_button .selected_block_img, #CP_icons .selected_block_img').html(img_html);
+      $("#CP_icons span.rgbR").text(array_rgb[0].slice(-3));
+      $("#CP_icons span.rgbG").text(array_rgb[1].slice(-3));
+      $("#CP_icons span.rgbB").text(array_rgb[2].slice(-3));
       //input sample_view rgb
       $('#sample_ratio_r').val(getData['ratio_r'][0]);
       $('#sample_ratio_g').val(getData['ratio_g'][0]);
@@ -2838,6 +2854,13 @@ $('.advanced_tool .sub_advanced_tool > label').click((e) => {
   let id = $('.advanced_tool .sub_advanced_tool > label:hover').attr('for');
   toggle_radio_at_area (id);
 });
+//change to no_set_action
+function no_set_action_ClickOrTouch(e) {
+  e.preventDefault();
+  let id = 'no_set_action';
+  toggle_radio_checked(id);
+}
+$('.normal_tool .normal_tool_button i.fa-pen-ruler').on('click touchstart', no_set_action_ClickOrTouch);
 //line bold collect number
 $('#line_bold_for_draw').change((e) => {
   if ($('#line_bold_for_draw').val() < 1) {
