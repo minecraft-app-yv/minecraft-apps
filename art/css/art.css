@@ -1771,7 +1771,7 @@ aside button span {
   border-radius: 0 4px 4px 0;
   position: absolute;
   top: -0.5px;
-  left: 34px;
+  left: 39px;
   display: block;
   text-align: center;
   line-height: 40px;
@@ -2561,7 +2561,7 @@ main {
 #editing_areas, #color_pick_map {
   position: relative;
   top: 0;
-  left: 60px;
+  left: 65px;
   width: 600px;
   height: 600px;
   overflow: scroll;
@@ -2785,7 +2785,7 @@ footer .app_ver {
   }
   /*palette board*/
   .palette {
-    left: 660px;
+    left: 665px;
   }
 }
 /*for 2 windows*/
@@ -2903,13 +2903,13 @@ footer .app_ver {
   }
   /*palette board*/
   .palette {
-    left: 660px;
+    left: 665px;
   }
 }
 @media screen and (max-width: 950px) {
   /*palette board*/
   .palette {
-    left: 60px;
+    left: 65px;
     top: 0px;
   }
 }
@@ -3265,6 +3265,9 @@ footer .app_ver {
     height: 400px;
   }
   /*++main++*/
+  main {
+    top: 120px;
+  }
   #drag-and-drop-area .drag-and-drop-area_form,
   #color_pick_map_drag-and-drop-area .color_pick_map_form {
     font-size: 95%;
