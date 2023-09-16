@@ -269,7 +269,7 @@
           <a id="download_memory" href="#"><i class="fa-solid fa-download"></i></a>
           <label class="upload_memory">
             <i class="fa-solid fa-file-excel"></i>
-            <input type="file" id="upload_memory" accept="text/plain" class="hidden">
+            <input type="file" id="upload_memory" accept=".xlsx, .xls, .txt" class="hidden">
           </label>
         </li>
         <li data-target="target_memorys" id="OTM_cell_1">
@@ -1105,11 +1105,7 @@
       <div id="color_pick_map_drag-and-drop-area">
         <div class="color_pick_map_form">
           <p><i class="fa-regular fa-map"></i></p>
-          <p>
-            Drag here the image<br>
-            for picking map colors<br>
-            or
-          </p>
+          <p>Drag here the image<br>for picking map colors<br>or</p>
           <input id="color_pick_map_input" type="file" accept="image/*" class="hidden">
           <button type="button" id="color_pick_map_button">Please select from your folder</button>
           <div class="close_button" data-close-id="color_pick_map_drag-and-drop-area">✕</div>
@@ -1130,10 +1126,7 @@
             <input id="change_to_map_art_data" name="change_to_data" type="radio" class="hidden" checked>
             <span><i class="fa-regular fa-map"></i>Map Art</span>
           </label>
-          <p>
-            Drag here one image to be converted<br>
-            or
-          </p>
+          <p>Drag here one image to be converted<br>or</p>
           <input id="file-select-input" type="file" accept="image/*" class="hidden">
           <button type="button" id="file-select-button">Please select from your folder</button>
           <p class="draw_art_to_pixels">or</p>
