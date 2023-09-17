@@ -1733,6 +1733,9 @@ aside button span {
 .advanced_tool label[for="roll_area_with_rect"],
 .advanced_tool label[for="for_cut_area"],
 .advanced_tool label[for="for_copy_area"],
+.advanced_tool label[for="for_copy_normal_position"],
+.advanced_tool label[for="for_horizontal_flip"],
+.advanced_tool label[for="for_vertical_flip"],
 .advanced_tool .to_close_path,
 .advanced_tool .to_open_path {
   position: absolute;
@@ -1813,6 +1816,9 @@ aside button span {
 }
 #advanced_tool_button:checked ~ .sub_advanced_tool label[for="for_cut_area"],
 #advanced_tool_button:checked ~ .sub_advanced_tool label[for="for_copy_area"],
+#advanced_tool_button:checked ~ .sub_advanced_tool label[for="for_copy_normal_position"],
+#advanced_tool_button:checked ~ .sub_advanced_tool label[for="for_horizontal_flip"],
+#advanced_tool_button:checked ~ .sub_advanced_tool label[for="for_vertical_flip"],
 #advanced_tool_button:checked ~ .sub_advanced_tool .to_close_path,
 #advanced_tool_button:checked ~ .sub_advanced_tool .to_open_path {
   display: none;
@@ -2394,6 +2400,9 @@ input.appear:focus ~ label.appear {
 }
 .advanced_tool label[for="for_cut_area"],
 .advanced_tool label[for="for_copy_area"],
+.advanced_tool label[for="for_copy_normal_position"],
+.advanced_tool label[for="for_horizontal_flip"],
+.advanced_tool label[for="for_vertical_flip"],
 .advanced_tool .to_close_path,
 .advanced_tool .to_open_path {
   position: relative;
@@ -2402,6 +2411,32 @@ input.appear:focus ~ label.appear {
   height: 40px;
   text-align: center;
   line-height: 40px;
+}
+.advanced_tool .sub_advanced_tool label[for="for_copy_normal_position"] {
+  font-size: 160%;
+}
+.advanced_tool span.for_horizontal_flip,
+.advanced_tool span.for_vertical_flip {
+  display: inline-block;
+  font-size: 80%;
+}
+.advanced_tool .sub_advanced_tool span.for_horizontal_flip,
+.advanced_tool .sub_advanced_tool span.for_vertical_flip {
+  font-size: 120%;
+}
+.advanced_tool span.for_vertical_flip {
+  transform: rotateZ(90deg);
+}
+.advanced_tool span.for_horizontal_flip::before,
+.advanced_tool span.for_vertical_flip::before {
+  content: '\f0da';
+}
+.advanced_tool span.for_horizontal_flip::after,
+.advanced_tool span.for_vertical_flip::after {
+  content: '\f0d9';
+}
+.advanced_tool label[for="copy_area_with_rect"] span {
+  display: none;
 }
 #line_bold_for_draw,
 .normal_tool label[for="line_bold_for_draw"] {
@@ -2450,6 +2485,9 @@ input.appear:focus ~ label.appear {
 #roll_area_with_rect:checked ~ label[for="roll_area_with_rect"],
 #for_cut_area:checked ~ label[for="for_cut_area"],
 #for_copy_area:checked ~ label[for="for_copy_area"],
+#for_copy_normal_position:checked ~ .sub_advanced_tool label[for="for_copy_normal_position"],
+#for_horizontal_flip:checked ~ .sub_advanced_tool label[for="for_horizontal_flip"],
+#for_vertical_flip:checked ~ .sub_advanced_tool label[for="for_vertical_flip"],
 .advanced_tool .to_close_path:active,
 .advanced_tool .to_open_path:active {
   background-image: linear-gradient(0deg, royalblue 0%, navy 100%);
@@ -2467,11 +2505,19 @@ input.appear:focus ~ label.appear {
 #fill_in_with_arc:checked ~ .sub_advanced_tool label[for="for_cut_area"],
 #copy_area_with_rect:checked ~ .sub_advanced_tool label[for="for_cut_area"],
 #copy_area_with_rect:checked ~ .sub_advanced_tool label[for="for_copy_area"],
+#copy_area_with_rect:checked ~ .sub_advanced_tool label[for="for_copy_normal_position"],
+#copy_area_with_rect:checked ~ .sub_advanced_tool label[for="for_horizontal_flip"],
+#copy_area_with_rect:checked ~ .sub_advanced_tool label[for="for_vertical_flip"],
 #resize_area_with_rect:checked ~ .sub_advanced_tool label[for="for_cut_area"],
 #resize_area_with_rect:checked ~ .sub_advanced_tool label[for="for_copy_area"],
 #roll_area_with_rect:checked ~ .sub_advanced_tool label[for="for_cut_area"],
 #roll_area_with_rect:checked ~ .sub_advanced_tool label[for="for_copy_area"] {
   display: block;
+}
+#for_copy_normal_position:checked ~ label[for="copy_area_with_rect"] span.for_copy_normal_position,
+#for_horizontal_flip:checked ~ label[for="copy_area_with_rect"] span.for_horizontal_flip,
+#for_vertical_flip:checked ~ label[for="copy_area_with_rect"] span.for_vertical_flip {
+  display: inline-block;
 }
 /*++main++*/
 main {
@@ -3262,7 +3308,7 @@ footer .app_ver {
   }
   /*palette_board style*/
   .palette .palette_board {
-    height: 400px;
+    height: 450px;
   }
   /*++main++*/
   main {
