@@ -4499,6 +4499,12 @@ function return_first_copyed_obj (e) {
     y = obj.end_y - put_img.height;
     w = put_img.width;
     h = put_img.height;
+    if ($('#for_horizontal_flip').prop('checked')) {
+      scale[0] = -1;
+    }
+    if ($('#for_vertical_flip').prop('checked')) {
+      scale[1] = -1;
+    }
   }
   if (obj.want_if === 'resize_area_with_rect') {
     x = obj.start_x - put_img.width;
@@ -4832,6 +4838,12 @@ function copy_area_with_rect(e) {
               }
               let mx = obj.fir_x + x + obj.end_x - obj.start_x;
               let my = obj.fir_y + y + obj.end_y - obj.start_y;
+              if ($('#for_horizontal_flip').prop('checked')) {
+                mx = obj.fir_x + ori_arry[y].length - x + obj.end_x - obj.start_x;
+              }
+              if ($('#for_vertical_flip').prop('checked')) {
+                my = obj.fir_y + ori_arry.length - y + obj.end_y - obj.start_y;
+              }
               if (mx >= 0 && mx < $('#map_art_size').val() && my >= 0 && my < $('#map_art_size').val()) {
                 mactx.fillRect(mx * cell_size_map, my * cell_size_map, cell_size_map, cell_size_map);
                 mactx.strokeRect(mx * cell_size_map, my * cell_size_map, cell_size_map, cell_size_map);
@@ -4857,6 +4869,12 @@ function copy_area_with_rect(e) {
               }
               let mx = obj.fir_x + x + obj.end_x - obj.start_x;
               let my = obj.fir_y + y + obj.end_y - obj.start_y;
+              if ($('#for_horizontal_flip').prop('checked')) {
+                mx = obj.fir_x + ori_arry[y].length - x + obj.end_x - obj.start_x;
+              }
+              if ($('#for_vertical_flip').prop('checked')) {
+                my = obj.fir_y + ori_arry.length - y + obj.end_y - obj.start_y;
+              }
               if (mx >= 0 && mx < $('#pixel_art_size').val() && my >= 0 && my < $('#pixel_art_size').val()) {
                 pactx.fillRect(mx * cell_size_map, my * cell_size_map, cell_size_map, cell_size_map);
                 if (image !== null) {
