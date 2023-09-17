@@ -3527,6 +3527,9 @@ let roll_back_obj = {map: [], pixel: [], draw: [null], c_map: 0, c_pixel: 0, c_d
 const mac = document.getElementById("map_art_canvas");
 const pac = document.getElementById("pixel_art_canvas");
 const dac = document.getElementById("draw_art_canvas");
+mac.setAttribute('willReadFrequently', 'true');
+pac.setAttribute('willReadFrequently', 'true');
+dac.setAttribute('willReadFrequently', 'true');
 const mactx = mac.getContext("2d");
 const pactx = pac.getContext("2d");
 const dactx = dac.getContext("2d");
@@ -4621,6 +4624,12 @@ function rect_SecondUp(e) {
             let alt = roll_back_obj.one_time_img[y][x];
             let mx = obj.fir_x + x + obj.end_x - obj.start_x;
             let my = obj.fir_y + y + obj.end_y - obj.start_y;
+            if ($('#for_horizontal_flip').prop('checked')) {
+              mx = obj.fir_x + roll_back_obj.one_time_img[y].length - x + obj.end_x - obj.start_x;
+            }
+            if ($('#for_vertical_flip').prop('checked')) {
+              my = obj.fir_y + roll_back_obj.one_time_img.length - y + obj.end_y - obj.start_y;
+            }
             if (mx >= 0 && mx < $('#map_art_size').val() && my >= 0 && my < $('#map_art_size').val() && $('#map_art').prop('checked')) {
               obj.one_time_arry[my][mx] = alt;
             }
