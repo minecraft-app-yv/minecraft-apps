@@ -46,6 +46,10 @@ function setup() {
   sudokuDivC.style('text-align', 'center');
   sudokuDivC.parent('sudoku');
   let canvas = createCanvas(canvas_size, canvas_size);
+  // canvas要素を取得
+  let canvasElement = canvas.elt;
+  // willReadFrequently属性を設定
+  canvasElement.setAttribute('willReadFrequently', 'true');
   canvas.parent('sudoku_canvas');
   cellSize = width / 9;
   initializeGrid(40); // Initialize grid, gridAns, and gridHole

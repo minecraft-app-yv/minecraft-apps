@@ -56,6 +56,10 @@ function setup() {
   gomokuDivC.style('width', canvas_size + 'px');
   gomokuDivC.parent('gomoku');
   let canvas = createCanvas(canvas_size, canvas_size);
+  // canvas要素を取得
+  let canvasElement = canvas.elt;
+  // willReadFrequently属性を設定
+  canvasElement.setAttribute('willReadFrequently', 'true');
   canvas.parent('gomoku_canvas');
   gridSize = width / boardSize;
   for (let j = 0; j < boardSize; j++) {
