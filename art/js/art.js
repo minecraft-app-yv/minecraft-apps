@@ -364,6 +364,7 @@ async function load_command_id_xlsx() {
 
     return new_obj;
   } catch (error) {
+    console.log('Error:', error);
     return {};
   }
 }
@@ -584,12 +585,7 @@ $(document).ready(async function () {
   }
   //command_ids into obj
   if (!load_flag) {
-    try {
-      command_obj = await load_command_id_xlsx();
-    } catch (error) {
-      command_obj = await load_command_id_xlsx();
-      console.log('Error:', error);
-    }
+    command_obj = await load_command_id_xlsx();
   }
   //hide aside menu when using smartphone & 2 windows
   let ww = window.innerWidth;
