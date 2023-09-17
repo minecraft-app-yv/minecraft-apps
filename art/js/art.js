@@ -5147,7 +5147,36 @@ function return_want_if_at_tool (e) {
     return want_if;
   }
 }
+function scroll_canvas_at_edge (e) {
+  let element = document.querySelector('#editing_areas');
+  let c_h = element.clientHeight;
+  let c_t = element.getBoundingClientRect().top;
+  let c_w = element.clientWidth;
+  let c_l = element.getBoundingClientRect().left;
+  let move_x, move_y;
+  if (obj.use === 'mouse') {
+    move_x = e.clientX;
+    move_y = e.clientY;
+  }
+  if (obj.use === 'touch') {
+    move_x = e.touches[0].clientX;
+    move_y = e.touches[0].clientY;
+  }
+  if (move_x <= c_l + 40) {
+    element.scrollLeft -= 20;
+  }
+  if (move_y <= c_t + 40) {
+    element.scrollTop -= 20;
+  }
+  if (move_x >= c_w + c_l - 40) {
+    element.scrollLeft += 20;
+  }
+  if (move_y >= c_h + c_t - 40) {
+    element.scrollTop += 20;
+  }
+}
 function choose_fun (e) {
+  scroll_canvas_at_edge (e);
   if (obj.want_if === 'pen_tool' || obj.want_if === 'eraser_points_tool') {
     pen_tool(e);
   }
