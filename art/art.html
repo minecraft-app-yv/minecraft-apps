@@ -1085,8 +1085,15 @@
         <label for="stroke_path_with_arc"><i class="fa-regular fa-circle"></i></label>
         <input id="fill_in_with_arc" type="radio" name="tools" class="hidden">
         <label for="fill_in_with_arc"><i class="fa-sharp fa-solid fa-circle"></i></label>
+        <input id="for_copy_normal_position" type="radio" name="copy_todo" class="hidden" checked>
+        <input id="for_horizontal_flip" type="radio" name="copy_todo" class="hidden">
+        <input id="for_vertical_flip" type="radio" name="copy_todo" class="hidden">
         <input id="copy_area_with_rect" type="radio" name="tools" class="hidden">
-        <label for="copy_area_with_rect">&#10063;</label>
+        <label for="copy_area_with_rect">
+          <span class="for_copy_normal_position">&#10063;</span>
+          <span class="for_horizontal_flip"></span>
+          <span class="for_vertical_flip"></span>
+        </label>
         <input id="resize_area_with_rect" type="radio" name="tools" class="hidden">
         <label for="resize_area_with_rect"><i class="fa-solid fa-arrows-up-down"></i><span>&#10063;</span></label>
         <input id="roll_area_with_rect" type="radio" name="tools" class="hidden">
@@ -1098,6 +1105,9 @@
           <label for="for_copy_area"><i class="fa-solid fa-copy"></i><span class="shortcut">範囲コピー</span></label>
           <div class="to_close_path"><i class="fa-solid fa-o"></i><span class="shortcut">閉じて終わり Shift+Click</span></div>
           <div class="to_open_path"><i class="fa-solid fa-c"></i><span class="shortcut">開いて終わり Ctrl+Click</span></div>
+          <label for="for_copy_normal_position">&#10063;</label>
+          <label for="for_horizontal_flip"><span class="for_horizontal_flip"></span></label>
+          <label for="for_vertical_flip"><span class="for_vertical_flip"></span></label>
         </div>
       </div>
     </div>
