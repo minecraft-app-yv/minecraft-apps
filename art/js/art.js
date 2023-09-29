@@ -4005,11 +4005,11 @@ function same_area_search (x, y, change_alt, base_alt) {
         continue;
       }
       if (target_alt === base_alt) {
-        let obj = array_xy_obj[i];
-        if (array_match_cell.indexOf(obj) < 0) {
-          array_match_cell.push(array_xy_obj[i]);
-          next++;
+        let new_obj = array_xy_obj[i];
+        if (array_match_cell.findIndex(obj => obj.x === new_obj.x && obj.y === new_obj.y < 0)) {
+          array_match_cell.push(new_obj);
         }
+        next++;
         continue;
       }
       if (target_alt !== base_alt) {
