@@ -3997,12 +3997,15 @@ function same_area_search (x, y, change_alt, base_alt) {
     }
     let next = 0;
     for (let i = 0; i < array_xy_obj.length; i++) {
+      if (
+        obj.one_time_arry[array_xy_obj[i].y] === undefined || 
+        obj.one_time_arry[array_xy_obj[i].y][array_xy_obj[i].x] === undefined
+      ) {
+        continue;
+      }
       let target_alt = obj.one_time_arry[array_xy_obj[i].y][array_xy_obj[i].x];
       if (next > 2) {
         break;
-      }
-      if (target_alt === 'undefined' || target_alt === '') {
-        continue;
       }
       if (target_alt === base_alt) {
         let new_obj = array_xy_obj[i];
