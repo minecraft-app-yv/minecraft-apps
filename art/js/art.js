@@ -3990,8 +3990,8 @@ function same_area_search (x, y, change_alt, base_alt) {
     ];
     obj.one_time_arry[y][x] = change_alt;
     let xy_obj = {x: x, y: y};
-    let key = array_match_cell.indexOf(xy_obj);
-    while (key.length > 0) {
+    let key = array_match_cell.findIndex(obj => obj.x === xy_obj.x && obj.y === xy_obj.y);
+    while (key >= 0) {
       array_match_cell.splice(key, 1);
       key = array_match_cell.indexOf(xy_obj);
     }
