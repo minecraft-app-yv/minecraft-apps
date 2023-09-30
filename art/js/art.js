@@ -3998,7 +3998,7 @@ function same_area_search (x, y, change_alt, base_alt) {
     let next = 0;
     for (let i = 0; i < array_xy_obj.length; i++) {
       if (
-        obj.one_time_arry[array_xy_obj[i].y] === undefined || 
+        obj.one_time_arry[array_xy_obj[i].y] === undefined ||
         obj.one_time_arry[array_xy_obj[i].y][array_xy_obj[i].x] === undefined
       ) {
         continue;
@@ -5200,6 +5200,16 @@ function choose_fun (e) {
 /*escape for touch test*/
 mac.onmousedown = function (e) {
   if (!do_flag || event.shiftKey || event.ctrlKey) {
+    if (!do_flag) {
+      let str;
+      if ($('header .header_form p.language').text() === 'Japanese') {
+        str = "処理が正しく完了できませんでした。ページの更新をお願い致します。";
+      }
+      if ($('header .header_form p.language').text() === '英語') {
+        str = "The process could not be completed correctly. Please reload the page.";
+      }
+      window.alert(str);
+    }
     return false;
   }
   do_flag = false;
@@ -5261,6 +5271,16 @@ mac.onmousedown = function (e) {
 };
 pac.onmousedown = function (e) {
   if (!do_flag || event.shiftKey || event.ctrlKey) {
+    if (!do_flag) {
+      let str;
+      if ($('header .header_form p.language').text() === 'Japanese') {
+        str = "処理が正しく完了できませんでした。ページの更新をお願い致します。";
+      }
+      if ($('header .header_form p.language').text() === '英語') {
+        str = "The process could not be completed correctly. Please reload the page.";
+      }
+      window.alert(str);
+    }
     return false;
   }
   do_flag = false;
@@ -5322,6 +5342,16 @@ pac.onmousedown = function (e) {
 };
 dac.onmousedown = function (e) {
   if (!do_flag || event.shiftKey || event.ctrlKey) {
+    if (!do_flag) {
+      let str;
+      if ($('header .header_form p.language').text() === 'Japanese') {
+        str = "処理が正しく完了できませんでした。ページの更新をお願い致します。";
+      }
+      if ($('header .header_form p.language').text() === '英語') {
+        str = "The process could not be completed correctly. Please reload the page.";
+      }
+      window.alert(str);
+    }
     return false;
   }
   do_flag = false;
@@ -5376,6 +5406,16 @@ dac.onmousedown = function (e) {
 };
 mac.addEventListener('touchstart', function (e) {
   if (!do_flag || event.shiftKey || event.ctrlKey) {
+    if (!do_flag) {
+      let str;
+      if ($('header .header_form p.language').text() === 'Japanese') {
+        str = "処理が正しく完了できませんでした。ページの更新をお願い致します。";
+      }
+      if ($('header .header_form p.language').text() === '英語') {
+        str = "The process could not be completed correctly. Please reload the page.";
+      }
+      window.alert(str);
+    }
     return false;
   }
   do_flag = false;
@@ -5441,6 +5481,16 @@ mac.addEventListener('touchstart', function (e) {
 });
 pac.addEventListener('touchstart', function (e) {
   if (!do_flag || event.shiftKey || event.ctrlKey) {
+    if (!do_flag) {
+      let str;
+      if ($('header .header_form p.language').text() === 'Japanese') {
+        str = "処理が正しく完了できませんでした。ページの更新をお願い致します。";
+      }
+      if ($('header .header_form p.language').text() === '英語') {
+        str = "The process could not be completed correctly. Please reload the page.";
+      }
+      window.alert(str);
+    }
     return false;
   }
   do_flag = false;
@@ -5506,6 +5556,16 @@ pac.addEventListener('touchstart', function (e) {
 });
 dac.addEventListener('touchstart', function (e) {
   if (!do_flag || event.shiftKey || event.ctrlKey) {
+    if (!do_flag) {
+      let str;
+      if ($('header .header_form p.language').text() === 'Japanese') {
+        str = "処理が正しく完了できませんでした。ページの更新をお願い致します。";
+      }
+      if ($('header .header_form p.language').text() === '英語') {
+        str = "The process could not be completed correctly. Please reload the page.";
+      }
+      window.alert(str);
+    }
     return false;
   }
   do_flag = false;
