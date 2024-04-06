@@ -13,6 +13,7 @@ let showAnswerText;
 let difficultySlider;
 let showingAnswer = false;
 let showingText = false;
+let shouldDraw = true;
 let images = [];
 let img_name = ['Block_of_Diamond', 'Block_of_Emerald', 'Block_of_Gold', 'Block_of_Amethyst', 'Copper_Block',
 'Shroomlight', 'Jack_o_lantern', 'Sea_Lantern', 'Glowstone'];
@@ -64,73 +65,90 @@ function setup() {
 }
 
 function draw() {
+  if (!shouldDraw) {
+    return;
+  }
   background(255);
   if (obj.failed) {
     return false;
   }
-  drawGrid(grid, 0); // Draw the user grid on the top
+  if (showingAnswer) {
+    drawGrid(gridAns, 0).then(() => {
+      shouldDraw = false;
+    }); // Draw the answer grid on the bottom
+  } else {
+    drawGrid(grid, 0).then(() => {
+      shouldDraw = false;
+    });
+  }
 }
-function drawGrid(targetGrid, yOffset) {
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      let x = j * cellSize;
-      let y = i * cellSize + yOffset;
-      stroke(0);
-      strokeWeight(1);
-      fill(255);
-      rect(x, y, cellSize, cellSize);
+function mousePressed() {
+  shouldDraw = true;
+}
+async function drawGrid(targetGrid, yOffset) {
+  return new Promise((resolve) => {
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        let x = j * cellSize;
+        let y = i * cellSize + yOffset;
+        stroke(0);
+        strokeWeight(1);
+        fill(255);
+        rect(x, y, cellSize, cellSize);
 
-      let num = targetGrid[i][j] % 10;
-      if (num !== 0) {
-        textSize(cellSize * 0.6);
-        textAlign(CENTER, CENTER);
-        textStyle(BOLD);
-        if (targetGrid[i][j] > 0) {
-          let img = images[num - 1];
-          if (targetGrid[i][j] <= 9) {
-            fill(0, 0, 255); // Blue color for user-added numbers
-            img.loadPixels(); // 画像のピクセルデータを読み込む
-            // 画像のアルファチャンネルを変更して透明度を設定
-            for (let y = 0; y < img.height; y++) {
-              for (let x = 0; x < img.width; x++) {
-                let index = (x + y * img.width) * 4;
-                let alphaValue = 255; // 透明度を設定（0から255の範囲）
-                img.pixels[index + 3] = alphaValue; // アルファチャンネルに透明度を設定
+        let num = targetGrid[i][j] % 10;
+        if (num !== 0) {
+          textSize(cellSize * 0.6);
+          textAlign(CENTER, CENTER);
+          textStyle(BOLD);
+          if (targetGrid[i][j] > 0) {
+            let img = images[num - 1];
+            if (targetGrid[i][j] <= 9) {
+              fill(0, 0, 255); // Blue color for user-added numbers
+              img.loadPixels(); // 画像のピクセルデータを読み込む
+              // 画像のアルファチャンネルを変更して透明度を設定
+              for (let y = 0; y < img.height; y++) {
+                for (let x = 0; x < img.width; x++) {
+                  let index = (x + y * img.width) * 4;
+                  let alphaValue = 255; // 透明度を設定（0から255の範囲）
+                  img.pixels[index + 3] = alphaValue; // アルファチャンネルに透明度を設定
+                }
               }
-            }
-            img.updatePixels(); // 更新したピクセルデータを適用
-            image(img, x, y, cellSize, cellSize);
-          } else {
-            fill(0); // Black color for pre-filled numbers
-            img.loadPixels(); // 画像のピクセルデータを読み込む
-            // 画像のアルファチャンネルを変更して透明度を設定
-            for (let y = 0; y < img.height; y++) {
-              for (let x = 0; x < img.width; x++) {
-                let index = (x + y * img.width) * 4;
-                let alphaValue = 100; // 透明度を設定（0から255の範囲）
-                img.pixels[index + 3] = alphaValue; // アルファチャンネルに透明度を設定
+              img.updatePixels(); // 更新したピクセルデータを適用
+              image(img, x, y, cellSize, cellSize);
+            } else {
+              fill(0); // Black color for pre-filled numbers
+              img.loadPixels(); // 画像のピクセルデータを読み込む
+              // 画像のアルファチャンネルを変更して透明度を設定
+              for (let y = 0; y < img.height; y++) {
+                for (let x = 0; x < img.width; x++) {
+                  let index = (x + y * img.width) * 4;
+                  let alphaValue = 100; // 透明度を設定（0から255の範囲）
+                  img.pixels[index + 3] = alphaValue; // アルファチャンネルに透明度を設定
+                }
               }
+              img.updatePixels(); // 更新したピクセルデータを適用
+              image(img, x, y, cellSize, cellSize);
             }
-            img.updatePixels(); // 更新したピクセルデータを適用
-            image(img, x, y, cellSize, cellSize);
           }
-        }
-        if (showingText) {
-          text(targetGrid[i][j] % 10, x + cellSize / 2, y + cellSize / 2);
+          if (showingText) {
+            text(targetGrid[i][j] % 10, x + cellSize / 2, y + cellSize / 2);
+          }
         }
       }
     }
-  }
-  stroke(0);
-  strokeWeight(4);
-  noFill();
-  for (let j = 0; j < 3; j++) {
-    for (let i = 0; i < 3; i++) {
-      let left = j * 3 * cellSize;
-      let top = i * 3 * cellSize + yOffset;
-      rect(left, top, cellSize * 3, cellSize * 3);
+    stroke(0);
+    strokeWeight(4);
+    noFill();
+    for (let j = 0; j < 3; j++) {
+      for (let i = 0; i < 3; i++) {
+        let left = j * 3 * cellSize;
+        let top = i * 3 * cellSize + yOffset;
+        rect(left, top, cellSize * 3, cellSize * 3);
+      }
     }
-  }
+    resolve();
+  });
 }
 function createNumberButtons() {
   for (let i = 1; i <= 9; i++) {
@@ -167,20 +185,14 @@ function createShowTextButton() {
   });
 }
 function createShowAnswerButton() {
-  showAnswerButton = createButton('<i class="fa-solid fa-circle-check"></i>');
+  showAnswerButton = createButton('Ans');
   showAnswerButton.parent('sudoku_control');
   showAnswerButton.mousePressed(() => {
     showingAnswer = !showingAnswer; // Toggle the flag
-    if (showingAnswer) {
-      drawGrid(gridAns, 0); // Draw the answer grid on the bottom
-    } else {
-      background(255);
-      drawGrid(grid, 0);
-    }
   });
 }
 function createRestartButton() {
-  restartButton = createButton('<i class="fa-solid fa-arrow-rotate-right"></i>');
+  restartButton = createButton('<i class="fa-solid fa-arrows-rotate"></i>');
   restartButton.parent('sudoku_control');
   restartButton.mousePressed(() => {
     initializeGrid(difficultySlider.value());

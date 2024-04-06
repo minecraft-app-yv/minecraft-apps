@@ -10,6 +10,7 @@ let cpuFlag = false;
 let stoneFlag = false;
 let images = {};
 let isTouched = false;
+let shouldDraw = true;
 let selectedCell = { i: 0, j: 0 };
 
 function tintGrayToRed(amount, img) {
@@ -90,36 +91,75 @@ function setup() {
   difficultySlider.input(changeDifficulty);
 
   let leftButton = createButton('<i class="fa-solid fa-left-long"></i>');
+  leftButton.id('leftButton');
   leftButton.parent('gomoku_control');
   leftButton.mousePressed(leftAction);
   let upButton = createButton('<i class="fa-solid fa-up-long"></i>');
+  upButton.id('upButton');
   upButton.parent('gomoku_control');
   upButton.mousePressed(upAction);
   let downButton = createButton('<i class="fa-solid fa-down-long"></i>');
+  downButton.id('downButton');
   downButton.parent('gomoku_control');
   downButton.mousePressed(downAction);
   let rightButton = createButton('<i class="fa-solid fa-right-long"></i>');
+  rightButton.id('rightButton');
   rightButton.parent('gomoku_control');
   rightButton.mousePressed(rightAction);
-  let checkedButton = createButton('<i class="fa-solid fa-circle-check"></i>');
-  checkedButton.style('margin-left', '25px');
+  let checkedButton = createButton('OK');
   checkedButton.parent('gomoku_control');
   checkedButton.mousePressed(checkedAction);
 }
 
-function draw() {
+async function draw() {
+  if (!shouldDraw) {
+    return;
+  }
+  console.log('e');
   background(255);
   image(images.board, 0, 0, width, height);
-  drawBoard();
-  drawStones();
-  highlightHover();
-  drawTarget();
+
+  await Promise.all([
+    drawBoardAsync(),
+    drawStonesAsync(),
+    highlightHoverAsync(),
+    drawTargetAsync()
+  ]);
+
+  shouldDraw = false;
+}
+function mouseMoved() {
+  shouldDraw = true;
+}
+async function drawBoardAsync() {
+  return new Promise(resolve => {
+    drawBoard();
+    resolve();
+  });
+}
+async function drawStonesAsync() {
+  return new Promise(resolve => {
+    drawStones();
+    resolve();
+  });
+}
+async function highlightHoverAsync() {
+  return new Promise(resolve => {
+    highlightHover();
+    resolve();
+  });
+}
+async function drawTargetAsync() {
+  return new Promise(resolve => {
+    drawTarget();
+    resolve();
+  });
 }
 function drawBoard() {
   stroke(0);
   for (let i = 0; i < boardSize; i++) {
-    line((i + 1 / 2) * gridSize,(1 / 2) * gridSize,(i + 1 / 2) * gridSize,height - (1 / 2) * gridSize);
-    line((1 / 2) * gridSize,(i + 1 / 2) * gridSize,width - (1 / 2) * gridSize,(i + 1 / 2) * gridSize);
+    line((i + 1 / 2) * gridSize, (1 / 2) * gridSize, (i + 1 / 2) * gridSize, height - (1 / 2) * gridSize);
+    line((1 / 2) * gridSize, (i + 1 / 2) * gridSize, width - (1 / 2) * gridSize, (i + 1 / 2) * gridSize);
   }
 }
 function drawStones() {
@@ -152,20 +192,6 @@ function drawStones() {
     }
   }
 }
-
-function drawTarget() {
-  let i = selectedCell.i;
-  let j = selectedCell.j;
-  noStroke();
-  fill(0, 255, 255);
-  if (currentPlayer == -1) {
-    fill(255, 0, 0);
-  }
-  triangle((i + 0.2) * gridSize,(j + 0.2) * gridSize,(i + 0.4) * gridSize,(j + 0.2) * gridSize,(i + 0.2) * gridSize,(j + 0.4) * gridSize);
-  triangle((i + 0.8) * gridSize,(j + 0.2) * gridSize,(i + 0.8) * gridSize,(j + 0.4) * gridSize,(i + 0.6) * gridSize,(j + 0.2) * gridSize);
-  triangle((i + 0.2) * gridSize,(j + 0.8) * gridSize,(i + 0.4) * gridSize,(j + 0.8) * gridSize,(i + 0.2) * gridSize,(j + 0.6) * gridSize);
-  triangle((i + 0.8) * gridSize,(j + 0.8) * gridSize,(i + 0.6) * gridSize,(j + 0.8) * gridSize,(i + 0.8) * gridSize,(j + 0.6) * gridSize);
-}
 function highlightHover() {
   if (!flag || isTouched) {
     return false;
@@ -178,6 +204,20 @@ function highlightHover() {
     drawTarget();
   }
 }
+function drawTarget() {
+  let i = selectedCell.i;
+  let j = selectedCell.j;
+  noStroke();
+  fill(0, 255, 255);
+  if (currentPlayer == -1) {
+    fill(255, 0, 0);
+  }
+  triangle((i + 0.2) * gridSize, (j + 0.2) * gridSize, (i + 0.4) * gridSize, (j + 0.2) * gridSize, (i + 0.2) * gridSize, (j + 0.4) * gridSize);
+  triangle((i + 0.8) * gridSize, (j + 0.2) * gridSize, (i + 0.8) * gridSize, (j + 0.4) * gridSize, (i + 0.6) * gridSize, (j + 0.2) * gridSize);
+  triangle((i + 0.2) * gridSize, (j + 0.8) * gridSize, (i + 0.4) * gridSize, (j + 0.8) * gridSize, (i + 0.2) * gridSize, (j + 0.6) * gridSize);
+  triangle((i + 0.8) * gridSize, (j + 0.8) * gridSize, (i + 0.6) * gridSize, (j + 0.8) * gridSize, (i + 0.8) * gridSize, (j + 0.6) * gridSize);
+}
+
 async function judgmentVictory(x, y) {
   let arry_x = [];
   let arry_y = [];
@@ -428,6 +468,7 @@ async function mousePressed() {
   if (!flag) {
     return false;
   }
+  shouldDraw = true;
   let i = Math.round((mouseX - (gridSize * 1) / 2) / gridSize);
   let j = Math.round((mouseY - (gridSize * 1) / 2) / gridSize);
 
