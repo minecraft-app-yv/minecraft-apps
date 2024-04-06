@@ -115,7 +115,6 @@ async function draw() {
   if (!shouldDraw) {
     return;
   }
-  console.log('e');
   background(255);
   image(images.board, 0, 0, width, height);
 
