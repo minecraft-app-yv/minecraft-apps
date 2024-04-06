@@ -47,6 +47,12 @@ main {
   margin: 15px auto 0 auto;
   text-align: center;
 }
+#gomoku_control {
+  position: relative;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
 #gomoku_button button,
 #gomoku_control button {
   background-color: white;
@@ -54,11 +60,33 @@ main {
   color: black;
   cursor: pointer;
   font-weight: bold;
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   text-align: center;
   line-height: 30px;
+  margin: 0;
+}
+#gomoku_button button {
   margin: 0 5px;
+}
+#gomoku_control button {
+  position: absolute;
+}
+#gomoku_control button#leftButton {
+  -webkit-transform : translate(-100%,0%);
+  transform : translate(-100%,0%);
+}
+#gomoku_control button#upButton {
+  -webkit-transform : translate(0%,-100%);
+  transform : translate(0%,-100%);
+}
+#gomoku_control button#downButton {
+  -webkit-transform : translate(0%,100%);
+  transform : translate(0%,100%);
+}
+#gomoku_control button#rightButton {
+  -webkit-transform : translate(100%,0%);
+  transform : translate(100%,0%);
 }
 #gomoku_button button#gomoku_cpu {
   background-color: rgb(0, 150, 0);
@@ -81,4 +109,11 @@ main {
   font-size: x-small;
   z-index: 100;
   position: fixed
+}
+/*for smartphone*/
+@media screen and (max-width: 640px) {
+  #gomoku_control {
+    display: flex;
+    height: 126px;
+  }
 }

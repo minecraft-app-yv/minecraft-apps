@@ -55,7 +55,9 @@ main {
   font-weight: bold;
 }
 #sudoku_control button {
-  margin: 0 5px;
+  width: 40px;
+  height: 40px;
+  margin: 0 5px 20px 5px;
 }
 #sudoku button.select {
   border: 2px inset dimgray;
