@@ -270,11 +270,11 @@ function shuffle() {
   }
 }
 document.getElementById('shuffle-button').addEventListener('click', shuffle);
-// mousemove fun
+//button action
 let obj = {
-  start_x: '', start_y: '', end_x: '', end_y: '',
-  targetCube: '', moveCube: '', select_cube: '', cubes: '', changeKey: 'x', vector: ''
+  p: [0, 0, 0], select_cube: '', cubes: '', changeKey: 'y', vector: ''
 };
+let animationActive = true;
 function rotateObjectByAxisAngle(object, axis, angle) {
   const rotationMatrix = new THREE.Matrix4().makeRotationAxis(axis, angle);
   object.applyMatrix4(rotationMatrix);
@@ -292,6 +292,155 @@ function calculateDistanceAndAngleChange(x1, y1, x2, y2) {
     angleChange += 2 * Math.PI;
   }
   return { dis: distance, ang: angleChange };
+}
+function findMaxAbsValueKey(obj) {
+  let maxKey = null;
+  let maxValue = -Infinity;
+
+  for (const key in obj) {
+    if (key === 'isVector3') {
+      continue;
+    }
+    const absValue = Math.abs(obj[key]);
+    if (absValue > maxValue) {
+      maxKey = key;
+      maxValue = absValue;
+    }
+  }
+
+  return maxKey;
+}
+function startFunc(p) {
+  // 全てのキューブの線を元の色に戻す
+  scene.traverse((object) => {
+    if (object.isLineSegments) {
+      object.material = lineMaterial;
+    }
+  });
+  const centerCubePosition = new THREE.Vector3(p[0], p[1], p[2]);
+  // キューブの間隔
+  const cubeSpacing = cubeSize;
+  let select_x_axis = [
+    {x: 0, y: -1, z: -1}, {x: 0, y: 0, z: -1}, {x: 0, y: 1, z: -1},
+    {x: 0, y: -1, z: 0}, {x: 0, y: 0, z: 0}, {x: 0, y: 1, z: 0},
+    {x: 0, y: -1, z: 1}, {x: 0, y: 0, z: 1}, {x: 0, y: 1, z: 1}
+  ];
+  let select_y_axis = [
+    {x: -1, y: 0, z: -1}, {x: 0, y: 0, z: -1}, {x: 1, y: 0, z: -1},
+    {x: -1, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 0, z: 0},
+    {x: -1, y: 0, z: 1}, {x: 0, y: 0, z: 1}, {x: 1, y: 0, z: 1}
+  ];
+  let select_z_axis = [
+    {x: -1, y: -1, z: 0}, {x: 0, y: -1, z: 0}, {x: 1, y: -1, z: 0},
+    {x: -1, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 0, z: 0},
+    {x: -1, y: 1, z: 0}, {x: 0, y: 1, z: 0}, {x: 1, y: 1, z: 0}
+  ];
+  obj.cubes = {x: [], y: [], z: []};
+  select_x_axis.forEach(function(item, index) {
+    // 選択キューブの座標を計算
+    const cubeNextPosition = new THREE.Vector3(
+      Math.round(centerCubePosition.x) + cubeSpacing * item.x,
+      cubeSpacing * item.y,
+      cubeSpacing * item.z
+    );
+    // 選択キューブを検索
+    const cubeNext = scene.children.find(child => {
+      if (child instanceof THREE.Mesh) {
+        const position = child.position.clone();
+        position.x = Math.round(position.x); // x座標にMath.floorを適用
+        position.y = Math.round(position.y); // y座標にMath.floorを適用
+        position.z = Math.round(position.z); // z座標にMath.floorを適用
+        return cubeNextPosition.equals(position);
+      }
+    });
+    // 選択キューブをハイライト
+    if (cubeNext) {
+      select_x_axis[index] = cubeNext;
+      obj.cubes.x.push({
+        position: cubeNext.position.clone(),
+        rotation: cubeNext.rotation.clone(),
+        scale: cubeNext.scale.clone()
+      });
+    }
+  });
+  select_y_axis.forEach(function(item, index) {
+    // 選択キューブの座標を計算
+    const cubeNextPosition = new THREE.Vector3(
+      cubeSpacing * item.x,
+      Math.round(centerCubePosition.y) + cubeSpacing * item.y,
+      cubeSpacing * item.z
+    );
+    // 選択キューブを検索
+    const cubeNext = scene.children.find(child => {
+      if (child instanceof THREE.Mesh) {
+        const position = child.position.clone();
+        position.x = Math.round(position.x); // x座標にMath.floorを適用
+        position.y = Math.round(position.y); // y座標にMath.floorを適用
+        position.z = Math.round(position.z); // z座標にMath.floorを適用
+        return cubeNextPosition.equals(position);
+      }
+    });
+    // 選択キューブをハイライト
+    if (cubeNext) {
+      cubeNext.children.forEach(child => {
+        if (child.isLineSegments) {
+          const lineMaterialHighlight = new THREE.LineBasicMaterial({
+            color: 0xffffff // ハイライト用の色（白）
+          });
+          child.material = lineMaterialHighlight;
+        }
+      });
+      select_y_axis[index] = cubeNext;
+      obj.cubes.y.push({
+        position: cubeNext.position.clone(),
+        rotation: cubeNext.rotation.clone(),
+        scale: cubeNext.scale.clone()
+      });
+    }
+  });
+  select_z_axis.forEach(function(item, index) {
+    // 選択キューブの座標を計算
+    const cubeNextPosition = new THREE.Vector3(
+      cubeSpacing * item.x,
+      cubeSpacing * item.y,
+      Math.round(centerCubePosition.z) + cubeSpacing * item.z
+    );
+    // 選択キューブを検索
+    const cubeNext = scene.children.find(child => {
+      if (child instanceof THREE.Mesh) {
+        const position = child.position.clone();
+        position.x = Math.round(position.x); // x座標にMath.floorを適用
+        position.y = Math.round(position.y); // y座標にMath.floorを適用
+        position.z = Math.round(position.z); // z座標にMath.floorを適用
+        return cubeNextPosition.equals(position);
+      }
+    });
+    // 選択キューブをハイライト
+    if (cubeNext) {
+      select_z_axis[index] = cubeNext;
+      obj.cubes.z.push({
+        position: cubeNext.position.clone(),
+        rotation: cubeNext.rotation.clone(),
+        scale: cubeNext.scale.clone()
+      });
+    }
+  });
+  obj.select_cube = {x: select_x_axis, y: select_y_axis, z: select_z_axis};
+  // カメラの現在の方向（クォータニオンからオイラー角に変換）
+  const cameraRotation = new THREE.Euler().setFromQuaternion(camera.quaternion);
+  // カメラのローカル座標系におけるXYZ軸
+  const cameraForward = new THREE.Vector3(0, 0, -1); // カメラの前方（奥行き方向）
+  const cameraUp = new THREE.Vector3(0, 1, 0); // カメラの上方（Y軸）
+  const cameraRight = new THREE.Vector3(1, 0, 0); // カメラの右方（X軸）
+  // カメラの方向に基づいて座標軸を回転
+  cameraForward.applyEuler(cameraRotation);
+  cameraUp.applyEuler(cameraRotation);
+  cameraRight.applyEuler(cameraRotation);
+  // 結果をログに出力
+  const cameraForwardKey = findMaxAbsValueKey(cameraForward);
+  const cameraUpKey = findMaxAbsValueKey(cameraUp);
+  const cameraRightKey = findMaxAbsValueKey(cameraRight);
+  obj.vector = [cameraRightKey, cameraUpKey, cameraForwardKey];
 }
 function highlightAxis(axis) {
   obj.changeKey = axis;
@@ -314,34 +463,8 @@ function highlightAxis(axis) {
     });
   }
 }
-function removeEvent(e) {
-  window.removeEventListener('mousemove', onMouseMove, false);
-  window.removeEventListener('mouseup', removeEvent, false);
-  window.removeEventListener('touchmove', onTouchMove, false);
-  window.removeEventListener('touchend', removeEvent, false);
-  const movedPosition = obj.moveCube.point;
-  if (movedPosition === undefined) {
-    return false;
-  }
-  const clickedPosition = obj.targetCube.point;
+function moveFunc(angleChange) {
   if (obj.changeKey === 'y') {
-    const x1 = clickedPosition.x;
-    const z1 = clickedPosition.z;
-    const x2 = movedPosition.x;
-    const z2 = movedPosition.z;
-    let angleChange = calculateDistanceAndAngleChange(x1, z1, x2, z2).ang;
-    if (angleChange < Math.PI / 4 && angleChange >= -Math.PI / 4) {
-      angleChange = 0;
-    }
-    if (angleChange >= Math.PI / 4 && angleChange < Math.PI * 3 / 4) {
-      angleChange = Math.PI / 2;
-    }
-    if (angleChange >= Math.PI * 3 / 4 || angleChange < -Math.PI * 3 / 4) {
-      angleChange = Math.PI;
-    }
-    if (angleChange >= -Math.PI * 3 / 4 && angleChange < -Math.PI / 4) {
-      angleChange = -Math.PI / 2;
-    }
     obj.select_cube.x.forEach(function(cube, index) {
       const savedState = obj.cubes.x[index];
       cube.position.copy(savedState.position);
@@ -359,8 +482,8 @@ function removeEvent(e) {
       cube.position.copy(savedState.position);
       cube.rotation.copy(savedState.rotation);
       cube.scale.copy(savedState.scale);
-      const offsetX = cube.position.x / 100;
-      const offsetZ = cube.position.z / 100;
+      const offsetX = cube.position.x / cubeSize;
+      const offsetZ = cube.position.z / cubeSize;
       const calc = calculateDistanceAndAngleChange(0, 0, offsetX, offsetZ);
       cube.position.x -= cubeSize * offsetX;
       cube.position.z -= cubeSize * offsetZ;
@@ -371,23 +494,6 @@ function removeEvent(e) {
     });
   }
   if (obj.changeKey === 'x') {
-    const y1 = clickedPosition.y;
-    const z1 = clickedPosition.z;
-    const y2 = movedPosition.y;
-    const z2 = movedPosition.z;
-    let angleChange = calculateDistanceAndAngleChange(y1, z1, y2, z2).ang;
-    if (angleChange < Math.PI / 4 && angleChange >= -Math.PI / 4) {
-      angleChange = 0;
-    }
-    if (angleChange >= Math.PI / 4 && angleChange < Math.PI * 3 / 4) {
-      angleChange = Math.PI / 2;
-    }
-    if (angleChange >= Math.PI * 3 / 4 || angleChange < -Math.PI * 3 / 4) {
-      angleChange = Math.PI;
-    }
-    if (angleChange >= -Math.PI * 3 / 4 && angleChange < -Math.PI / 4) {
-      angleChange = -Math.PI / 2;
-    }
     obj.select_cube.y.forEach(function(cube, index) {
       const savedState = obj.cubes.y[index];
       cube.position.copy(savedState.position);
@@ -405,8 +511,8 @@ function removeEvent(e) {
       cube.position.copy(savedState.position);
       cube.rotation.copy(savedState.rotation);
       cube.scale.copy(savedState.scale);
-      const offsetY = cube.position.y / 100;
-      const offsetZ = cube.position.z / 100;
+      const offsetY = cube.position.y / cubeSize;
+      const offsetZ = cube.position.z / cubeSize;
       const calc = calculateDistanceAndAngleChange(0, 0, offsetY, offsetZ);
       cube.position.y -= cubeSize * offsetY;
       cube.position.z -= cubeSize * offsetZ;
@@ -417,23 +523,6 @@ function removeEvent(e) {
     });
   }
   if (obj.changeKey === 'z') {
-    const x1 = clickedPosition.x;
-    const y1 = clickedPosition.y;
-    const x2 = movedPosition.x;
-    const y2 = movedPosition.y;
-    let angleChange = calculateDistanceAndAngleChange(x1, y1, x2, y2).ang;
-    if (angleChange < Math.PI / 4 && angleChange >= -Math.PI / 4) {
-      angleChange = 0;
-    }
-    if (angleChange >= Math.PI / 4 && angleChange < Math.PI * 3 / 4) {
-      angleChange = Math.PI / 2;
-    }
-    if (angleChange >= Math.PI * 3 / 4 || angleChange < -Math.PI * 3 / 4) {
-      angleChange = Math.PI;
-    }
-    if (angleChange >= -Math.PI * 3 / 4 && angleChange < -Math.PI / 4) {
-      angleChange = -Math.PI / 2;
-    }
     obj.select_cube.x.forEach(function(cube, index) {
       const savedState = obj.cubes.x[index];
       cube.position.copy(savedState.position);
@@ -451,8 +540,8 @@ function removeEvent(e) {
       cube.position.copy(savedState.position);
       cube.rotation.copy(savedState.rotation);
       cube.scale.copy(savedState.scale);
-      const offsetX = cube.position.x / 100;
-      const offsetY = cube.position.y / 100;
+      const offsetX = cube.position.x / cubeSize;
+      const offsetY = cube.position.y / cubeSize;
       const calc = calculateDistanceAndAngleChange(0, 0, offsetX, offsetY);
       cube.position.x -= cubeSize * offsetX;
       cube.position.y -= cubeSize * offsetY;
@@ -463,344 +552,107 @@ function removeEvent(e) {
     });
   }
 }
-function moveFunc(event) {
-  let xRang = Math.abs(obj.start_x - obj.end_x);
-  let yRang = Math.abs(obj.start_y - obj.end_y);
-  if (yRang >= 3 * xRang) {
-    highlightAxis(obj.vector[0]);
-  } else if (xRang >= 3 * yRang) {
-    highlightAxis(obj.vector[1]);
-  } else {
-    highlightAxis(obj.vector[2]);
-  }
-  // マウス座標を正規化
-  mouse.x = ((obj.end_x + window.scrollX) / canvasWidth) * 2 - 1;
-  mouse.y = -((obj.end_y +  window.scrollY) / canvasHeight) * 2 + 1;
-  // レイキャスティング
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(scene.children, true);
-  if (intersects.length > 0) {
-    obj.moveCube = intersects[0];
-    const movedPosition = obj.moveCube.point;
-    const clickedPosition = obj.targetCube.point;
-    if (obj.changeKey === 'y') {
-      const x1 = clickedPosition.x;
-      const z1 = clickedPosition.z;
-      const x2 = movedPosition.x;
-      const z2 = movedPosition.z;
-      let angleChange = calculateDistanceAndAngleChange(x1, z1, x2, z2).ang;
-      obj.select_cube.x.forEach(function(cube, index) {
-        const savedState = obj.cubes.x[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-      });
-      obj.select_cube.z.forEach(function(cube, index) {
-        const savedState = obj.cubes.z[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-      });
-      obj.select_cube.y.forEach(function(cube, index) {
-        const savedState = obj.cubes.y[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-        const offsetX = cube.position.x / 100;
-        const offsetZ = cube.position.z / 100;
-        const calc = calculateDistanceAndAngleChange(0, 0, offsetX, offsetZ);
-        cube.position.x -= cubeSize * offsetX;
-        cube.position.z -= cubeSize * offsetZ;
-        const rotationAxis = new THREE.Vector3(0, 1, 0); // y軸回転
-        rotateObjectByAxisAngle(cube, rotationAxis, -angleChange); // -angleChangeで逆方向に回転
-        cube.position.x += cubeSize * calc.dis * Math.cos(calc.ang + angleChange);
-        cube.position.z += cubeSize * calc.dis * Math.sin(calc.ang + angleChange);
-      });
-    }
-    if (obj.changeKey === 'x') {
-      const y1 = clickedPosition.y;
-      const z1 = clickedPosition.z;
-      const y2 = movedPosition.y;
-      const z2 = movedPosition.z;
-      let angleChange = calculateDistanceAndAngleChange(y1, z1, y2, z2).ang;
-      obj.select_cube.y.forEach(function(cube, index) {
-        const savedState = obj.cubes.y[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-      });
-      obj.select_cube.z.forEach(function(cube, index) {
-        const savedState = obj.cubes.z[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-      });
-      obj.select_cube.x.forEach(function(cube, index) {
-        const savedState = obj.cubes.x[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-        const offsetY = cube.position.y / 100;
-        const offsetZ = cube.position.z / 100;
-        const calc = calculateDistanceAndAngleChange(0, 0, offsetY, offsetZ);
-        cube.position.y -= cubeSize * offsetY;
-        cube.position.z -= cubeSize * offsetZ;
-        const rotationAxis = new THREE.Vector3(1, 0, 0); // y軸回転
-        rotateObjectByAxisAngle(cube, rotationAxis, angleChange); // -angleChangeで逆方向に回転
-        cube.position.y += cubeSize * calc.dis * Math.cos(calc.ang + angleChange);
-        cube.position.z += cubeSize * calc.dis * Math.sin(calc.ang + angleChange);
-      });
-    }
-    if (obj.changeKey === 'z') {
-      const x1 = clickedPosition.x;
-      const y1 = clickedPosition.y;
-      const x2 = movedPosition.x;
-      const y2 = movedPosition.y;
-      let angleChange = calculateDistanceAndAngleChange(x1, y1, x2, y2).ang;
-      obj.select_cube.x.forEach(function(cube, index) {
-        const savedState = obj.cubes.x[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-      });
-      obj.select_cube.y.forEach(function(cube, index) {
-        const savedState = obj.cubes.y[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-      });
-      obj.select_cube.z.forEach(function(cube, index) {
-        const savedState = obj.cubes.z[index];
-        cube.position.copy(savedState.position);
-        cube.rotation.copy(savedState.rotation);
-        cube.scale.copy(savedState.scale);
-        const offsetX = cube.position.x / 100;
-        const offsetY = cube.position.y / 100;
-        const calc = calculateDistanceAndAngleChange(0, 0, offsetX, offsetY);
-        cube.position.x -= cubeSize * offsetX;
-        cube.position.y -= cubeSize * offsetY;
-        const rotationAxis = new THREE.Vector3(0, 0, 1); // y軸回転
-        rotateObjectByAxisAngle(cube, rotationAxis, angleChange); // -angleChangeで逆方向に回転
-        cube.position.x += cubeSize * calc.dis * Math.cos(calc.ang + angleChange);
-        cube.position.y += cubeSize * calc.dis * Math.sin(calc.ang + angleChange);
-      });
+function animateMoveFunc(initialAngle, finalAngle, duration) {
+  const startTime = Date.now();
+  const endTime = startTime + duration;
+  function animateRoll() {
+    const now = Date.now();
+    const progress = Math.min((now - startTime) / duration, 1); // アニメーションの進行度を計算する
+    const angleChange = initialAngle + (finalAngle - initialAngle) * progress; // 初期角度から最終角度までの間を進む
+    moveFunc(angleChange); // moveFunc を呼び出す
+    if (now < endTime) {
+      requestAnimationFrame(animateRoll); // 次のフレームを要求してアニメーションを継続する
+      animate();
+    } else {
+      animate();
+      animationActive = false;
     }
   }
+  animateRoll(); // アニメーションを開始する
 }
-function onMouseMove(event) {
-  obj.end_x = event.clientX;
-  obj.end_y = event.clientY;
-  moveFunc(event);
-}
-function onTouchMove(event) {
-  obj.end_x = event.touches[0].clientX;
-  obj.end_y = event.touches[0].clientY;
-  moveFunc(event);
-}
-// マウスダウン時の処理
-function findMaxAbsValueKey(obj) {
-  let maxKey = null;
-  let maxValue = -Infinity;
-
-  for (const key in obj) {
-    if (key === 'isVector3') {
-      continue;
-    }
-    const absValue = Math.abs(obj[key]);
-    if (absValue > maxValue) {
-      maxKey = key;
-      maxValue = absValue;
-    }
+$('#axis_change').click((e) => {
+  animationActive = true;
+  obj.p = [0, 0, 0];
+  startFunc(obj.p);
+  let arry = ['x', 'y', 'z'];
+  let axis = obj.changeKey;
+  axis = arry[(arry.indexOf(axis) + 1) % arry.length];
+  highlightAxis(axis);
+  animate();
+  animationActive = false;
+});
+$('#layer_change').click((e) => {
+  animationActive = true;
+  let arry = ['x', 'y', 'z'];
+  let axis = obj.changeKey;
+  let n = obj.p[arry.indexOf(axis)] / cubeSize + 1;
+  n = (n + 1) % 3 - 1;
+  obj.p[arry.indexOf(axis)] = n * cubeSize;
+  startFunc(obj.p);
+  highlightAxis(axis);
+  animate();
+  animationActive = false;
+});
+$('#cube_right_roll').click((e) => {
+  animationActive = true;
+  let angleChange = -Math.PI / 2;
+  if (obj.changeKey === 'y') {
+    angleChange = Math.PI / 2
   }
-
-  return maxKey;
-}
-function startFunc(event) {
-  // マウス座標を正規化
-  mouse.x = ((obj.start_x + window.scrollX) / canvasWidth) * 2 - 1;
-  mouse.y = -((obj.start_y + window.scrollY) / canvasHeight) * 2 + 1;
-  // レイキャスティング
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(scene.children, true);
-  // 全てのキューブの線を元の色に戻す
-  scene.traverse((object) => {
-    if (object.isLineSegments) {
-      object.material = lineMaterial;
-    }
-  });
-  if (intersects.length <= 0) {
-    document.body.style.cursor = "pointer";
-    // カメラコントローラーを有効
-    controls.enabled = true;
-  } else {
-    // キューブ内をクリックした場合の処理
-    document.body.style.cursor = "default";
-    // カメラコントローラーの停止
-    controls.enabled = false;
-    // 触ったキューブの座標
-    obj.targetCube = intersects[0];
-    const touchedCubePosition = obj.targetCube.object.position.clone();
-    // キューブの間隔
-    const cubeSpacing = cubeSize;
-    let select_x_axis = [
-      {x: 0, y: -1, z: -1}, {x: 0, y: 0, z: -1}, {x: 0, y: 1, z: -1},
-      {x: 0, y: -1, z: 0}, {x: 0, y: 0, z: 0}, {x: 0, y: 1, z: 0},
-      {x: 0, y: -1, z: 1}, {x: 0, y: 0, z: 1}, {x: 0, y: 1, z: 1}
-    ];
-    let select_y_axis = [
-      {x: -1, y: 0, z: -1}, {x: 0, y: 0, z: -1}, {x: 1, y: 0, z: -1},
-      {x: -1, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 0, z: 0},
-      {x: -1, y: 0, z: 1}, {x: 0, y: 0, z: 1}, {x: 1, y: 0, z: 1}
-    ];
-    let select_z_axis = [
-      {x: -1, y: -1, z: 0}, {x: 0, y: -1, z: 0}, {x: 1, y: -1, z: 0},
-      {x: -1, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 0, z: 0},
-      {x: -1, y: 1, z: 0}, {x: 0, y: 1, z: 0}, {x: 1, y: 1, z: 0}
-    ];
-    obj.cubes = {x: [], y: [], z: []};
-    select_x_axis.forEach(function(item, index) {
-      // 選択キューブの座標を計算
-      const cubeNextPosition = new THREE.Vector3(
-        Math.round(touchedCubePosition.x) + cubeSpacing * item.x,
-        cubeSpacing * item.y,
-        cubeSpacing * item.z
-      );
-      // 選択キューブを検索
-      const cubeNext = scene.children.find(child => {
-        if (child instanceof THREE.Mesh) {
-          const position = child.position.clone();
-          position.x = Math.round(position.x); // x座標にMath.floorを適用
-          position.y = Math.round(position.y); // y座標にMath.floorを適用
-          position.z = Math.round(position.z); // z座標にMath.floorを適用
-          return cubeNextPosition.equals(position);
-        }
-      });
-      // 選択キューブをハイライト
-      if (cubeNext) {
-        select_x_axis[index] = cubeNext;
-        obj.cubes.x.push({
-          position: cubeNext.position.clone(),
-          rotation: cubeNext.rotation.clone(),
-          scale: cubeNext.scale.clone()
-        });
-      }
-    });
-    select_y_axis.forEach(function(item, index) {
-      // 選択キューブの座標を計算
-      const cubeNextPosition = new THREE.Vector3(
-        cubeSpacing * item.x,
-        Math.round(touchedCubePosition.y) + cubeSpacing * item.y,
-        cubeSpacing * item.z
-      );
-      // 選択キューブを検索
-      const cubeNext = scene.children.find(child => {
-        if (child instanceof THREE.Mesh) {
-          const position = child.position.clone();
-          position.x = Math.round(position.x); // x座標にMath.floorを適用
-          position.y = Math.round(position.y); // y座標にMath.floorを適用
-          position.z = Math.round(position.z); // z座標にMath.floorを適用
-          return cubeNextPosition.equals(position);
-        }
-      });
-      // 選択キューブをハイライト
-      if (cubeNext) {
-        cubeNext.children.forEach(child => {
-          if (child.isLineSegments) {
-            const lineMaterialHighlight = new THREE.LineBasicMaterial({
-              color: 0xffffff // ハイライト用の色（白）
-            });
-            child.material = lineMaterialHighlight;
-          }
-        });
-        select_y_axis[index] = cubeNext;
-        obj.cubes.y.push({
-          position: cubeNext.position.clone(),
-          rotation: cubeNext.rotation.clone(),
-          scale: cubeNext.scale.clone()
-        });
-      }
-    });
-    select_z_axis.forEach(function(item, index) {
-      // 選択キューブの座標を計算
-      const cubeNextPosition = new THREE.Vector3(
-        cubeSpacing * item.x,
-        cubeSpacing * item.y,
-        Math.round(touchedCubePosition.z) + cubeSpacing * item.z
-      );
-      // 選択キューブを検索
-      const cubeNext = scene.children.find(child => {
-        if (child instanceof THREE.Mesh) {
-          const position = child.position.clone();
-          position.x = Math.round(position.x); // x座標にMath.floorを適用
-          position.y = Math.round(position.y); // y座標にMath.floorを適用
-          position.z = Math.round(position.z); // z座標にMath.floorを適用
-          return cubeNextPosition.equals(position);
-        }
-      });
-      // 選択キューブをハイライト
-      if (cubeNext) {
-        select_z_axis[index] = cubeNext;
-        obj.cubes.z.push({
-          position: cubeNext.position.clone(),
-          rotation: cubeNext.rotation.clone(),
-          scale: cubeNext.scale.clone()
-        });
-      }
-    });
-    obj.select_cube = {x: select_x_axis, y: select_y_axis, z: select_z_axis};
-    // カメラの現在の方向（クォータニオンからオイラー角に変換）
-    const cameraRotation = new THREE.Euler().setFromQuaternion(camera.quaternion);
-    // カメラのローカル座標系におけるXYZ軸
-    const cameraForward = new THREE.Vector3(0, 0, -1); // カメラの前方（奥行き方向）
-    const cameraUp = new THREE.Vector3(0, 1, 0); // カメラの上方（Y軸）
-    const cameraRight = new THREE.Vector3(1, 0, 0); // カメラの右方（X軸）
-    // カメラの方向に基づいて座標軸を回転
-    cameraForward.applyEuler(cameraRotation);
-    cameraUp.applyEuler(cameraRotation);
-    cameraRight.applyEuler(cameraRotation);
-    // 結果をログに出力
-    const cameraForwardKey = findMaxAbsValueKey(cameraForward);
-    const cameraUpKey = findMaxAbsValueKey(cameraUp);
-    const cameraRightKey = findMaxAbsValueKey(cameraRight);
-    obj.vector = [cameraRightKey, cameraUpKey, cameraForwardKey];
-    // hilight & action
-    obj.changeKey = 'y';
-    window.addEventListener('mousemove', onMouseMove, false);
-    window.addEventListener('mouseup', removeEvent, false);
-    window.addEventListener('touchmove', onTouchMove, false);
-    window.addEventListener('touchend', removeEvent, false);
+  startFunc(obj.p);
+  highlightAxis(obj.changeKey);
+  animateMoveFunc(0, angleChange, 300);
+});
+$('#cube_left_roll').click((e) => {
+  animationActive = true;
+  let angleChange = Math.PI / 2;
+  if (obj.changeKey === 'y') {
+    angleChange = -Math.PI / 2
   }
+  startFunc(obj.p);
+  highlightAxis(obj.changeKey);
+  animateMoveFunc(0, angleChange, 300);
+});
+//animation
+function clickFunc() {
+  document.addEventListener('mousemove', startAnimation);
+  document.addEventListener('mouseup', stopAnimation);
+  document.addEventListener('touchmove', startAnimation);
+  document.addEventListener('touchend', stopAnimation);
 }
-function onMouseDown(event) {
-  obj.start_x = event.clientX;
-  obj.start_y = event.clientY;
-  startFunc(event);
+function startAnimation() {
+  animationActive = true;
+  animate();
 }
-function onTouchStart(event) {
-  obj.start_x = event.touches[0].clientX;
-  obj.start_y = event.touches[0].clientY;
-  startFunc(event);
+function stopAnimation() {
+  animationActive = false;
+  document.removeEventListener('mousemove', startAnimation);
+  document.removeEventListener('mouseup', stopAnimation);
+  document.removeEventListener('touchmove', startAnimation);
+  document.removeEventListener('touchend', stopAnimation);
 }
-// マウスイベントリスナーを追加
-window.addEventListener('mousedown', onMouseDown, false);
-window.addEventListener('touchstart', onTouchStart, false);
+document.addEventListener('mousedown', clickFunc);
+document.addEventListener('touchstart', clickFunc);
 function animate() {
-  controls.update();
-  renderer.render(scene, camera);
-  requestAnimationFrame(animate);
+  if (animationActive) {
+    controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
 }
 animate();
+animationActive = false;
 //pop pop_text
 function changeDifficulty() {
   let value = $('#shuffle-value').val();
   let diff_text = $('<div>').attr('id', 'pop_text').text(value);
+  $('body').append(diff_text);
   let p = $('#shuffle-value')[0].getBoundingClientRect();
   let d = diff_text[0].getBoundingClientRect();
   let scrollTop = window.scrollY;
-  let left = p.left + p.width + 10;
-  let top = p.top + scrollTop - (d.height);
+  let left = p.left - (d.width - p.width) / 2;
+  let top = p.top + scrollTop + p.height + 5;
   diff_text.css({ 'position': 'absolute', 'left': left, 'top': top });
-  $('body').append(diff_text);
   setTimeout(() => {
     diff_text.remove();
   }, 1000);
