@@ -37,32 +37,74 @@ html {
   scroll-behavior: smooth;
 }
 /*main*/
-#canvas-container {
-  position: relative;
+#canvas-container,
+#action-container {
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+  margin: 10px 0;
 }
-#shuffle-button, #image-button {
-  background: #eee;
-  border-radius: 3px;
-  color: #313131;
-  transition: 0.1s ease-in-out;
-  font-weight: 600;
-  box-shadow: 5px 5px 0 #6bb6ff;
-  position: absolute;
+#canvas-container {
+  top: 0;
+}
+#action-container {
+  bottom: 0;
+}
+#shuffle-button,
+#image-button,
+#axis_change,
+#layer_change,
+#action-container .cube_roll {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: whitesmoke;
+  color: silver;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.3), inset 0 -1px 3px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0,0,0,0.2);
+}
+#shuffle-button,
+#image-button {
+  margin-bottom: 10px;
+  width: 40px;
+  height: 40px;
+}
+#axis_change,
+#layer_change,
+#action-container .cube_roll {
+  margin: 0px;
   width: 50px;
   height: 50px;
-  text-align: center;
-  line-height: 50px;
-  cursor: pointer;
-  font-size: large;
 }
-#shuffle-button:active, #image-button:active {
-  background-color: #b3d9ff;
-  box-shadow: 0 0 0;
-  transform: translate(5px, 5px);
+/*https://magazine.techacademy.jp/magazine/24183*/
+#action-container img {
+  filter: saturate(0) brightness(10) drop-shadow(1px 1px 1px white);
+  width: 60%;
+  height: 60%;
+  display: block;
+  object-fit: fill;
 }
-#image-button {
-  top: 10px;
-  left: 10px;
+#shuffle-button:active,
+#image-button:active,
+#axis_change:active,
+#layer_change:active,
+#action-container .cube_roll:active {
+  background-color: lightgreen;
+  color: green;
+  -webkit-transform: translateY(1px);
+  transform: translateY(1px);
+  box-shadow: inset 0 -1px 3px rgba(255, 255, 255, 0.3), inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+#axis_change:active > img,
+#layer_change:active > img,
+#action-container .cube_roll:active > img {
+  filter: hue-rotate(220deg) brightness(1.5) drop-shadow(1px 1px 1px white);
 }
 #image-button i,
 #change_image:checked ~ #image-button .fa-droplet {
@@ -72,14 +114,9 @@ html {
 #change_image ~ #image-button .fa-droplet {
   display: inline;
 }
-#shuffle-button {
-  top: 10px;
-  left: 80px;
-}
 #shuffle-value {
-  position: absolute;
-  top: 80px;
-  left: 10px;
+  margin: 10px 5px;
+  display: inline-block;
 }
 #pop_text {
   padding: 5px 15px;
