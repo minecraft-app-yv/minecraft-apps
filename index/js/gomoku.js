@@ -11,7 +11,8 @@ let stoneFlag = false;
 let images = {};
 let isTouched = false;
 let shouldDraw = true;
-let selectedCell = { i: 0, j: 0 };
+let moveCount = 0;
+let selectedCell = { i: 9, j: 9 };
 
 function tintGrayToRed(amount, img) {
   img.loadPixels();
@@ -48,14 +49,14 @@ function setup() {
   gomokuDiv.style('width', canvas_size + 'px');
   gomokuDiv.style('height', canvas_size + 'px');
   gomokuDiv.parent('gomoku');
-  let gomokuDivB = createDiv();
-  gomokuDivB.id('gomoku_button');
-  gomokuDivB.style('width', canvas_size + 'px');
-  gomokuDivB.parent('gomoku');
   let gomokuDivC = createDiv();
   gomokuDivC.id('gomoku_control');
   gomokuDivC.style('width', canvas_size + 'px');
   gomokuDivC.parent('gomoku');
+  let gomokuDivB = createDiv();
+  gomokuDivB.id('gomoku_button');
+  gomokuDivB.style('width', canvas_size + 'px');
+  gomokuDivB.parent('gomoku');
   let canvas = createCanvas(canvas_size, canvas_size);
   // canvas要素を取得
   let canvasElement = canvas.elt;
@@ -192,18 +193,18 @@ function drawStones() {
   }
 }
 function highlightHover() {
-  if (!flag || isTouched) {
+  if (!flag || isTouched || moveCount == 0) {
     return false;
   }
   let i = Math.round((mouseX - (gridSize * 1) / 2) / gridSize);
   let j = Math.round((mouseY - (gridSize * 1) / 2) / gridSize);
-
   if (i >= 0 && i < boardSize && j >= 0 && j < boardSize) {
     selectedCell = { i, j };
     drawTarget();
   }
 }
 function drawTarget() {
+  moveCount++;
   let i = selectedCell.i;
   let j = selectedCell.j;
   noStroke();
@@ -526,7 +527,7 @@ function changeDifficulty() {
   let p = difficultySlider.elt.getBoundingClientRect();
   let d = diff_text.elt.getBoundingClientRect();
   let scrollTop = window.scrollY;
-  diff_text.position(p.left + p.width + 10, p.top + scrollTop - (d.height - p.height) / 2);
+  diff_text.position(p.left - (d.width - p.width) / 2 , p.top + scrollTop + p.height + 5);
   setTimeout(() => {
     diff_text.elt.remove();
   }, 1000)
