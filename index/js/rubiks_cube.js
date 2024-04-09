@@ -82,6 +82,7 @@ for (let x = -1; x <= 1; x++) {
   }
 }
 //change image
+let animationActive = true;
 // ルービックキューブの初期化関数
 function initializeRubiksCube() {
   // 古いルービックキューブを削除
@@ -102,20 +103,23 @@ function initializeRubiksCube() {
     }
   }
 }
-$('#change_image').change((e) => {
+$('#change_image').change(async (e) => {
+  animationActive = true;
   if ($('#change_image').prop('checked')) {
-    materials = colors.map((color, index) => {
+    const loadedMaterials = await Promise.all(textureUrls.map(async (url) => {
       const textureLoader = new THREE.TextureLoader();
-      const texture = textureLoader.load(textureUrls[index]);
+      const texture = await new Promise((resolve, reject) => {
+        textureLoader.load(url, resolve, undefined, reject);
+      });
       return new THREE.MeshBasicMaterial({ map: texture });
-    });
-  }
-  if (!$('#change_image').prop('checked')) {
-    materials = colors.map(color => new THREE.MeshBasicMaterial({
-      color
     }));
+    materials = loadedMaterials;
+  } else {
+    materials = colors.map(color => new THREE.MeshBasicMaterial({ color }));
   }
   initializeRubiksCube();
+  animate();
+  animationActive = false;
 });
 let controls = new OrbitControls(camera, canvasElement);
 // マウス座標からのレイキャスティング
@@ -139,6 +143,7 @@ function getRandomDirection() {
   return Math.random() < 0.5 ? 1 : -1;
 }
 function shuffle() {
+  animationActive = true;
   let shuffleCount = $("#shuffle-value").val();
   for (let i = 0; i < shuffleCount; i++) {
     const selectedCube = scene.children[getRandomInt(0, scene.children.length - 1)];
@@ -268,13 +273,14 @@ function shuffle() {
       }
     }
   }
+  animate();
+  animationActive = false;
 }
 document.getElementById('shuffle-button').addEventListener('click', shuffle);
 //button action
 let obj = {
   p: [0, 0, 0], select_cube: '', cubes: '', changeKey: 'y', vector: ''
 };
-let animationActive = true;
 function rotateObjectByAxisAngle(object, axis, angle) {
   const rotationMatrix = new THREE.Matrix4().makeRotationAxis(axis, angle);
   object.applyMatrix4(rotationMatrix);
@@ -454,8 +460,12 @@ function highlightAxis(axis) {
     targetAxis.forEach(function(cubeNext, index) {
       cubeNext.children.forEach(child => {
         if (child.isLineSegments) {
+          let colorCode = 0xffffff; // ハイライト用の色（白）
+          if ($('#change_image').prop('checked')) {
+            colorCode = 0xff0000; // 赤色
+          }
           const lineMaterialHighlight = new THREE.LineBasicMaterial({
-            color: 0xffffff // ハイライト用の色（白）
+            color: colorCode
           });
           child.material = lineMaterialHighlight;
         }
