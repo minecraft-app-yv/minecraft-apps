@@ -134,6 +134,10 @@ async function drawGrid(targetGrid, yOffset) {
           if (showingText) {
             text(targetGrid[i][j] % 10, x + cellSize / 2, y + cellSize / 2);
           }
+          if (showingAnswer && gridAns[i][j] % 10 != grid[i][j] % 10) {
+            fill(255, 0, 0);
+            text('⚠', x + cellSize / 2, y + cellSize / 2);
+          }
         }
       }
     }
