@@ -114,7 +114,7 @@ function setup() {
 
 async function draw() {
   if (!shouldDraw) {
-    return;
+    return false;
   }
   background(255);
   image(images.board, 0, 0, width, height);
@@ -130,7 +130,7 @@ async function draw() {
 }
 function mouseMoved() {
   if (shouldDraw) {
-    return;
+    return false;
   }
   shouldDraw = true;
 }

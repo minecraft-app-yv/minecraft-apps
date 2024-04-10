@@ -66,7 +66,7 @@ function setup() {
 
 function draw() {
   if (!shouldDraw) {
-    return;
+    return false;
   }
   background(255);
   if (obj.failed) {
@@ -84,7 +84,7 @@ function draw() {
 }
 function mousePressed() {
   if (shouldDraw) {
-    return;
+    return false;
   }
   shouldDraw = true;
 }
