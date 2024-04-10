@@ -83,6 +83,7 @@ for (let x = -1; x <= 1; x++) {
 }
 //change image
 let animationActive = true;
+let flag = true;
 // ルービックキューブの初期化関数
 function initializeRubiksCube() {
   // 古いルービックキューブを削除
@@ -104,7 +105,11 @@ function initializeRubiksCube() {
   }
 }
 $('#change_image').change(async (e) => {
+  if (!flag) {
+    return false;
+  }
   animationActive = true;
+  flag = false;
   if ($('#change_image').prop('checked')) {
     const loadedMaterials = await Promise.all(textureUrls.map(async (url) => {
       const textureLoader = new THREE.TextureLoader();
@@ -120,6 +125,7 @@ $('#change_image').change(async (e) => {
   initializeRubiksCube();
   animate();
   animationActive = false;
+  flag = true;
 });
 let controls = new OrbitControls(camera, canvasElement);
 // マウス座標からのレイキャスティング
@@ -143,7 +149,11 @@ function getRandomDirection() {
   return Math.random() < 0.5 ? 1 : -1;
 }
 function shuffle() {
+  if (!flag) {
+    return false;
+  }
   animationActive = true;
+  flag = false;
   let shuffleCount = $("#shuffle-value").val();
   for (let i = 0; i < shuffleCount; i++) {
     const selectedCube = scene.children[getRandomInt(0, scene.children.length - 1)];
@@ -275,6 +285,7 @@ function shuffle() {
   }
   animate();
   animationActive = false;
+  flag = true;
 }
 document.getElementById('shuffle-button').addEventListener('click', shuffle);
 //button action
@@ -576,13 +587,17 @@ function animateMoveFunc(initialAngle, finalAngle, duration) {
     } else {
       animate();
       animationActive = false;
+      flag = true;
     }
   }
   animateRoll(); // アニメーションを開始する
 }
 $('#axis_change').click((e) => {
+  if (!flag) {
+    return false;
+  }
   animationActive = true;
-  obj.p = [0, 0, 0];
+  flag = false;
   startFunc(obj.p);
   let arry = ['x', 'y', 'z'];
   let axis = obj.changeKey;
@@ -590,9 +605,14 @@ $('#axis_change').click((e) => {
   highlightAxis(axis);
   animate();
   animationActive = false;
+  flag = true;
 });
 $('#layer_change').click((e) => {
+  if (!flag) {
+    return false;
+  }
   animationActive = true;
+  flag = false;
   let arry = ['x', 'y', 'z'];
   let axis = obj.changeKey;
   let n = obj.p[arry.indexOf(axis)] / cubeSize + 1;
@@ -602,9 +622,14 @@ $('#layer_change').click((e) => {
   highlightAxis(axis);
   animate();
   animationActive = false;
+  flag = true;
 });
 $('#cube_right_roll').click((e) => {
+  if (!flag) {
+    return false;
+  }
   animationActive = true;
+  flag = false;
   let angleChange = -Math.PI / 2;
   if (obj.changeKey === 'y') {
     angleChange = Math.PI / 2
@@ -614,7 +639,11 @@ $('#cube_right_roll').click((e) => {
   animateMoveFunc(0, angleChange, 300);
 });
 $('#cube_left_roll').click((e) => {
+  if (!flag) {
+    return false;
+  }
   animationActive = true;
+  flag = false;
   let angleChange = Math.PI / 2;
   if (obj.changeKey === 'y') {
     angleChange = -Math.PI / 2
@@ -624,25 +653,50 @@ $('#cube_left_roll').click((e) => {
   animateMoveFunc(0, angleChange, 300);
 });
 //animation
-function clickFunc() {
+function onCubeClick(event) {
   document.addEventListener('mousemove', startAnimation);
   document.addEventListener('mouseup', stopAnimation);
   document.addEventListener('touchmove', startAnimation);
   document.addEventListener('touchend', stopAnimation);
+  const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+  const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera({ x: mouseX, y: mouseY }, camera);
+  const intersects = raycaster.intersectObjects(scene.children, true);
+  if (intersects.length > 0) {
+    const selectedCube = intersects[0].object;
+    const touchedCubePosition = selectedCube.position.clone();
+    obj.p = [Math.round(touchedCubePosition.x), Math.round(touchedCubePosition.y), Math.round(touchedCubePosition.z)];
+    startFunc(obj.p);
+    highlightAxis(obj.changeKey);
+    animationActive = true;
+    animate();
+  }
+}
+function onCubeTouch(event) {
+  const touchX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+  const touchY = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+  onCubeClick({ clientX: touchX, clientY: touchY });
 }
 function startAnimation() {
+  if (animationActive) {
+    return false;
+  }
   animationActive = true;
   animate();
 }
 function stopAnimation() {
-  animationActive = false;
+  if (flag) {
+    animationActive = false;
+  }
   document.removeEventListener('mousemove', startAnimation);
   document.removeEventListener('mouseup', stopAnimation);
   document.removeEventListener('touchmove', startAnimation);
   document.removeEventListener('touchend', stopAnimation);
 }
-document.addEventListener('mousedown', clickFunc);
-document.addEventListener('touchstart', clickFunc);
+document.addEventListener('mousedown', onCubeClick);
+document.addEventListener('touchstart', onCubeTouch);
+
 function animate() {
   if (animationActive) {
     controls.update();
