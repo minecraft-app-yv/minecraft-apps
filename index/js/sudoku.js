@@ -83,6 +83,9 @@ function draw() {
   }
 }
 function mousePressed() {
+  if (shouldDraw) {
+    return;
+  }
   shouldDraw = true;
 }
 async function drawGrid(targetGrid, yOffset) {

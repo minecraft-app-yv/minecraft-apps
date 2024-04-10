@@ -129,6 +129,9 @@ async function draw() {
   shouldDraw = false;
 }
 function mouseMoved() {
+  if (shouldDraw) {
+    return;
+  }
   shouldDraw = true;
 }
 async function drawBoardAsync() {
@@ -465,7 +468,7 @@ function cpuMovement() {
   $('#gomoku_cpu').toggleClass('white');
 }
 async function mousePressed() {
-  if (!flag) {
+  if (!flag || shouldDraw) {
     return false;
   }
   shouldDraw = true;
