@@ -165,27 +165,24 @@ html {
   font-weight: bold;
   font-size: large;
   z-index: 4;
-  background: whitesmoke;
-  box-shadow: inset 2px 2px 2px rgba(255, 255, 255, 0.9), inset -2px -2px 2px rgba(0, 0, 0, 0.1), 1px 1px 5px rgba(0, 0, 0, 0.5);
-  background-size: 40px 40px;
-  background-image: radial-gradient(#444444 0%, #555555 50%, transparent 55%);
+  background: #fff;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  background-size: 0px 0px;
+  background-image: radial-gradient(dimgray 0%, dimgray 50%, transparent 55%);
   background-position: center;
   background-repeat: no-repeat;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1);
+  border: 1px solid dimgray;
+  color: black;
   transition: all 0.3s ease-in-out;
   text-decoration: none;
 }
 #plan_to_download_Blueprint .plan_menu a.to_top:before {
-  transition: all 0.3s ease-in-out;
   content: '\f106';
 }
 #plan_to_download_Blueprint .plan_menu a.to_top:hover {
-  text-shadow: -0.5px -0.5px 0.5px rgba(0, 0, 0, 0.5), 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.5);
-  color: #27ae60;
-}
-#plan_to_download_Blueprint .plan_menu a.to_top:hover::before {
-  transform: rotateZ(360deg);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  color: white;
+  background-size: 40px 40px;
 }
 #plan_to_download_Blueprint .close_button {
   position: absolute;
@@ -3002,8 +2999,9 @@ footer .app_ver {
   }
   /*++download for skin++*/
   #plan_to_download_Blueprint .plan_menu a.to_top {
-    text-shadow: -0.5px -0.5px 0.5px rgba(0, 0, 0, 0.5), 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.5);
-    color: #27ae60;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    color: white;
+    background-size: 40px 40px;
   }
   #plan_to_download_Blueprint .plan_to_download_Blueprint {
     height: 80vh;
