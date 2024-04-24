@@ -1815,6 +1815,8 @@ $('#change_command').change((e) => {
     result = confirm('Are you sure you want to change the id?');
   }
   if (!result) {
+    $('#change_command').val('');
+    $('#command_table input[name="command"]:checked').prop('checked', false);
     return false;
   }
   let text = $('#change_command').val();
