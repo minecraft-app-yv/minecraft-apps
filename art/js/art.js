@@ -1768,13 +1768,6 @@ function fold_command_table(e) {
     }
   }, 4);
 }
-function validateInput(inputElement) {
-  const inputValue = inputElement.value;
-  const regex = /[^a-zA-Z0-9_=-\[\]"\/:\s-]/g;
-  if (regex.test(inputValue)) {
-    inputElement.value = inputValue.replace(/[^a-zA-Z0-9_=-\[\]"\/:\s-]/g, '');
-  }
-}
 function build_command_table (e) {
   let table = '<thead><tr>';
   table += '<th class="bk_title" onclick="fold_command_table(this)">Block Name <i class="fa-solid fa-square-caret-up" onclick="fold_command_table(this)"></i></th>';
@@ -1802,6 +1795,17 @@ function build_command_table (e) {
   table += '</tbody>';
   $('#command_table').html(table);
 }
+function delete_str_escape_html(string) {
+  if (typeof string !== "string") {
+    return string;
+  }
+  return string.replace(/[&'`"<>]/g, '');
+}
+$('#change_command').on('input', (e) => {
+  let text = $('#change_command').val();
+  text = delete_str_escape_html(text);
+  $('#change_command').val(text);
+});
 $('#change_command').change((e) => {
   let result;
   if ($('header .header_form p.language').text() === 'Japanese') {
