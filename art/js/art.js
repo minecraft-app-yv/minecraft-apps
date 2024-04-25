@@ -1799,7 +1799,8 @@ function delete_str_escape_html(string) {
   if (typeof string !== "string") {
     return string;
   }
-  return string.replace(/[&'`"<>]/g, '');
+  //remove ""
+  return string.replace(/[&'`<>]/g, '');
 }
 $('#change_command').on('input', (e) => {
   let text = $('#change_command').val();
