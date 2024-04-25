@@ -1500,6 +1500,8 @@ function make_map_art_fun(arry, type) {
       coordinate[i] = Math.floor((coordinate[i] + 64) / 128) * 128 - 64;
     }
   }
+  let execution_limit = 1;
+  let listFunction = [];
   let str = 'tp @p ' + coordinate[0] + ' ' + coordinate[1] + ' ' + coordinate[2] + '\n';
   if (type === 'je') {
     str = 'execute as @p at @s run teleport @s ' + coordinate[0] + ' ' + coordinate[1] + ' ' + coordinate[2] + '\n';
@@ -1526,10 +1528,20 @@ function make_map_art_fun(arry, type) {
       if (id === '') {
         continue;
       }
-      str += 'fill ' + x + ' ' + y + ' ' + z + ' ' + x + ' ' + y + ' ' + z + ' ' + id + '\n';
+      execution_limit++;
+      if (execution_limit < 10000) {
+        str += 'fill ' + x + ' ' + y + ' ' + z + ' ' + x + ' ' + y + ' ' + z + ' ' + id + '\n';
+      }
+      else {
+        execution_limit = 1;
+        str += 'fill ' + x + ' ' + y + ' ' + z + ' ' + x + ' ' + y + ' ' + z + ' ' + id + '\n';
+        listFunction.push(str);
+        str = '';
+      }
     }
   }
-  return str;
+  listFunction.push(str);
+  return listFunction;
 }
 function make_pixel_art_fun(arry, type) {
   let coordinate = [];
@@ -1542,6 +1554,8 @@ function make_pixel_art_fun(arry, type) {
     }
     coordinate[i] = Number(coordinate[i]);
   }
+  let execution_limit = 1;
+  let listFunction = [];
   let str = 'tp @p ' + coordinate[0] + ' ' + coordinate[1] + ' ' + coordinate[2] + '\n';
   if (type === 'je') {
     str = 'execute as @p at @s run teleport @s ' + coordinate[0] + ' ' + coordinate[1] + ' ' + coordinate[2] + '\n';
@@ -1573,10 +1587,20 @@ function make_pixel_art_fun(arry, type) {
       if (id === '') {
         continue;
       }
-      str += 'fill ' + x + ' ' + y + ' ' + z + ' ' + x + ' ' + y + ' ' + z + ' ' + id + '\n';
+      execution_limit++;
+      if (execution_limit < 10000) {
+        str += 'fill ' + x + ' ' + y + ' ' + z + ' ' + x + ' ' + y + ' ' + z + ' ' + id + '\n';
+      }
+      else {
+        execution_limit = 1;
+        str += 'fill ' + x + ' ' + y + ' ' + z + ' ' + x + ' ' + y + ' ' + z + ' ' + id + '\n';
+        listFunction.push(str);
+        str = '';
+      }
     }
   }
-  return str;
+  listFunction.push(str);
+  return listFunction;
 }
 function return_blockC_imgUrl_skinUrl(arry, type) {
   const c = document.createElement("canvas");
@@ -1681,7 +1705,7 @@ function downBlueprint(e) {
   if ($('#pixel_art').prop('checked')) {
     arry = deepCopyArray(roll_back_obj.pixel[roll_back_obj.pixel.length - roll_back_obj.c_pixel - 1]);
   }
-  let placeExcelBlob, needExcelBlob, cBlobImg, cBlobSkin, fun_text, nameArr, blobArr, obj;
+  let placeExcelBlob, needExcelBlob, cBlobImg, cBlobSkin, listFunction, nameArr, blobArr, obj;
   if ($('#map_art').prop('checked')) {
     obj = return_blockC_imgUrl_skinUrl(arry, 'map_art');
     placeExcelBlob = func1(arry, 'map_art');
@@ -1695,16 +1719,20 @@ function downBlueprint(e) {
       blobArr.push(cBlobSkin);
     }
     if ($('#need_fun_for_be').prop('checked')) {
-      fun_text = make_map_art_fun(arry, 'be');
-      const blob = new Blob([fun_text], { type: "text/plain" });
-      nameArr.push('map_be.mcfunction');
-      blobArr.push(blob);
+      listFunction = make_map_art_fun(arry, 'be');
+      listFunction.forEach((fun_text, i) => {
+        const blob = new Blob([fun_text], { type: "text/plain" });
+        nameArr.push('map_be_' + i + '.mcfunction');
+        blobArr.push(blob);
+      });
     }
     if ($('#need_fun_for_je').prop('checked')) {
-      fun_text = make_map_art_fun(arry, 'je');
-      const blob = new Blob([fun_text], { type: "text/plain" });
-      nameArr.push('map_je.mcfunction');
-      blobArr.push(blob);
+      listFunction = make_map_art_fun(arry, 'je');
+      listFunction.forEach((fun_text, i) => {
+        const blob = new Blob([fun_text], { type: "text/plain" });
+        nameArr.push('map_je_' + i + '.mcfunction');
+        blobArr.push(blob);
+      });
     }
   }
   if ($('#pixel_art').prop('checked')) {
@@ -1720,16 +1748,20 @@ function downBlueprint(e) {
       blobArr.push(cBlobSkin);
     }
     if ($('#need_fun_for_be').prop('checked')) {
-      fun_text = make_pixel_art_fun(arry, 'be');
-      const blob = new Blob([fun_text], { type: "text/plain" });
-      nameArr.push('pixel_be.mcfunction');
-      blobArr.push(blob);
+      listFunction = make_pixel_art_fun(arry, 'be');
+      listFunction.forEach((fun_text, i) => {
+        const blob = new Blob([fun_text], { type: "text/plain" });
+        nameArr.push('pixel_be_' + i + '.mcfunction');
+        blobArr.push(blob);
+      });
     }
     if ($('#need_fun_for_je').prop('checked')) {
-      fun_text = make_pixel_art_fun(arry, 'je');
-      const blob = new Blob([fun_text], { type: "text/plain" });
-      nameArr.push('pixel_je.mcfunction');
-      blobArr.push(blob);
+      listFunction = make_pixel_art_fun(arry, 'je');
+      listFunction.forEach((fun_text, i) => {
+        const blob = new Blob([fun_text], { type: "text/plain" });
+        nameArr.push('pixel_je_' + i + '.mcfunction');
+        blobArr.push(blob);
+      });
     }
   }
   if ($('#draw_art').prop('checked')) {
