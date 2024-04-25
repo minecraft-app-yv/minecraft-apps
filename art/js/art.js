@@ -3393,7 +3393,7 @@ $('#for_sample_view input[name="sample_view"]').change((e) => {
 });
 $('#sample_view_retry').click((e) => {
   $('#wait').removeClass('hidden');
-  $('#for_sample_view').css('display', 'none');
+  //$('#for_sample_view').css('display', 'none');
   setTimeout((e) => {
     for_sample_view_action();
     $('#wait').addClass('hidden');
