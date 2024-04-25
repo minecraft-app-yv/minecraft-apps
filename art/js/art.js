@@ -3122,11 +3122,11 @@ function for_sample_view_action(e) {
   c.width = 171;
   c.height = 171;
   if (imgH >= imgW) {
-    cy = (imgH - imgW) / 2;
-    imgH = imgW;
-  } else {
     cx = (imgW - imgH) / 2;
     imgW = imgH;
+  } else {
+    cy = (imgH - imgW) / 2;
+    imgH = imgW;
   }
   ctx.fillStyle = "rgb(255, 255, 255)";
   ctx.fillRect(0, 0, 171, 171);
@@ -3192,6 +3192,8 @@ function for_sample_view_action(e) {
   let g_count = Number($('#sample_ratio_g').attr('data-count'));
   let b_count = Number($('#sample_ratio_b').attr('data-count'));
   for (let k = 0; k < sample_array.length; k++) {
+    sample_array[k].fillStyle = "rgb(255, 255, 255)";
+    sample_array[k].fillRect(0, 0, 171, 171);
     if (k > 0) {
       ratio_r = ratio_r + (Math.random() - 0.5) * 20 * Math.exp(-r_count / 10);
       r_count++;
@@ -3279,11 +3281,11 @@ function change_to_blocks(e) {
   c.width = px;
   c.height = px;
   if (imgH >= imgW) {
-    cy = (imgH - imgW) / 2;
-    imgH = imgW;
-  } else {
     cx = (imgW - imgH) / 2;
     imgW = imgH;
+  } else {
+    cy = (imgH - imgW) / 2;
+    imgH = imgW;
   }
   ctx.fillStyle = "rgb(255, 255, 255)";
   ctx.fillRect(0, 0, px, px);
