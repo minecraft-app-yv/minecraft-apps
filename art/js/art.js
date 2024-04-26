@@ -252,35 +252,6 @@ function rgb_to_return_array_rgb (rgb) {
   rgb = rgb.split(",");
   return rgb;
 }
-function rgb_to_return_array_hsv (array_rgb) {
-  let r = array_rgb[0] / 255 ;
-  let g = array_rgb[1] / 255 ;
-  let b = array_rgb[2] / 255 ;
-  let max = Math.max( r, g, b ) ;
-  let min = Math.min( r, g, b ) ;
-  let diff = max - min ;
-  let h = 0 ;
-  switch( min ) {
-    case max :
-    h = 0 ;
-    break ;
-
-    case r :
-    h = (60 * ((b - g) / diff)) + 180 ;
-    break ;
-
-    case g :
-    h = (60 * ((r - b) / diff)) + 300 ;
-    break ;
-
-    case b :
-    h = (60 * ((g - r) / diff)) + 60 ;
-    break ;
-  }
-  let s = max == 0 ? 0 : diff / max ;
-  let v = max ;
-  return [ h, s, v ] ;
-}
 function rgb_to_return_text_hex (array_rgb) {
   let R = ("0" + parseInt(array_rgb[0]).toString(16)).slice(-2);
   let G = ("0" + parseInt(array_rgb[1]).toString(16)).slice(-2);
@@ -345,6 +316,60 @@ function return_obj_from_localStorage (storage,key) {
   let getData = JSON.parse(storage.getItem(key));
   return getData;
 }
+function localStorageInto (getData) {
+  if (getData['top_menu'] === undefined) {
+    return true;
+  }
+  //top menu memory
+  $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
+    $(this).remove();
+  });
+  $('#syncer-acdn-03').append(getData['top_menu']);
+  //memory_obj in js
+  let get_obj = getData['top_menu_data'];
+  memory_obj = {};
+  let i = 0;
+  $.each(get_obj, function(index, obj) {
+    let key = get_obj['memoryObj_id' + i];
+    let canvas = get_obj['memoryObj_canvas' + i];
+    let data = get_obj['memoryObj_data' + i];
+    let value = {canvas: canvas, data: data};
+    memory_obj[key] = value;
+    i++;
+  })
+  //color boxes of palette board cp
+  let get_cp_obj = getData['cp_html'];
+  let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
+  for (let j = 0; j < arry_cp_class.length; j++) {
+    let html = get_cp_obj['cpObj_data' + j];
+    $('#CP .' + arry_cp_class[j]).html(html);
+  }
+  //check box color to display
+  let id = $("#CP label.check").attr('id');
+  let select_rgb = $("#" + id + " .CPrgb").css("backgroundColor").toString();
+  let select_img = $("#" + id + " .CPimg img.mImg");
+  let img_html = return_img_html (id);
+  let array_rgb = rgb_to_return_array_rgb (select_rgb);
+  let text_hex = rgb_to_return_text_hex (array_rgb);
+  $('.palette .palette_button > i').css('color', select_rgb);
+  $("#colorBox").val(text_hex);
+  $('.palette .palette_button .selected_block_img, #CP_icons .selected_block_img').html(img_html);
+  $("#CP_icons span.rgbR").text(array_rgb[0].slice(-3));
+  $("#CP_icons span.rgbG").text(array_rgb[1].slice(-3));
+  $("#CP_icons span.rgbB").text(array_rgb[2].slice(-3));
+  //input sample_view rgb
+  $('#sample_ratio_r').val(getData['ratio_r'][0]);
+  $('#sample_ratio_g').val(getData['ratio_g'][0]);
+  $('#sample_ratio_b').val(getData['ratio_b'][0]);
+  $('#sample_ratio_r').attr('data-count', getData['ratio_r'][1]);
+  $('#sample_ratio_g').attr('data-count', getData['ratio_g'][1]);
+  $('#sample_ratio_b').attr('data-count', getData['ratio_b'][1]);
+  //read command id
+  if (getData['command_data'] !== undefined) {
+    command_obj = deepCopyObj(getData['command_data']);
+    load_flag = true;
+  }
+}
 async function load_command_id_xlsx() {
   const url = '../art/data/image_alts.xlsm'; // ファイルのURLに置き換えてください
 
@@ -400,6 +425,7 @@ if (typeof sessionStorage === 'undefined') {
       value_obj['storage'] = 'off';
       //in storage
       let key = 'art_ver_two';
+      remove_localStorage (storage,key);
       setItem_in_localStorage (storage,key,value_obj);
       return false;
     }
@@ -442,10 +468,13 @@ if (typeof sessionStorage === 'undefined') {
       value_obj['command_data'] = deepCopyObj(command_obj);
       //in storage
       let key = 'art_ver_two';
+      remove_localStorage (storage,key);
       setItem_in_localStorage (storage,key,value_obj);
     }
   }
   //upload load storage from button
+  let localStorageRollBack_selector = 'header .header_form nav ul li.roll_back';
+  localStorageRollBack_selector += ', header .header_2windows nav ul li.roll_back';
   $('header .header_form nav ul li.roll_back').click((e) => {
     let key = 'art_ver_two';
     let getData = return_obj_from_localStorage (storage,key);
@@ -453,69 +482,8 @@ if (typeof sessionStorage === 'undefined') {
       return false;
     }
     value_obj = getData;
-    //top menu memory
-    $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-      $(this).remove();
-    });
-    $('#syncer-acdn-03').append(getData['top_menu']);
-    //memory_obj in js
-    let get_obj = getData['top_menu_data'];
-    memory_obj = {};
-    let i = 0;
-    $.each(get_obj, function(index, obj) {
-      let key = get_obj['memoryObj_id' + i];
-      let canvas = get_obj['memoryObj_canvas' + i];
-      let data = get_obj['memoryObj_data' + i];
-      let value = {canvas: canvas, data: data};
-      memory_obj[key] = value;
-      i++;
-    })
-    //color boxes of palette board cp
-    let get_cp_obj = getData['cp_html'];
-    let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
-    for (let j = 0; j < arry_cp_class.length; j++) {
-      let html = get_cp_obj['cpObj_data' + j];
-      $('#CP .' + arry_cp_class[j]).html(html);
-    }
-    //input sample_view rgb
-    $('#sample_ratio_r').val(getData['ratio_r']);
-    $('#sample_ratio_g').val(getData['ratio_g']);
-    $('#sample_ratio_b').val(getData['ratio_b']);
-  });
-  $('header .header_2windows nav ul li.roll_back').click((e) => {
-    let key = 'art_ver_two';
-    let getData = return_obj_from_localStorage (storage,key);
-    if (getData === '' || getData === null) {
-      return false;
-    }
-    //top menu memory
-    $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-      $(this).remove();
-    });
-    $('#syncer-acdn-03').append(getData['top_menu']);
-    //memory_obj in js
-    let get_obj = getData['top_menu_data'];
-    memory_obj = {};
-    let i = 0;
-    $.each(get_obj, function(index, obj) {
-      let key = get_obj['memoryObj_id' + i];
-      let canvas = get_obj['memoryObj_canvas' + i];
-      let data = get_obj['memoryObj_data' + i];
-      let value = {canvas: canvas, data: data};
-      memory_obj[key] = value;
-      i++;
-    })
-    //color boxes of palette board cp
-    let get_cp_obj = getData['cp_html'];
-    let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
-    for (let j = 0; j < arry_cp_class.length; j++) {
-      let html = get_cp_obj['cpObj_data' + j];
-      $('#CP .' + arry_cp_class[j]).html(html);
-    }
-    //input sample_view rgb
-    $('#sample_ratio_r').val(getData['ratio_r']);
-    $('#sample_ratio_g').val(getData['ratio_g']);
-    $('#sample_ratio_b').val(getData['ratio_b']);
+    $('#auto_download_storage').prop('checked', true);
+    localStorageInto (getData);
   });
 }
 /*++ready document++*/
@@ -526,61 +494,11 @@ $(document).ready(async function () {
   let getData = return_obj_from_localStorage (storage,key);
   if (getData !== '' && getData !== null) {
     value_obj = getData;
-    //storage button on or off
     if (getData['storage'] === 'off') {
       $('#auto_download_storage').prop('checked', false);
     }
     if (getData['storage'] === 'on') {
-      remove_localStorage (storage,key);
-      //top menu memory
-      $('#syncer-acdn-03 li[data-target="target_memorys"]').each(function(ele) {
-        $(this).remove();
-      });
-      $('#syncer-acdn-03').append(getData['top_menu']);
-      //memory_obj in js
-      let get_obj = getData['top_menu_data'];
-      memory_obj = {};
-      let i = 0;
-      $.each(get_obj, function(index, obj) {
-        let key = get_obj['memoryObj_id' + i];
-        let canvas = get_obj['memoryObj_canvas' + i];
-        let data = get_obj['memoryObj_data' + i];
-        let value = {canvas: canvas, data: data};
-        memory_obj[key] = value;
-        i++;
-      })
-      //color boxes of palette board cp
-      let get_cp_obj = getData['cp_html'];
-      let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
-      for (let j = 0; j < arry_cp_class.length; j++) {
-        let html = get_cp_obj['cpObj_data' + j];
-        $('#CP .' + arry_cp_class[j]).html(html);
-      }
-      //check box color to display
-      let id = $("#CP label.check").attr('id');
-      let select_rgb = $("#" + id + " .CPrgb").css("backgroundColor").toString();
-      let select_img = $("#" + id + " .CPimg img.mImg");
-      let img_html = return_img_html (id);
-      let array_rgb = rgb_to_return_array_rgb (select_rgb);
-      let text_hex = rgb_to_return_text_hex (array_rgb);
-      $('.palette .palette_button > i').css('color', select_rgb);
-      $("#colorBox").val(text_hex);
-      $('.palette .palette_button .selected_block_img, #CP_icons .selected_block_img').html(img_html);
-      $("#CP_icons span.rgbR").text(array_rgb[0].slice(-3));
-      $("#CP_icons span.rgbG").text(array_rgb[1].slice(-3));
-      $("#CP_icons span.rgbB").text(array_rgb[2].slice(-3));
-      //input sample_view rgb
-      $('#sample_ratio_r').val(getData['ratio_r'][0]);
-      $('#sample_ratio_g').val(getData['ratio_g'][0]);
-      $('#sample_ratio_b').val(getData['ratio_b'][0]);
-      $('#sample_ratio_r').attr('data-count', getData['ratio_r'][1]);
-      $('#sample_ratio_g').attr('data-count', getData['ratio_g'][1]);
-      $('#sample_ratio_b').attr('data-count', getData['ratio_b'][1]);
-      //read command id
-      if (getData['command_data'] !== undefined) {
-        command_obj = getData['command_data'];
-        load_flag = true;
-      }
+      localStorageInto (getData);
     }
   }
   //command_ids into obj
