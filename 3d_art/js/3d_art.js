@@ -294,7 +294,7 @@ else {
       setItem_in_localStorage (storage,key,value_obj);
       return false;
     }
-    if ($('#auto_download_storage').prop('checked')) {
+    else if ($('#auto_download_storage').prop('checked')) {
       value_obj['storage'] = 'on';
       //top menu memory
       let get_memorys_html = '';
