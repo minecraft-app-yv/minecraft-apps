@@ -2735,8 +2735,8 @@ function selected_color_box_move (e) {
     $('#CP .active').removeClass('active');
     $elem.addClass('active');
   }
-  let cp_top = $(".palette .palette_board").offset().top + 116;
-  let cp_bottom = $(".palette .palette_board").offset().top + $(".palette .palette_board").height();
+  let cp_top = $(".palette .palette_board").offset().top + 116 - window.scrollY;
+  let cp_bottom = $(".palette .palette_board").offset().top + $(".palette .palette_board").height() - window.scrollY;
   let palette_board_scroll_top = $('.palette .palette_board').scrollTop();
   if (y <= cp_top) {
     palette_board_scroll_top -= 20;
