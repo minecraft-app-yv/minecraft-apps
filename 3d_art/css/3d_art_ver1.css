@@ -1,11 +1,9 @@
 /*reserve css*/
-i {
-  user-select: none;
-}
 .hidden, .hide {
   display: none;
 }
-#CP_img_explanation {
+#CP_img_explanation,
+#jump_layer_explanation {
   display: block;
   position: fixed;
   white-space: nowrap;
@@ -14,9 +12,6 @@ i {
   font-size: xx-small;
   font-weight: normal;
   z-index: 100;
-}
-input:invalid {
-  color: red;
 }
 /*reset*/
 a {
@@ -72,27 +67,16 @@ html {
 /*close_button form*/
 .close_button {
   background: #fff;
-  background-size: 0px 0px;
-  background-image: radial-gradient(dimgray 0%, dimgray 50%, transparent 55%);
-  background-position: center;
-  background-repeat: no-repeat;
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 40px;
-  border: 1px solid dimgray;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-  font-size: large;
+  font-size: x-large;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease-out;
-}
-.close_button:hover {
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-  color: white;
-  background-size: 40px 40px;
 }
 /*wait for loding*/
 #wait {
@@ -102,9 +86,9 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0);
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.5);
   cursor: wait;
-  z-index: 999;
 }
 #wait.hidden {
   display: none;
@@ -125,9 +109,9 @@ html {
 #plan_to_download_Blueprint .plan_to_download_Blueprint {
   width: 600px;
   height: 600px;
+  border: 1px solid gainsboro;
   border-radius: 3px;
-  background-color: #000022;
-  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  background-color: white;
   position: relative;
 }
 /*https://qiita.com/shizen-shin/items/2b7534caa17ab2dd02fb*/
@@ -139,7 +123,6 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  user-select: none;
 }
 #plan_to_download_Blueprint .plan_menu .for_scroll {
   display: none;
@@ -149,47 +132,12 @@ html {
   width: 0;
   height: 0;
 }
-#plan_to_download_Blueprint .plan_menu a.to_top {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 100%;
-  font-weight: bold;
-  font-size: large;
-  z-index: 4;
-  background: #fff;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-  background-size: 0px 0px;
-  background-image: radial-gradient(dimgray 0%, dimgray 50%, transparent 55%);
-  background-position: center;
-  background-repeat: no-repeat;
-  border: 1px solid dimgray;
-  color: black;
-  transition: all 0.3s ease-in-out;
-  text-decoration: none;
-}
-#plan_to_download_Blueprint .plan_menu a.to_top:before {
-  content: '\f106';
-}
-#plan_to_download_Blueprint .plan_menu a.to_top:hover {
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-  color: white;
-  background-size: 40px 40px;
-}
 #plan_to_download_Blueprint .close_button {
   position: absolute;
   top: -20px;
   right: -20px;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint button,
-#plan_to_download_Blueprint .third.plan label.button {
+#plan_to_download_Blueprint .plan_to_download_Blueprint button {
   display: block;
   margin: 10px auto 0 auto;
   box-sizing: border-box;
@@ -207,7 +155,7 @@ html {
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
   border: 2px solid rgba(0,0,0,0.2);
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title {
+#plan_to_download_Blueprint .plan_to_download_Blueprint p {
   display: block;
   margin: 0 auto;
   padding: 0 10px;
@@ -221,21 +169,21 @@ html {
   line-height: 45px;
   text-align: center;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title::after,
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title::before {
+#plan_to_download_Blueprint .plan_to_download_Blueprint p::after,
+#plan_to_download_Blueprint .plan_to_download_Blueprint p::before {
   content:'';
   width: 20px;
   height: 40px;
   position: absolute;
   display: inline-block;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title::before {
+#plan_to_download_Blueprint .plan_to_download_Blueprint p::before {
   border-left: solid 5px darkgreen;
   border-top: solid 5px darkgreen;
   top:0;
   left: 0;
 }
-#plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title::after {
+#plan_to_download_Blueprint .plan_to_download_Blueprint p::after {
   border-right: solid 5px darkgreen;
   border-bottom: solid 5px darkgreen;
   bottom:0;
@@ -337,220 +285,101 @@ html {
 #plan_to_download_Blueprint .second.plan i {
   color: navy;
 }
-#plan_to_download_Blueprint .first.plan span,
+#plan_to_download_Blueprint .plan span {
+  cursor: pointer;
+}
 #plan_to_download_Blueprint .second.plan span {
   line-height: 20px;
-  display: block;
-  border: 3px solid white;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  cursor: pointer;
 }
-#plan_to_download_Blueprint .third.plan {
-  scroll-behavior: smooth;
-}
-#plan_to_download_Blueprint .third.plan .user_input {
-  display: none;
-}
-#plan_to_download_Blueprint .third.plan label.button,
-#plan_to_download_Blueprint .third.plan section h2 span {
-  display: inline-block;
-}
-#plan_to_download_Blueprint .third.plan section,
-#plan_to_download_Blueprint .fourth.plan .coordinate {
-  padding: 0.5em 1em;
-  margin: 10px 0;
-  color: #5d627b;
-  background: white;
-  border-top: solid 5px #5d627b;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
-  position: relative;
-}
-#plan_to_download_Blueprint .fourth.plan .coordinate {
-  display: none;
-}
-#plan_to_download_Blueprint .third.plan section h2 {
-  font-size: x-large;
-  margin-bottom: 5px;
-}
-#plan_to_download_Blueprint .third.plan section p {
-  color: black;
-  text-align: left;
-  margin-bottom: 10px;
-}
-#plan_to_download_Blueprint .third.plan section a {
-  margin: 2px 5px;
-  text-decoration: underline;
-  color: #0000EE;
-  display: inline-block;
-}
-#plan_to_download_Blueprint .third.plan section h3 {
-  font-size: large;
-  margin: 15px auto 5px auto;
-}
-#plan_to_download_Blueprint .third.plan section .idList {
-  margin: 0 10px;
-  display: inline-block;
-  cursor: pointer;
-}
-#plan_to_download_Blueprint .third.plan section iframe {
-  display: block;
-  margin: 10px auto;
-}
-#plan_to_download_Blueprint .third.plan #change_command {
-  padding: 5px;
-  cursor: pointer;
-  margin: 10px 0;
-  width: calc(100%);
-  display: block;
-  text-align: center;
-  font-size: large;
-  background: #fff;
-  border-radius: 3px;
-  border: 2px inset silver;
-  box-sizing: border-box;
-  box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.3);
-}
-#plan_to_download_Blueprint .third.plan .table_frame {
-  overflow: scroll;
-  width: 100%;
-  height: calc(600px * 0.9 - 60px);
-  margin-bottom: 10px;
-  scroll-behavior: smooth;
-}
-#plan_to_download_Blueprint .third.plan .table_frame::-webkit-scrollbar-track {
-  background-color: darkgreen;
-  border-radius: 1px;
-}
-#plan_to_download_Blueprint .third.plan .table_frame::-webkit-scrollbar {
-  width: 1px;
-  height: 1px;
-  background-color: darkgreen;
-}
-#plan_to_download_Blueprint .third.plan .table_frame::-webkit-scrollbar-thumb {
-  border-radius: 1px;
-  background-image: linear-gradient(180deg, green 0%, lime 100%);
-}
-#plan_to_download_Blueprint .third.plan #command_table {
-  table-layout: auto;
-  width: 100%;
-  border-collapse: collapse; /* セル間の境界を設定 */
-  border-spacing: 5px;
-  border: 1px solid #fff;
-  background-color: white;
-}
-#plan_to_download_Blueprint .third.plan #command_table input {
-  display: none;
-}
-#plan_to_download_Blueprint .third.plan #command_table tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-#plan_to_download_Blueprint .third.plan #command_table thead th {
-  text-align: center;
-  background-color: #333;
-  color: white;
-  position: sticky;
-  top: 0;
-  border-left: 1px solid #fff;
-  padding: 5px;
-  cursor: pointer;
-}
-#plan_to_download_Blueprint .third.plan #command_table tbody td {
-  border-left: 1px solid #000;
-}
-#plan_to_download_Blueprint .third.plan #command_table tbody td[data-id="empty"] {
-  background: rgba(255, 0, 0, 0.5);
-}
-#plan_to_download_Blueprint .third.plan #command_table tbody td label,
-#plan_to_download_Blueprint .third.plan #command_table tbody th label {
-  padding: 0px; /* セル内の余白を設定 */
-  white-space: nowrap;
-  text-align: center;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#plan_to_download_Blueprint .third.plan #command_table tbody td label span,
-#plan_to_download_Blueprint .third.plan #command_table tbody th label span {
-  padding: 5px;
-  text-align: left;
-  white-space: nowrap;
-  width: 100%;
-}
-#plan_to_download_Blueprint .third.plan .user_input .attention {
-  text-decoration: underline;
-  color: red;
-  font-weight: bold;
-  position: relative;
-  cursor: pointer;
-}
-#plan_to_download_Blueprint .third.plan .for_scroll {
-  display: block;
-}
-#command_table input[name="command"]:checked ~ span {
-  background: rgba(0, 255, 0, 0.2);
-}
-#plan_to_download_Blueprint .fourth.plan .frame {
+#plan_to_download_Blueprint .third.plan .frame {
   margin-top: 30px;
 }
-#plan_to_download_Blueprint .fourth.plan .title {
+#plan_to_download_Blueprint .third.plan .title {
   padding: 0.4em 0.5em;
   color: #494949;
   background: #f4f4f4;
   border-left: solid 5px #7db4e6;
   border-bottom: solid 3px #d7d7d7;
 }
-#plan_to_download_Blueprint .fourth.plan .response {
+#plan_to_download_Blueprint .third.plan .response {
   margin-top: 5px;
 }
-#plan_to_download_Blueprint .fourth.plan .response span {
-  color: white;
+#plan_to_download_Blueprint .third.plan .response span {
   display: none;
 }
-#plan_to_download_Blueprint .fourth.plan button {
+#plan_to_download_Blueprint .third.plan button {
   margin-top: 30px;
 }
-#plan_to_download_Blueprint .fourth.plan .coordinate > * {
-  margin-bottom: 10px;
-}
-#plan_to_download_Blueprint .fourth.plan .coordinate p span {
-  display: inline-block;
-}
-#plan_to_download_Blueprint .fourth.plan .coordinate > span {
+#plan_to_download_Blueprint .fourth.plan .for_scroll {
   display: block;
 }
-#plan_to_download_Blueprint .fourth.plan .coordinate input {
-  border-bottom: 1px solid #5d627b;
-  text-align: center;
-  cursor: pointer;
+#plan_to_download_Blueprint .fourth.plan .frame {
   position: relative;
-}
-#plan_to_download_Blueprint .fourth.plan .coordinate input:invalid {
-  color: red;
-}
-#plan_to_download_Blueprint .fourth.plan .coordinate input:hover,
-#plan_to_download_Blueprint .fourth.plan .coordinate #make_art_direction:hover {
-  background-image: linear-gradient(0deg, green 10%, transparent 15%);
-}
-#plan_to_download_Blueprint .fourth.plan .coordinate #make_art_direction {
-  border-bottom: 1px solid #5d627b;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
+  margin-top: 30px;
   width: 100%;
-  padding: 5px 0;
-}
-#plan_menu_2:checked ~ .plan_menu a.to_top {
+  align-items: center;
+  justify-content: center;
   display: flex;
+}
+#plan_to_download_Blueprint .fourth.plan .frame .canvas {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  overflow: hidden;
+  width: 80%;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid darkgray;
+  transition: all 0.5s ease-in-out;
+  display: none;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas.present {
+  display: block;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas.before {
+  transform-origin: left bottom;
+  transform: rotateZ(-90deg);
+  display: block;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas.after {
+  transform-origin: right bottom;
+  transform: rotateZ(90deg);
+  display: block;
+}
+#plan_to_download_Blueprint .fourth.plan .frame canvas[data-id="dummy_before"],
+#plan_to_download_Blueprint .fourth.plan .frame canvas[data-id="dummy_after"] {
+  border: none;
+}
+#plan_to_download_Blueprint .fourth.plan i {
+  position: absolute;
+  font-size: xx-large;
+  color: green;
+  opacity: 0.5;
+  font-weight: bold;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+#plan_to_download_Blueprint .fourth.plan i:hover {
+  opacity: 1;
+}
+#plan_to_download_Blueprint .fourth.plan i.fa-angles-left {
+  left: 0;
+}
+#plan_to_download_Blueprint .fourth.plan i.fa-angles-right {
+  right: 0;
 }
 #Blueprint_direction_horizon:checked ~ .plan_menu label[for="Blueprint_direction_horizon"] span,
 #Blueprint_direction_vertical:checked ~ .plan_menu label[for="Blueprint_direction_vertical"] span,
 #not_need_block_skins:checked ~ .plan_menu label[for="not_need_block_skins"] span,
 #need_block_skins:checked ~ .plan_menu label[for="need_block_skins"] span {
-  border: 3px solid lime;
+  display: block;
+  border: 3px solid green;
+  padding: 20px;
+  border-radius: 8px;
   font-weight: bold;
 }
 #not_need_block_skins:checked ~ .plan_menu label[for="not_need_block_skins"] span i {
@@ -577,31 +406,14 @@ html {
     transform: translate(60px, 0);
   }
 }
-#need_fun_for_be:checked ~ .plan_menu .third.plan .user_input,
-#need_fun_for_je:checked ~ .plan_menu .third.plan .user_input,
-#need_fun_for_be:checked ~ .plan_menu .fourth.plan .coordinate,
-#need_fun_for_je:checked ~ .plan_menu .fourth.plan .coordinate {
-  display: block;
-}
 #Blueprint_direction_horizon:checked ~ .plan_menu .response span.Blueprint_direction_horizon,
 #Blueprint_direction_vertical:checked ~ .plan_menu .response span.Blueprint_direction_vertical,
 #not_need_block_skins:checked ~ .plan_menu .response span.not_need_block_skins,
-#need_block_skins:checked ~ .plan_menu .response span.need_block_skins,
-#need_fun_for_be:checked ~ .plan_menu .response span.need_fun_for_be,
-#need_fun_for_je:checked ~ .plan_menu .response span.need_fun_for_je,
-#not_need_fun:checked ~ .plan_menu .response span.not_need_fun {
+#need_block_skins:checked ~ .plan_menu .response span.need_block_skins {
   display: inline;
 }
-#need_fun_for_be:checked ~ .plan_menu .third.plan label[for="need_fun_for_be"],
-#need_fun_for_je:checked ~ .plan_menu .third.plan label[for="need_fun_for_je"],
-#not_need_fun:checked ~ .plan_menu .third.plan label[for="not_need_fun"] {
-  color: white;
-  text-shadow: none;
-  background: royalblue;
-  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.05), inset 0 -2px 0 rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(0,0,0,0.6);
-}
 /*slideshow*/
+/*https://photopizza.design/slideshow/*/
 #plan_to_download_Blueprint .plan_menu .slideshow_icon {
   height: 60px;
   width: 100%;
@@ -612,16 +424,15 @@ html {
   align-items: center;
   justify-content: center;
   display: flex;
-  background: #000011;
+  background: white;
   border-radius: 3px;
-  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
 }
 #plan_to_download_Blueprint .plan_menu label.slideshow {
   display: block;
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: #66b2ff;
+  background: royalblue;
   opacity: 0.3;
   margin: 0 15px;
   cursor: pointer;
@@ -637,7 +448,7 @@ html {
   top: 50%;
   left: 50%;
   opacity: 0.3;
-  border: 2px solid #66b2ff;
+  border: 2px solid royalblue;
   border-radius: 50%;
   transform: translate(-50%, -50%) scale(0);
   transition: all 0.3s ease-in-out;
@@ -690,7 +501,7 @@ html {
   width: 35px;
   height: 35px;
   cursor: pointer;
-  color: #66b2ff;
+  color: navy;
   font-weight: bold;
   font-size: x-large;
   margin: 0 10px;
@@ -716,8 +527,8 @@ html {
   height: 640px;
   border-radius: 3px;
   position: relative;
-  background-color: #000022;
-  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 5, 10, 0.5);
+  box-shadow: 0 0 5px rgb(0, 5, 10);
 }
 #for_sample_view .make_menu {
   width: 85%;
@@ -963,8 +774,6 @@ html {
   align-items: center;
   justify-content: center;
   display: flex;
-  background-color: #000011;
-  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px 1px rgba(0, 0, 0, 0.5);
 }
 #for_sample_view .make_menu label.slideshow {
   display: block;
@@ -1111,7 +920,6 @@ header {
   height: 80px;
   background: #404040;
   transition: top 0.5s ease-in-out;
-  user-select: none;
 }
 #header_hanb, .header_hanb_icon {
   display: none;
@@ -1347,17 +1155,6 @@ header img:hover {
 #all_close_icons:checked ~ aside, #all_close_icons:checked ~ .icon_button_fixed_frame {
   display: none;
 }
-#all_close_icons:checked ~ header .header_form nav ul li .close_tools {
-  box-shadow: inset 0 -2px 0px rgba(255, 255, 255, 0.25), inset 0 2px 0px rgba(0, 0, 0, 0.7);
-  background-color: none;
-  background-image: linear-gradient(green 0%, lightgreen 100%);
-  -webkit-transform: translateY(-2px);
-  transform: translateY(-2px);
-}
-#all_close_icons:checked ~ header .header_form nav ul li .close_tools i {
-  top: 5.5px;
-  color: #fff;
-}
 #auto_download_storage:checked ~ .header_form .auto_download_storage {
   box-shadow: inset 0 -2px 0px rgba(255, 255, 255, 0.25), inset 0 2px 0px rgba(0, 0, 0, 0.7);
   background-color: none;
@@ -1397,7 +1194,6 @@ header img:hover {
   z-index: 30;
   background: #000;
   transition: top 0.5s ease-in-out;
-  user-select: none;
 }
 .top_menu input {
   display: none;
@@ -1521,9 +1317,9 @@ header img:hover {
 /*top menu action*/
 .top_menu ul li:hover,
 .top_menu ul li:active,
-#editing_layer:checked ~ label[for="editing_layer"],
-#editing_2d:checked ~ label[for="editing_2d"],
-#editing_3d:checked ~ label[for="editing_3d"],
+#vertical_layer:checked ~ label[for="vertical_layer"],
+#horizontal_layer:checked ~ label[for="horizontal_layer"],
+#side_layer:checked ~ label[for="side_layer"],
 #syncer-acdn-03 li.top_menu_acdn_action_tool > *:active,
 #syncer-acdn-03 li.top_menu_acdn_action_tool > *:hover {
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), inset 0px -1px 1px rgba(255, 255, 255, 0.5);
@@ -1595,7 +1391,7 @@ aside {
 .hanb_icon_form .title {
   width: 640px;
   height: 40px;
-  margin-top: 60px;
+  margin-top:60px;
   line-height: 40px;
   transform-origin: top left;
   transform: rotate(90deg) translate(0, -100%);
@@ -1664,14 +1460,8 @@ aside {
   background-image: linear-gradient(180deg, green 0%, lightgreen 100%);
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.8);
 }
-#hanb:checked ~ .aside_menu .scrollTop,
-#hanb:checked ~ .aside_menu .scrollBottom {
-  display: none;
-}
 /*change to pixel art*/
-.aside_menu .change_to_pixel_art,
-.aside_menu .scrollTop,
-.aside_menu .scrollBottom {
+.aside_menu .change_to_pixel_art {
   box-sizing: border-box;
   text-align: center;
   font-size: 30px;
@@ -1688,14 +1478,8 @@ aside {
   left: 0;
   cursor: pointer;
   transition: all 0.5s ease-in-out;
-  z-index: 10;
-}
-.aside_menu .change_to_pixel_art {
   transform: translate(-1px, 40px);
-}
-.aside_menu .scrollTop,
-.aside_menu .scrollBottom {
-  display: none;
+  z-index: 10;
 }
 .aside_menu .change_to_pixel_art span.pop_text {
   display: none;
@@ -1795,6 +1579,195 @@ aside button span {
   border-color: #ffdb88 #DAAE83 #ffdb88;
   box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
 }
+/*https://saruwakakun.com/html-css/reference/buttons*/
+#check_view_button {
+  position: absolute;
+  border: none;
+  display: block;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  text-align: center;
+  background: #f7f7f7;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
+  transform: translate(-50%,-50%);
+  z-index: 1;
+}
+#check_view_button i {
+  color: rgba(0,0,0,0.2);
+  position: relative;
+  content: '';
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  border-radius: 50%;
+  font-size: 40px;
+  background-image: linear-gradient(#e8e8e8 0%, #d6d6d6 100%);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
+  border-bottom: solid 2px #b5b5b5;
+  transform: translate(0, -1px);
+  transition: all 1s ease-in-out;
+}
+#check_view_button span.pop_text {
+  display: none;
+}
+/*direction selector*/
+#change_view_face {
+  width: 150px;
+  position: relative;
+  height: 30px;
+  margin: 17px auto;
+  z-index: 2;
+}
+#roll_cube_to_left,
+#roll_cube_to_right {
+  position: absolute;
+  font-size: 15px;
+  color: darkgray;
+  cursor: pointer;
+  width: 30px;
+  height: 20px;
+  top: 5px;
+  line-height: 30px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+}
+#roll_cube_to_top,
+#roll_cube_to_bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 20px;
+  color: black;
+  cursor: pointer;
+  width: 150px;
+}
+#roll_cube_to_top {
+  top: -10px;
+}
+#roll_cube_to_bottom {
+  bottom: -10px;
+  transform: rotateZ(180deg);
+}
+#roll_cube_to_left {
+  text-shadow: -1px 1px 1px rgba(0, 0, 0, 0.8), 1px -1px 1px rgba(255, 255, 255, 1);
+  transform: rotateZ(90deg);
+  right: -28px;
+}
+#roll_cube_to_right {
+  text-shadow: 1px -1px 1px rgba(0, 0, 0, 0.8), -1px 1px 1px rgba(255, 255, 255, 1);
+  transform: rotateZ(-90deg);
+  left: -28px;
+}
+#change_view_face > p {
+  margin: 0 auto;
+  box-sizing: border-box;
+  cursor: pointer;
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  line-height: 28px;
+  font-weight: bold;
+  font-size: small;
+  color: #fff;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0,0,0,0.2);
+  position: absolute;
+  z-index: 2;
+  transition: all 0.5s ease-in-out;
+}
+#cube_front {
+  background-color: darkred;
+}
+#cube_right {
+  background-color: darkgreen;
+}
+#cube_left {
+  background-color: darkblue;
+}
+#cube_top {
+  background-color: darkorange;
+}
+#cube_bottom {
+  background-color: blueviolet;
+}
+#cube_back {
+  background-color: black;
+}
+#cube_front::before,
+#cube_right::before,
+#cube_left::before,
+#cube_top::before,
+#cube_bottom::before,
+#cube_back::before {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  transform: scale(0.2);
+  transform-origin: top left;
+}
+#cube_front::before {
+  background-image: url(../img/cube_front.png);
+}
+#cube_right::before {
+  background-image: url(../img/cube_right.png);
+}
+#cube_left::before {
+  background-image: url(../img/cube_left.png);
+}
+#cube_top::before {
+  background-image: url(../img/cube_top.png);
+}
+#cube_bottom::before {
+  background-image: url(../img/cube_bottom.png);
+}
+#cube_back::before {
+  background-image: url(../img/cube_back.png);
+}
+#change_view_face > p.pull_down {
+  transform: translate(0, 0) rotate(0);
+  position: relative;
+  z-index: 2;
+}
+#change_view_face > span.pull_down {
+  display: none;
+}
+#change_view_face > .front {
+  transform: translate(0, 0);
+  z-index: 3;
+}
+#change_view_face > .back {
+  transform: translate(0, 0);
+  z-index: 1;
+}
+#change_view_face > .right {
+  transform-origin: right;
+  transform: translate(-100%, 0) rotateY(90deg);
+  z-index: 2;
+}
+#change_view_face > .left {
+  transform-origin: left;
+  transform: translate(100%, 0) rotateY(90deg);
+  z-index: 2;
+}
+#change_view_face > .top {
+  transform-origin: bottom;
+  transform: translate(0, -100%) rotateX(90deg);
+  z-index: 2;
+}
+#change_view_face > .bottom {
+  transform-origin: top;
+  transform: translate(0, 100%) rotateX(90deg);
+  z-index: 2;
+}
 /*select size*/
 .input_forms .small_title {
   padding: 5px 0;
@@ -1885,42 +1858,37 @@ aside button span {
   position: absolute;
   z-index: 2;
   top: 0;
-  user-select: none;
 }
 .zoom_in_out_scope {
   position: absolute;
   top: 0px;
   left: 0;
   z-index: 6;
-  user-select: none;
 }
 .normal_tool {
   position: absolute;
-  top: 40px;
+  top: 30px;
   left: 0;
   z-index: 5;
-  user-select: none;
 }
 .roll_back_and_forward {
   position: absolute;
-  top: 80px;
+  top: 60px;
   left: 0;
   z-index: 4;
-  user-select: none;
 }
 .layer_selector {
   position: absolute;
-  top: 120px;
+  top: 90px;
   left: 0;
   z-index: 3;
-  user-select: none;
 }
 .palette .palette_button,
 .palette .palette_download,
 .palette .palette_upload,
 .zoom_in_out_scope .zoom_scope_button,
-.zoom_in_out_scope .plus_scope_icon,
-.zoom_in_out_scope .minus_scope_icon,
+.zoom_in_out_scope label[for="plus_scope_icon"],
+.zoom_in_out_scope label[for="minus_scope_icon"],
 .normal_tool .normal_tool_button,
 .normal_tool label[for="pen_tool"],
 .normal_tool label[for="fill_tool_of_paint_roller"],
@@ -1937,9 +1905,7 @@ aside button span {
 .roll_back_and_forward .roll_forward,
 .layer_selector .layer_selector_button,
 .layer_selector .layer_copy,
-.layer_selector .layer_cut,
 .layer_selector .layer_paste,
-.layer_selector .layer_change,
 .layer_selector label[for="jump_to_this_layer"] {
   position: absolute;
   top: 0;
@@ -1947,13 +1913,13 @@ aside button span {
   z-index: 2;
   display: block;
   text-align: center;
-  line-height: 40px;
+  line-height: 30px;
   background: whitesmoke;
   color: #a5a5a5;
   font-weight: bold;
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 2px rgba(0, 0, 0, 0.1);
@@ -1977,13 +1943,13 @@ aside button span {
   border-radius: 0 4px 4px 0;
   position: absolute;
   top: -0.5px;
-  left: 39px;
+  left: 29px;
   display: block;
   text-align: center;
-  line-height: 40px;
+  line-height: 30px;
   color: black;
-  width: 25px;
-  height: 40px;
+  width: 20px;
+  height: 30px;
   background: whitesmoke;
   box-sizing: border-box;
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 2px rgba(0, 0, 0, 0.1);
@@ -1993,8 +1959,8 @@ aside button span {
 #palette_button:checked ~ .palette_download,
 #palette_button:checked ~ .palette_upload,
 #palette_button:checked ~ .palette_board,
-#zoom_scope_button:checked ~ .plus_scope_icon,
-#zoom_scope_button:checked ~ .minus_scope_icon,
+#zoom_scope_button:checked ~ label[for="plus_scope_icon"],
+#zoom_scope_button:checked ~ label[for="minus_scope_icon"],
 #zoom_scope_button:checked ~ .appear,
 #normal_tool_button:checked ~ label[for="pen_tool"],
 #normal_tool_button:checked ~ label[for="fill_tool_of_paint_roller"],
@@ -2011,9 +1977,7 @@ aside button span {
 #roll_both_button:checked ~ .roll_forward,
 #layer_selector_button:checked ~ .appear,
 #layer_selector_button:checked ~ .layer_copy,
-#layer_selector_button:checked ~ .layer_cut,
 #layer_selector_button:checked ~ .layer_paste,
-#layer_selector_button:checked ~ .layer_change,
 #layer_selector_button:checked ~ label[for="jump_to_this_layer"] {
   display: block;
 }
@@ -2038,8 +2002,8 @@ aside button span {
 #layer_selector_button:checked ~ .layer_selector_button label[for="layer_selector_button"] {
   top: -1px;
   left: -1px;
-  width: 41px;
-  height: 41px;
+  width: 31px;
+  height: 31px;
   background: none;
   border-color: rgba(0,0,0,0);
   border-radius: 4px;
@@ -2064,26 +2028,26 @@ aside button span {
   background: navy;
 }
 .palette .palette_button .selected_block_img {
-  width: 39px;
-  height: 39px;
+  width: 29px;
+  height: 29px;
   object-fit: cover;
   cursor: default;
   display: inline-block;
 }
 .palette .palette_button .selected_block_img img {
   position: relative;
-  top: 5px;
+  top: 2px;
   width: 25px;
   height: 25px;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 .palette .palette_download {
   display: none;
-  left: 40px;
+  left: 30px;
 }
 .palette .palette_upload {
   display: none;
-  left: 80px;
+  left: 60px;
 }
 .palette .palette_download:hover,
 .palette .palette_upload:hover {
@@ -2400,24 +2364,24 @@ aside button span {
   display: none;
 }
 /*only zoom_in_out_scope*/
-.zoom_in_out_scope .plus_scope_icon {
+.zoom_in_out_scope label[for="plus_scope_icon"] {
   display: none;
-  left: 40px;
+  left: 30px;
 }
-.zoom_in_out_scope .minus_scope_icon {
+.zoom_in_out_scope label[for="minus_scope_icon"] {
   display: none;
-  left: 80px;
+  left: 60px;
 }
 .zoom_in_out_scope label,
 .zoom_in_out_scope input {
   display: none;
 }
-.zoom_in_out_scope .plus_scope_icon:hover,
-.zoom_in_out_scope .minus_scope_icon:hover {
+.zoom_in_out_scope label[for="plus_scope_icon"]:hover,
+.zoom_in_out_scope label[for="minus_scope_icon"]:hover {
   color: blue;
 }
-.zoom_in_out_scope .plus_scope_icon:active,
-.zoom_in_out_scope .minus_scope_icon:active {
+#plus_scope_icon:checked ~ label[for="plus_scope_icon"],
+#minus_scope_icon:checked ~ label[for="minus_scope_icon"] {
   background: royalblue;
   background-image: none;
   color: white;
@@ -2429,8 +2393,8 @@ aside button span {
 .zoom_in_out_scope label.appear {
   width: 120px;
   position: absolute;
-  top: 40px;
-  left: 40px;
+  top: 30px;
+  left: 30px;
   text-align: center;
   white-space: nowrap;
   padding: 10px 5px;
@@ -2467,7 +2431,7 @@ input.appear:focus ~ label.appear {
 .normal_tool label[for="area_cut_tool_of_scissors"] {
   position: relative;
   display: none;
-  transform: translate(40px,-40px);
+  transform: translate(30px,-30px);
 }
 #no_set_action:checked ~ i,
 #no_set_action:checked ~ label i {
@@ -2492,7 +2456,7 @@ input.appear:focus ~ label.appear {
 .normal_tool label[for="roll_area_with_rect"] {
   position: relative;
   display: none;
-  transform: translate(40px,-40px);
+  transform: translate(30px,-30px);
 }
 .normal_tool label[for="copy_area_with_rect"] span.for_copy_normal_position,
 .normal_tool label[for="resize_area_with_rect"],
@@ -2528,23 +2492,21 @@ input.appear:focus ~ label.appear {
   display: none;
   position: absolute;
   top: 0;
-  left: 80px;
+  left: 60px;
 }
-.normal_tool .sub_normal_tool label,
-.normal_tool .sub_normal_tool .to_close_path,
-.normal_tool .sub_normal_tool .to_open_path {
+.normal_tool .sub_normal_tool label {
   position: relative;
   cursor: pointer;
   z-index: 2;
   display: block;
   text-align: center;
-  line-height: 40px;
+  line-height: 30px;
   background: whitesmoke;
   color: #a5a5a5;
   font-weight: bold;
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 1);
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 2px rgba(0, 0, 0, 0.1);
@@ -2572,48 +2534,12 @@ input.appear:focus ~ label.appear {
 .normal_tool label[for="copy_area_with_rect"] span {
   display: none;
 }
-.sub_normal_tool span.shortcut {
-  display: none;
-}
-#normal_tool_button:checked ~ .sub_normal_tool {
+#normal_tool_button:checked ~ #copy_area_with_rect:checked ~ .sub_normal_tool {
   display: block;
 }
-#normal_tool_button:checked ~ .sub_normal_tool label,
-#normal_tool_button:checked ~ .sub_normal_tool .to_close_path,
-#normal_tool_button:checked ~ .sub_normal_tool .to_open_path {
-  display: none;
-}
-#stroke_path_with_line:checked ~ .sub_normal_tool .to_close_path,
-#stroke_path_with_line:checked ~ .sub_normal_tool .to_open_path,
-#stroke_path_with_line:checked ~ .sub_normal_tool label[for="for_path_area"],
-#stroke_path_with_line:checked ~ .sub_normal_tool label[for="for_fill_area"],
-#stroke_path_with_line:checked ~ .sub_normal_tool label[for="for_cut_area"],
-#stroke_path_with_rect:checked ~ .sub_normal_tool label[for="for_path_area"],
-#stroke_path_with_rect:checked ~ .sub_normal_tool label[for="for_fill_area"],
-#stroke_path_with_rect:checked ~ .sub_normal_tool label[for="for_cut_area"],
-#stroke_path_with_arc:checked ~ .sub_normal_tool label[for="for_path_area"],
-#stroke_path_with_arc:checked ~ .sub_normal_tool label[for="for_fill_area"],
-#stroke_path_with_arc:checked ~ .sub_normal_tool label[for="for_cut_area"],
-#copy_area_with_rect:checked ~ .sub_normal_tool label[for="for_cut_area"],
-#copy_area_with_rect:checked ~ .sub_normal_tool label[for="for_copy_area"],
-#copy_area_with_rect:checked ~ .sub_normal_tool label[for="for_copy_normal_position"],
-#copy_area_with_rect:checked ~ .sub_normal_tool label[for="for_horizontal_flip"],
-#copy_area_with_rect:checked ~ .sub_normal_tool label[for="for_vertical_flip"],
-#resize_area_with_rect:checked ~ .sub_normal_tool label[for="for_cut_area"],
-#resize_area_with_rect:checked ~ .sub_normal_tool label[for="for_copy_area"],
-#roll_area_with_rect:checked ~ .sub_normal_tool label[for="for_cut_area"],
-#roll_area_with_rect:checked ~ .sub_normal_tool label[for="for_copy_area"] {
-  display: block;
-}
-#for_path_area:checked ~ label[for="for_path_area"],
-#for_fill_area:checked ~ label[for="for_fill_area"],
-#for_cut_area:checked ~ label[for="for_cut_area"],
-#for_copy_area:checked ~ label[for="for_copy_area"],
 #for_copy_normal_position:checked ~ .sub_normal_tool label[for="for_copy_normal_position"],
 #for_horizontal_flip:checked ~ .sub_normal_tool label[for="for_horizontal_flip"],
-#for_vertical_flip:checked ~ .sub_normal_tool label[for="for_vertical_flip"],
-.sub_normal_tool .to_close_path:active,
-.sub_normal_tool .to_open_path:active {
+#for_vertical_flip:checked ~ .sub_normal_tool label[for="for_vertical_flip"] {
   background-image: linear-gradient(0deg, royalblue 0%, navy 100%);
   color: white;
   text-shadow: none;
@@ -2628,10 +2554,10 @@ input.appear:focus ~ label.appear {
 /*only roll_back_and_forward*/
 .roll_back_and_forward .roll_back {
   display: none;
-  left: 40px;
+  left: 30px;
 }
 .roll_back_and_forward .roll_forward {
-  left: 80px;
+  left: 60px;
   display: none;
 }
 .roll_back_and_forward .roll_back:active,
@@ -2654,9 +2580,9 @@ input.appear:focus ~ label.appear {
 #select_horizon_layers,
 .layer_selector label[for="select_horizon_layers"] {
   display: none;
-  width: 90px;
+  width: 120px;
   position: absolute;
-  left: 80px;
+  left: 60px;
   top: 0;
   text-align: center;
   white-space: nowrap;
@@ -2671,7 +2597,7 @@ input.appear:focus ~ label.appear {
   z-index: 1;
   box-shadow: inset -1px -1px 1px rgba(0, 0, 0, 0.5), inset 1px 1px 1px rgba(0, 0, 255, 0.3);
   background-image: linear-gradient(0deg, #fff 0%, #ECFFFF 100%);
-  width: 100px;
+  width: 130px;
 }
 .layer_selector label[for="select_vertical_layers"],
 .layer_selector label[for="select_side_layers"],
@@ -2705,20 +2631,14 @@ input.appear:focus ~ label.appear {
   color: white;
 }
 .layer_selector .layer_copy,
-.layer_selector .layer_cut,
 .layer_selector .layer_paste,
-.layer_selector .layer_change,
 .layer_selector label[for="jump_to_this_layer"] {
   position: relative;
   display: none;
-  transform: translate(40px,-40px);
+  transform: translate(30px,-30px);
 }
 .layer_selector .layer_copy:active,
-.layer_selector .layer_cut:active,
-.layer_selector .layer_paste:active,
-.layer_selector .layer_change:active,
-.layer_selector .layer_copy.copyed,
-.layer_selector .layer_cut.copyed {
+.layer_selector .layer_paste:active {
   background: royalblue;
   background-image: none;
   color: white;
@@ -2830,7 +2750,7 @@ main {
 #editing_areas {
   position: relative;
   top: 0;
-  left: 65px;
+  left: 50px;
   width: 600px;
   height: 600px;
   overflow: scroll;
@@ -2838,10 +2758,44 @@ main {
   background: whitesmoke;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
-#drag-and-drop-area,
-#myCanvas {
-  width: 100%;
-  height: 100%;
+#art_canvas {
+  transform-origin: top left;
+  position: relative;
+}
+#art_canvas thead th.headCol {
+  height: 0.1px;
+  min-width: 20px;
+  background: #000;
+  border: 0;
+}
+#art_canvas tbody th.headRow {
+  height: 20px;
+  min-width: 0.1px;
+  background: #000;
+  border: 0;
+}
+#art_canvas td {
+  border: 1px solid #f5f5f5;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+  background: rgb(255, 255, 255);
+}
+#art_canvas td.selected {
+  background: lightcyan;
+}
+#art_canvas td.selected * {
+  opacity: 0.8;
+}
+#art_canvas td img {
+  display: none;
+  height: 18px;
+  width: 18px;
+  object-fit: fill;
+}
+#art_canvas td img.mImg {
+  display: block;
 }
 /*scrollbar_byCodepenFromPin*/
 #editing_areas::-webkit-scrollbar-track {
@@ -3020,7 +2974,7 @@ footer .app_ver {
   }
   /*palette board*/
   .palette {
-    left: 665px;
+    left: 650px;
   }
 }
 /*for 2 windows*/
@@ -3127,13 +3081,13 @@ footer .app_ver {
   }
   /*palette board*/
   .palette {
-    left: 665px;
+    left: 650px;
   }
 }
 @media screen and (max-width: 950px) {
   /*palette board*/
   .palette {
-    left: 65px;
+    left: 50px;
     top: 0px;
   }
 }
@@ -3143,7 +3097,7 @@ footer .app_ver {
   #for_sample_view .for_sample_view_form {
     width: 80%;
   }
-  #plan_to_download_Blueprint .plan_to_download_Blueprint p.big_title,
+  #plan_to_download_Blueprint .plan_to_download_Blueprint p,
   #for_sample_view .for_sample_view_form .title {
     font-size: 2.5vw;
   }
@@ -3169,26 +3123,16 @@ footer .app_ver {
     max-width: 100%;
     max-height: 100%;
   }
+  #drag-and-drop-area {
+    width: 100%;
+  }
 }
 /*for smartphone*/
 @media screen and (max-width: 640px) {
-  .close_button {
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-    color: white;
-    background-size: 40px 40px;
-  }
   main, aside, .top_menu ul, .icon_button_fixed_frame .icon_button_form {
     width: 100%;
   }
   /*++download for skin++*/
-  #plan_to_download_Blueprint .plan_menu a.to_top {
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-    color: white;
-    background-size: 40px 40px;
-  }
-  #plan_to_download_Blueprint .plan_to_download_Blueprint {
-    height: 80vh;
-  }
   #plan_to_download_Blueprint .first.plan label.left,
   #plan_to_download_Blueprint .second.plan label.left {
     float: none;
@@ -3200,10 +3144,6 @@ footer .app_ver {
     float: none;
     margin: 10px auto;
     height: 250px;
-  }
-  #plan_to_download_Blueprint .second.plan section iframe {
-    width: calc(60vw - 30px);
-    height: calc((60vw - 30px) * 16 / 9);
   }
   #plan_to_download_Blueprint .plan_menu .for_scroll {
     display: block;
@@ -3450,13 +3390,6 @@ footer .app_ver {
   #OTM .thin_text, #OTM .wid_text, .top_menu ul span.pc_text {
     display: none;
   }
-  .top_menu ul li,
-  .top_menu ul label:not(label.upload_memory) {
-    line-height: 30px;
-  }
-  .top_menu ul .syncer-acdn-child {
-    top: 30px;
-  }
   /*aside hanburger style*/
   .hanb_icon_form .title {
     display: none;
@@ -3474,37 +3407,12 @@ footer .app_ver {
   .hanb_icon_form .hanb_icon {
     border-left: 2px solid #73563A;
   }
-  .aside_menu .scrollTop,
-  .aside_menu .scrollBottom,
   .aside_menu .change_to_pixel_art {
     border-left: 2px solid #73563A;
-    box-shadow: none;
+    box-shadow: noen;
     transform: translate(-41px, 40px);
   }
-  .aside_menu .scrollTop {
-    display: block;
-    transform: translate(-41px, 80px);
-  }
-  .aside_menu .scrollBottom {
-    display: block;
-    transform: translate(-41px, 120px);
-  }
-  /*++aside++*/
-  aside {
-    top: 120px;
-  }
-  /*++icon_button++*/
-  .icon_button_fixed_frame {
-    top: 120px;
-  }
-  /*palette_board style*/
-  .palette .palette_board {
-    height: 400px;
-  }
   /*++main++*/
-  main {
-    top: 120px;
-  }
   #drag-and-drop-area .drag-and-drop-area_form {
     font-size: 95%;
   }

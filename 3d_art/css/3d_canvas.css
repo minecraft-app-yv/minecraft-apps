@@ -1,0 +1,19 @@
+/*reserve css*/
+i {
+  user-select: none;
+}
+.hidden {
+  display: none;
+}
+/*style*/
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif, "Font Awesome 5 Free";
+  position: relative;
+}
+/*++main++*/
+#selectCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
