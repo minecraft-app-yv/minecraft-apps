@@ -368,7 +368,7 @@ $(document).ready(async function () {
   let load_flag = false;
   let key = '3d_art_ver_two';
   let getData = return_obj_from_localStorage (storage, key);
-  if (getData !== '' || getData !== null) {
+  if (getData !== '' || getData != null) {
     value_obj = getData;
     if (getData['storage'] === 'off') {
       $('#auto_download_storage').prop('checked', false);
