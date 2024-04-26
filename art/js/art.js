@@ -329,14 +329,14 @@ function localStorageInto (getData) {
   let get_obj = getData['top_menu_data'];
   memory_obj = {};
   let i = 0;
-  $.each(get_obj, function(index, obj) {
+  while (get_obj['memoryObj_id' + i]) {
     let key = get_obj['memoryObj_id' + i];
     let canvas = get_obj['memoryObj_canvas' + i];
     let data = get_obj['memoryObj_data' + i];
     let value = {canvas: canvas, data: data};
     memory_obj[key] = value;
     i++;
-  })
+  }
   //color boxes of palette board cp
   let get_cp_obj = getData['cp_html'];
   let arry_cp_class = ['add_new_blocks', 'color_named_blocks', 'easy_to_gather', 'hard_in_overworld', 'in_nether', 'in_end'];
