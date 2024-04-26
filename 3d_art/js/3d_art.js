@@ -285,12 +285,14 @@ else {
   //ページを離れる直前
   window.onbeforeunload = function(){
     //make input data for localStorage
-    value_obj['storage'] = 'off';
-    //in storage
-    let key = '3d_art_ver_two';
-    remove_localStorage (storage,key);
-    setItem_in_localStorage (storage,key,value_obj);
     //storage button on or off
+    if (!$('#auto_download_storage').prop('checked')) {
+      value_obj['storage'] = 'off';
+      //in storage
+      let key = '3d_art_ver_two';
+      remove_localStorage (storage,key);
+      setItem_in_localStorage (storage,key,value_obj);
+    }
     if ($('#auto_download_storage').prop('checked')) {
       value_obj['storage'] = 'on';
       //top menu memory
@@ -340,6 +342,7 @@ else {
       value_obj['ratio_b'] = [$('#sample_ratio_b').val(), Number($('#sample_ratio_b').attr('data-count'))];
       value_obj['command_data'] = deepCopyObj(command_obj);
       //in storage
+      let key = '3d_art_ver_two';
       remove_localStorage (storage,key);
       setItem_in_localStorage (storage,key,value_obj);
     }
@@ -364,9 +367,8 @@ $(document).ready(async function () {
   let load_flag = false;
   let key = '3d_art_ver_two';
   let getData = return_obj_from_localStorage (storage, key);
-  if (getData !== '' || getData != null) {
+  if (getData !== null && getData !== '') {
     value_obj = getData;
-    console.log(getData);
     if (getData['storage'] === 'off') {
       $('#auto_download_storage').prop('checked', false);
     }
