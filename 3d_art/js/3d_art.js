@@ -366,6 +366,7 @@ $(document).ready(async function () {
   let getData = return_obj_from_localStorage (storage, key);
   if (getData !== '' || getData != null) {
     value_obj = getData;
+    console.log(getData);
     if (getData['storage'] === 'off') {
       $('#auto_download_storage').prop('checked', false);
     }
