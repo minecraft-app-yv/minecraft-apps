@@ -800,6 +800,7 @@ $('#remove_memory').click((e) => {
 });
 //data download
 /*https://techacademy.jp/magazine/21725*/
+/*
 $('#download_memory').click((e) => {
   let target_id = $('#syncer-acdn-03 li[data-target="target_memorys"] p.target').parent().attr('id');
   let have_memory = $('#' + target_id).attr('data-check');
@@ -847,8 +848,10 @@ $('#download_memory').click((e) => {
     }, 100);
   }
 });
+*/
 //data upload
 /*https://javascript.keicode.com/newjs/how-to-read-file-with-file-api.php*/
+/*
 function showDialog() {
   return new Promise((resolve) => {
     $("#dialog").dialog({
@@ -996,6 +999,7 @@ async function upload_memory_fun(e){
   }
 }
 $('#upload_memory').change(upload_memory_fun);
+*/
 //change_memory_text
 function change_memory_text (e) {
   let text_val = $('#memory_text').val();
@@ -2056,6 +2060,7 @@ $('#CP_icons .CP_icons_form label[for="map_canvas_open_icon"]').click(function (
 });
 //palette color_boxes form download
 /*https://techacademy.jp/magazine/21725*/
+/*
 $(".palette .palette_download").click(function () {
   let getStr = "";
   $('#CP .CPrgb').parent('label').each(function (index) {
@@ -2097,7 +2102,9 @@ $(".palette .palette_download").click(function () {
   link.click();
   link.remove();
 });
+*/
 //palette color_boxes form upload
+/*
 function return_array_doinput(alt_arr, src_arr, str) {
   let array_html = [];
   str = str.split("_split_").slice(1);
@@ -2173,6 +2180,7 @@ $("#palette_upload").change(function (e) {
   };
   reader.readAsText(file);
 });
+*/
 //new color pickup action form map & canvas
 $("#colorBox").click(function () {
   if (!$('#color_dropper_icon').prop('checked')) {
