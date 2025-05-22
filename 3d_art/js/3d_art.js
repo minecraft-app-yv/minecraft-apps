@@ -627,6 +627,7 @@ $('#remove_memory').click((e) => {
     i++;
   });
 });
+/*
 $('#download_memory').click((e) => {
   let target_id = $('#syncer-acdn-03 li[data-target="target_memorys"] p.target').parent().attr('id');
   let have_memory = $('#' + target_id).attr('data-check');
@@ -658,6 +659,8 @@ $('#download_memory').click((e) => {
     URL.revokeObjectURL(url);
   }, 100);
 });
+*/
+/*
 $('#upload_memory').change((e) => {
   let target_id = $('#syncer-acdn-03 li[data-target="target_memorys"] p.target').parent().attr('id');
   if (target_id === undefined || target_id === '') {
@@ -751,6 +754,7 @@ $('#upload_memory').change((e) => {
     reader.readAsArrayBuffer(file);
   }
 });
+*/
 function change_memory_text (e) {
   let text_val = $('#memory_text').val();
   $('#memory_text').remove();
@@ -1537,6 +1541,7 @@ $('#CP_icons .CP_icons_form label[for="make_palette_board_compact"]').click(func
   }
 });
 //palette color_boxes form download
+/*
 $(".palette .palette_download").click(function () {
   let getStr = "";
   $('#CP .CPimg').parent('label').each(function (index) {
@@ -1576,7 +1581,9 @@ $(".palette .palette_download").click(function () {
   link.click();
   link.remove();
 });
+*/
 //palette color_boxes form upload
+/*
 function return_array_doinput(alt_arr, src_arr, str) {
   let array_html = [];
   str = str.split("_split_").slice(1);
@@ -1662,6 +1669,7 @@ $("#palette_upload").change(function (e) {
   };
   reader.readAsText(file);
 });
+*/
 //remove_CP_boxes
 $('#CP_icons .CP_icons_form button.remove_CP_box').click((e) => {
   let str = '';
